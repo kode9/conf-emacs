@@ -7,7 +7,6 @@
 
 ;; conf path
 (add-to-list 'load-path '"~/conf/emacs/")
-(add-to-list 'load-path '"~/.emacs.d/")
 
 (load-file "~/conf/emacs/user.el")
 
@@ -190,10 +189,6 @@
 ;;; http://www.emacswiki.org/emacs/modeline-posn.el
 ;;; Does not work with powerline
 (set 'modelinepos-column-limit 100)
-
-;; http://www.emacswiki.org/emacs/AutoIndentMode
-(setq auto-indent-on-visit-file t)
-(auto-indent-global-mode)
 
 ;; Powerline (custom mode-line)
 ;;; https://github.com/milkypostman/powerline
@@ -515,9 +510,10 @@ sending a five megabyte query string to Netscape.")
     (diff file1 file2)))
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Anonymous Pro")))))
