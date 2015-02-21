@@ -5,10 +5,17 @@
 ;; Copy this in your home and custom user.el                                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; conf path
-(add-to-list 'load-path '"~/conf/emacs/")
+;; Package managment
+(add-to-list 'load-path '"~/.emacs.d/vendor/")
+(require 'cask "~/.emacs.d/cask/cask.el")
+(cask-initialize)
+(require 'pallet)
+(pallet-mode t) ;; Keep Cask file up to date
 
-(load-file "~/conf/emacs/user.el")
+;; conf path
+;; (add-to-list 'load-path '"~/conf/emacs/")
+
+;; (load-file "~/conf/emacs/user.el")
 
 ;; Custom variables
 (custom-set-variables
@@ -55,12 +62,12 @@
 ;; Start emacs-client server
 (server-start)
 
-;; Package archive
-(require 'package)
-(package-initialize) ;; initialisation de package
-;;; Additional packages http://marmalade-repo.org/
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+;; ;; Package archive
+;; (require 'package)
+;; (package-initialize) ;; initialisation de package
+;; ;;; Additional packages http://marmalade-repo.org/
+;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 ;; Theme
 ;;; Zenburn color theme
@@ -348,6 +355,7 @@
 
 ;;; Better SQL indentation
 (eval-after-load "sql" (load-library "sql-indent"))
+
 ;;; Yasnippet
 (yas-global-mode 1)
 
