@@ -5,7 +5,7 @@
 ;; Copy this in your home and custom user.el                                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Package managment
+;; Package management
 (add-to-list 'load-path '"~/.emacs.d/vendor/")
 (require 'cask "~/.emacs.d/cask/cask.el")
 (cask-initialize)
@@ -312,6 +312,7 @@
 (autoload 'apache-mode "apache-mode" nil t)
 (autoload 'haxe-mode "haxe-mode" "Haxe Mode." t)
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(autoload 'scilab-mode "scilab-mode" "Scilab mode." t)
 ;;;; Filename patterns
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(markdown\\|md\\|mdwn\\|mdml\\)\\'" . markdown-mode))

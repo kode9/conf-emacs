@@ -2,7 +2,6 @@
 (source marmalade)
 (source melpa)
 
-;; packaged
 (depends-on "ac-etags")
 (depends-on "apache-mode")
 (depends-on "auctex")
@@ -15,9 +14,13 @@
 (depends-on "clean-aindent-mode")
 (depends-on "cmake-mode")
 (depends-on "cmake-project")
+(depends-on "compilation-always-kill")
 (depends-on "cpputils-cmake")
+(depends-on "cuda-mode")
 (depends-on "dash")
 (depends-on "ddg")
+(depends-on "ddg-mode")
+(depends-on "ddg-search")
 (depends-on "epl")
 (depends-on "expand-region")
 (depends-on "f")
@@ -44,6 +47,7 @@
 (depends-on "powerline")
 (depends-on "s")
 (depends-on "scf-mode")
+(depends-on "scilab")
 (depends-on "shut-up")
 (depends-on "smart-operator")
 (depends-on "smex")
@@ -51,9 +55,3 @@
 (depends-on "wcheck-mode")
 (depends-on "yasnippet")
 (depends-on "zenburn-theme")
-
-;; Local
-(depends-on "compilation-always-kill")
-(depends-on "ddg")
-(depends-on "ddg-mode")
-(depends-on "ddg-search")
