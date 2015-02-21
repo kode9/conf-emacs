@@ -24,6 +24,7 @@
  '(display-time-24hr-format nil)
  '(display-time-day-and-date nil)
  '(display-time-mode nil)
+ '(flycheck-completion-system (quote ido))
  '(line-number-mode t)
  '(menu-bar-mode nil)
  '(mouse-avoidance-mode (quote cat-and-mouse) nil (avoid))
@@ -46,8 +47,11 @@
  vc-follow-symlinks t               ; Automatically follow symlinks to files under CVS
  )
 
-;; Save history beetween sessions
+;; Save mini buffer history between sessions
 (savehist-mode t)
+
+;; Save buffer location between  sessions
+(setq-default save-place t)
 
 ;; Start emacs-client server
 (server-start)
@@ -69,6 +73,10 @@
 ;; Identify multiple buffers with the same file name
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
+;; expand-region: increase selected region by semantic units
+;; https://github.com/magnars/expand-region.el
+(global-set-key [(control c) (a)] 'er/expand-region)
+
 ;; ido (InteractivelyDoThings) better completion for files and buffer, fuzzy matching etc
 (setq ido-everywhere t) ;; activer ido pour find-files et les buffers
 (setq ido-enable-flex-matching t) ;; activer le fuzzy matching pour trier les résultats
@@ -79,7 +87,13 @@
 (setq ido-max-work-file-list 50)   ; remember many
 (setq ido-confirm-unique-completion t) ; wait for RET, even with unique completion
 (setq confirm-nonexistent-file-or-buffer nil) ;; when using ido, the confirmation is rather annoying...
+(setq ido-use-virtual-buffers t) ;; Keep buffers even if files have been closed
 (ido-mode 1) ;; activer ido
+
+;; better fuzzy matching for ido
+(flx-ido-mode 1)
+;;; disable ido faces to see flx highlights.
+(setq ido-use-faces nil)
 
 ;; ido evberywhere
 (ido-ubiquitous-mode t)
@@ -501,3 +515,9 @@ sending a five megabyte query string to Netscape.")
     (diff file1 file2)))
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
