@@ -4,6 +4,9 @@
 ;;                                                                             ;;
 ;; Copy this in your home and custom user.el                                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; TODO
+;; - Better backup and autosave
+;; - Auto chmod +x: http://www.emacswiki.org/emacs/MakingScriptsExecutableOnSave
 
 ;; Package management
 (add-to-list 'load-path '"~/.emacs.d/vendor/")
