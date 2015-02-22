@@ -1,86 +1,38 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs configuration file                                                    ;;
-;; Pierre-Luc Perrier <pluc@the-pluc.net>                                      ;;
-;;                                                                             ;;
-;; Copy this in your home and custom user.el                                   ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs configuration file
+;; Pierre-Luc Perrier <pluc@the-pluc.net>
+;;
 ;; TODO
 ;; - Better backup and autosave
+;;     '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
+;;     '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
 ;; - Auto chmod +x: http://www.emacswiki.org/emacs/MakingScriptsExecutableOnSave
+;; - (setq-default save-place t)
+;; - more documentation...
+;; - user.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Package management
-(add-to-list 'load-path '"~/.emacs.d/vendor/")
-(require 'cask "~/.emacs.d/cask/cask.el")
+(add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
+(require 'cask (expand-file-name "cask/cask.el" user-emacs-directory))
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t) ;; Keep Cask file up to date
 
-;; conf path
-;; (add-to-list 'load-path '"~/conf/emacs/")
+;; Function to load subs from pluc/
+(defun include (file)
+  (load (expand-file-name (concat "pluc/" file) user-emacs-directory) t t nil nil))
 
-;; (load-file "~/conf/emacs/user.el")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Submodules
+;; Comment out the ones you do not want
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Custom variables
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
- '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
- '(column-number-mode t)
- '(display-battery-mode nil)
- '(display-time-24hr-format nil)
- '(display-time-day-and-date nil)
- '(display-time-mode nil)
- '(flycheck-completion-system (quote ido))
- '(line-number-mode t)
- '(menu-bar-mode nil)
- '(mouse-avoidance-mode (quote cat-and-mouse) nil (avoid))
- '(python-python-command "python3")
- '(scroll-bar-mode nil)
- '(show-paren-mode t)
- '(show-trailing-whitespace t)
- '(size-indication-mode t)
- '(tool-bar-mode nil)
- '(winner-mode t))
-
-(setq
- inhibit-startup-screen t           ; Do not show the welcome message
- initial-scratch-message nil
- message-log-max 50                 ; Disable off message buffer
- visible-bell nil                   ; Get rid of bells
- ring-bell-function 'ignore
- frame-title-format "Emacs : %f"    ; Frame title format
- savehist-file "~/.emacs.d/history" ; History file
- vc-follow-symlinks t               ; Automatically follow symlinks to files under CVS
- )
-
-;; Save mini buffer history between sessions
-(savehist-mode t)
-
-;; Save buffer location between  sessions
-(setq-default save-place t)
-
-;; Start emacs-client server
-(server-start)
-
-;; ;; Package archive
-;; (require 'package)
-;; (package-initialize) ;; initialisation de package
-;; ;;; Additional packages http://marmalade-repo.org/
-;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-
-;; Theme
-;;; Zenburn color theme
-(require 'zenburn-theme)
-;;; Solarized
-;; (load-theme 'solarized-dark t)
-;; (load-theme 'solarized-light t)
-
-;; Identify multiple buffers with the same file name
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(include "custom") ;; Basic setup
+(include "backup") ;; Backup and autosave
+(include "server") ;; Emacs server (emacsclient)
+(include "history") ;; Minibuffer history
+(include "theme") ;; Theme (only zenburn ATM)
 
 ;; expand-region: increase selected region by semantic units
 ;; https://github.com/magnars/expand-region.el
