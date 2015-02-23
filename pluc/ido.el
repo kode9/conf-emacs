@@ -8,7 +8,7 @@
  ido-max-work-directory-list 30 ;; Max working directory history
  ido-max-work-file-list 100 ;; Max file history
  ido-confirm-unique-completion nil ;; Do not wait for RET, even with unique completion
- ido-use-virtual-buffers 'auto ;; Use virtual buffers if the current input matches no existing buffer
+ ido-use-virtual-buffers 't ;; Use virtual buffers
  ;;
  confirm-nonexistent-file-or-buffer 'after-completion ;; Ask confirmation for new file/buffer only after completion
  flycheck-completion-system 'ido ;; Use ido for flycheck completion
