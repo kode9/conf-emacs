@@ -1,4 +1,4 @@
-#!usr/bin/env sh
+#!/usr/bin/env sh
 
 ################################################################################
 ## Simple installation script for my Emacs configuration.
