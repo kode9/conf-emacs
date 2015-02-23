@@ -1,7 +1,7 @@
 .cask/
+.history
+.ido.last
+ac-comphist.dat
 auto-save-list/
 backups/
-.history
-ido.cache
-ac-comphist.dat
 tramp
