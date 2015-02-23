@@ -4,7 +4,6 @@
  frame-title-format "⸗ %F ⸗ %b (%&) ⸗ %Z ⸗"              ;; Frame title format
  display-time-24hr-format nil
  display-time-day-and-date nil
- ;; flycheck-completion-system (quote ido)
  ;; mouse-avoidance-mode (quote cat-and-mouse) nil (avoid)
  python-python-command "python3"
  show-trailing-whitespace t
