@@ -10,6 +10,14 @@
 ;; - (setq-default save-place t)
 ;; - more documentation...
 ;; - user.el
+;; - better kill ring (or even helm!)
+;; - better undo/redo (check undo-tree)
+;; - C++14
+;; - Search regex
+;;
+;; REMINDER
+;;   - ffap
+;;   - re-builder
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Package management
@@ -18,6 +26,10 @@
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t) ;; Keep Cask file up to date
+
+;; Takes too much time!
+;; (add-hook 'window-setup-hook 'pallet-update t)
+;; (add-hook 'window-setup-hook 'pallet-install t)
 
 ;; Function to load subs from pluc/
 (defun include (file)
@@ -224,9 +236,6 @@
 ;;; Better SQL indentation
 (eval-after-load "sql" (load-library "sql-indent"))
 
-;;; Yasnippet
-(yas-global-mode 1)
-
 ;;; Autocomplete
 (ac-config-default)
 
@@ -236,8 +245,8 @@
 ;;; set the trigger key so that it can work together with yasnippet on tab key,
 ;;; if the word exists in yasnippet, pressing tab will cause yasnippet to
 ;;; activate, otherwise, auto-complete will
-(ac-set-trigger-key "TAB")
-(ac-set-trigger-key "<tab>")
+;; (ac-set-trigger-key "TAB")
+;; (ac-set-trigger-key "<tab>")
 
 ;; ;;;; Andy Stewart init
 ;; (require 'init-auto-complete)
@@ -260,7 +269,7 @@
 ;; (add-hook 'css-mode-hook 'ac-css-mode-setup)
 ;; (add-hook 'auto-complete-mode-hook 'ac-common-setup)
 ;; (defun my-ac-cc-mode-setup ()
-;;   (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
+;;   (setq ac-sources (append 'ac-source-clang ac-sources)))
 ;; (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 
 ;; ;; http://www.cx4a.org/pub/auto-complete-config.el
