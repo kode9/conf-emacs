@@ -85,10 +85,6 @@ _install() {
     "$GIT" clone --quiet --depth 1 -- "$CASK_REPO" cask
     export PATH="$PATH:$PWD/cask/bin"
 
-    echo "pwd: $PWD"
-    ls --color -la
-    echo "path: $PATH"
-
     local CASK=$(which cask)
     _check_bin 'cask' "$CASK"
 
