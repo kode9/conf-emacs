@@ -9,10 +9,9 @@
 ## will ask you if you want to delete or back it up.
 ##
 ## Usage:
-##   wget https://git.the-pluc.net/conf-emacs.git/raw/cask/install.sh -O - | sh
+##   wget https://git.the-pluc.net/conf-emacs.git/raw/master/install.sh -O - | sh
 ##
 ## TODO:
-##   - Change branch from 'cask' to 'master' after merge
 ##   - Check emacs version
 ################################################################################
 
@@ -22,7 +21,7 @@ readonly WGET=$(which wget)
 readonly EMACS=$(which emacs)
 
 readonly EMACSD="$HOME/.emacs.d"
-readonly TARBALL_URL='https://git.the-pluc.net/index.php/conf-emacs.git/tarball/cask'
+readonly TARBALL_URL='https://git.the-pluc.net/index.php/conf-emacs.git/tarball/master'
 readonly TARBALL='/tmp/conf-emacs.tar'
 readonly CASK_REPO='https://github.com/cask/cask.git'
 
