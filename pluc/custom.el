@@ -33,3 +33,13 @@
 (setq show-paren-style 'expression) ;; Show full expression
 (setq show-paren-delay 0.01)        ;; Delay before showing
 (show-paren-mode 1)                 ;; Highlights parenthesis
+
+;; https://github.com/roman/golden-ratio.el
+;;; Automatic resizing of windows using the golden ration and keeping
+;;; the one with the focus bigger.
+(use-package golden-ratio
+  :init
+  (setq golden-ratio-auto-scale nil) ;; If not nil, keep frames narrow on wide screens
+  (setq split-width-threshold nil) ;; Prevent additional windows creation
+  :config
+  (golden-ratio-mode 1))

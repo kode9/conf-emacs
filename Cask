@@ -29,6 +29,7 @@
 (depends-on "git-gutter+")
 (depends-on "git-rebase-mode")
 (depends-on "glsl-mode")
+(depends-on "golden-ratio")
 (depends-on "google-maps")
 (depends-on "haxe-mode")
 (depends-on "ido-ubiquitous")
