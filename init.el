@@ -27,6 +27,11 @@
 (require 'pallet)
 (pallet-mode t) ;; Keep Cask file up to date
 
+;; (setq use-package-verbose t) ;; Debugging
+(require 'use-package)
+;; (require 'diminish)                ;; if you use :diminish
+;; (require 'bind-key)                ;; if you use any :bind variant
+
 ;; Takes too much time!
 ;; (add-hook 'window-setup-hook 'pallet-update t)
 ;; (add-hook 'window-setup-hook 'pallet-install t)

@@ -52,5 +52,6 @@
 (depends-on "smart-operator")
 (depends-on "smex")
 (depends-on "sql-indent")
+(depends-on "use-package")
 (depends-on "wcheck-mode")
 (depends-on "zenburn-theme")
