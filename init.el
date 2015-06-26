@@ -50,6 +50,7 @@
 (include "server") ;; Emacs server (emacsclient)
 (include "history") ;; Minibuffer history
 (include "theme") ;; Theme (only zenburn ATM)
+(include "devel") ;; Development
 (include "keys") ;; Key bindings
 (include "ido") ;; InteractivelyDoThings
 

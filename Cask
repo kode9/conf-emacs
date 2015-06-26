@@ -18,6 +18,7 @@
 (depends-on "cpputils-cmake")
 (depends-on "cuda-mode")
 (depends-on "dash")
+(depends-on "enclose")
 (depends-on "epl")
 (depends-on "expand-region")
 (depends-on "f")
