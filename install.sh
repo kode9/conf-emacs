@@ -13,6 +13,9 @@
 ##
 ## TODO:
 ##   - Check emacs version
+##   - Certificate error
+##   - 'local' seems to be an extension and not part of posix shell
+##   - delete ~/.emacs if present
 ################################################################################
 
 readonly GIT=$(which git)
