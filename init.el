@@ -214,7 +214,6 @@
 (add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("\\.xrdb\\'" . conf-xdefaults-mode))
-(add-to-list 'auto-mode-alist '(".*_EDITMSG\\'" . log-entry-mode)) ; Git commit
 (add-to-list 'auto-mode-alist '("\\.\\(glsl\\|vert\\|frag\\|geom\\|vs\\|ksh\\|fs\\|gs\\)\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . cuda-mode))
 (add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
