@@ -33,10 +33,6 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-;; Parenthesis mode
-(setq show-paren-style 'expression) ;; Show full expression
-(setq show-paren-delay 0.01)        ;; Delay before showing
-(show-paren-mode 1)                 ;; Highlights parenthesis
 
 ;; Emacs server to use with emacsclient
 (use-package server

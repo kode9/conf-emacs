@@ -4,6 +4,11 @@
 
 (delete-selection-mode 1) ;; Typing replaces current selection
 
+;; Parenthesis
+(setq show-paren-style 'expression) ;; Show full expression
+(setq show-paren-delay 0.01)        ;; Delay before showing
+(show-paren-mode 1)                 ;; Highlights parenthesis
+
 ;;;;;;;;;;;;;;;;;;
 ;; Key bindings ;;
 ;;;;;;;;;;;;;;;;;;
