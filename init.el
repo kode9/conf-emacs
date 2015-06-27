@@ -20,23 +20,38 @@
 ;;   - re-builder
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Package management
-(add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Cask: Project management for Emacs package development	        ;;
+;; http://github.com/cask/cask					        ;;
+;; 								        ;;
+;; Automatic installation and updates of packages listed in a Cask file ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'cask (expand-file-name "cask/cask.el" user-emacs-directory))
 (cask-initialize)
-(require 'pallet)
-(pallet-mode t) ;; Keep Cask file up to date
 
-;; (setq use-package-verbose t) ;; Debugging
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; use-package: A use-package declaration for simplifying your .emacs ;;
+;; https://github.com/jwiegley/use-package			      ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (setq use-package-verbose t) ;; Uncomment to see package loading in *Messages*
 (require 'use-package)
-;; (require 'diminish)                ;; if you use :diminish
-;; (require 'bind-key)                ;; if you use any :bind variant
+(require 'bind-key)    ;; if you use any :bind variant
+;; (require 'diminish) ;; if you use :diminish
 
-;; Takes too much time!
-;; (add-hook 'window-setup-hook 'pallet-update t)
-;; (add-hook 'window-setup-hook 'pallet-install t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Pallet: A package management tool for Emacs, using Cask. ;;
+;; https://github.com/rdallasgray/pallet		    ;;
+;; 							    ;;
+;; Keep track of installed packages using Cask		    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package pallet
+  :demand
+  :config (pallet-mode t))
 
-;; Function to load subs from pluc/
+;; Some non-packaged stuff
+(add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
+
+;; Function to load settings files from pluc/
 (defun include (file)
   (load (expand-file-name (concat "pluc/" file) user-emacs-directory) t t nil nil))
 
