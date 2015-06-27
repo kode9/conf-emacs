@@ -1,7 +1,7 @@
 ;; Misc customization, mainly basic display setup.
 
 (setq
- frame-title-format "⸗ %F ⸗ %b (%&) ⸗ %Z ⸗"              ;; Frame title format
+ frame-title-format "⸗ %b (%&) ⸗" ;; Frame title format: buffer (status)
  display-time-24hr-format nil
  display-time-day-and-date nil
  ;; mouse-avoidance-mode (quote cat-and-mouse) nil (avoid)
@@ -29,18 +29,30 @@
 (prefer-coding-system 'utf-8) ;; Primary coding system for automatic detection.
 (set-language-environment "UTF-8") ;; Default input method
 
-;; Allow undo/redo windows configuration
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
+;; Gets the mouse out of the cursor
+(use-package avoid
+  :init
+  (setq mouse-avoidance-threshold 10) ;; When is it too close
+  :config
+  (mouse-avoidance-mode 'exile) ;; Exile it to top-right corder, but allow it to come back
+  )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Allow undo/redo windows configuration ;;
+;; Keys: "C-c LEFT" and "C-c RIGHT"	 ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when (fboundp 'winner-mode) (winner-mode 1))
 
-;; Emacs server to use with emacsclient
-(use-package server
-  :config (unless (server-running-p) (server-start)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs server (emacsclient) ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package server :config (unless (server-running-p) (server-start)))
 
-;; https://github.com/roman/golden-ratio.el
-;;; Automatic resizing of windows using the golden ration and keeping
-;;; the one with the focus bigger.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Automatic resizing of windows using the golden ration and keeping ;;
+;; the one with the focus bigger.				     ;;
+;; https://github.com/roman/golden-ratio.el			     ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package golden-ratio
   :init
   (setq golden-ratio-auto-scale nil) ;; If not nil, keep frames narrow on wide screens
