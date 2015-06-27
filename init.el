@@ -51,7 +51,6 @@
 (include "theme") ;; Theme (only zenburn ATM)
 (include "editing") ;; Development
 (include "devel") ;; Development
-(include "keys") ;; Key bindings
 (include "ido") ;; InteractivelyDoThings
 
 ;; Ibuffer
