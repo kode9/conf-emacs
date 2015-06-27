@@ -38,6 +38,10 @@
 (setq show-paren-delay 0.01)        ;; Delay before showing
 (show-paren-mode 1)                 ;; Highlights parenthesis
 
+;; Emacs server to use with emacsclient
+(use-package server
+  :config (unless (server-running-p) (server-start)))
+
 ;; https://github.com/roman/golden-ratio.el
 ;;; Automatic resizing of windows using the golden ration and keeping
 ;;; the one with the focus bigger.

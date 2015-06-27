@@ -47,7 +47,6 @@
 
 (include "custom") ;; Basic setup
 (include "backup") ;; Backup and autosave
-(include "server") ;; Emacs server (emacsclient)
 (include "history") ;; Minibuffer history
 (include "theme") ;; Theme (only zenburn ATM)
 (include "editing") ;; Development
