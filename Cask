@@ -56,6 +56,7 @@
 (depends-on "smex")
 (depends-on "sql-indent")
 (depends-on "use-package")
+(depends-on "volatile-highlights")
 (depends-on "wcheck-mode")
 (depends-on "wrap-region")
 (depends-on "zenburn-theme")
