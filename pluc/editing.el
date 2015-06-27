@@ -1,5 +1,7 @@
-;; https://github.com/rejeep/drag-stuff.el
+;; Common editing settings
+
 ;; Drag stuff (lines, words, region, etc...) around
+;; https://github.com/rejeep/drag-stuff.el
 (use-package drag-stuff
   :config
   (drag-stuff-global-mode t))
