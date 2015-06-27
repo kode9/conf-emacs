@@ -56,4 +56,5 @@
 (depends-on "sql-indent")
 (depends-on "use-package")
 (depends-on "wcheck-mode")
+(depends-on "wrap-region")
 (depends-on "zenburn-theme")
