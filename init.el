@@ -320,17 +320,14 @@
   (interactive)
   (delete-trailing-whitespace))
 
-(defun iwb()
-  "Indent whole buffer, untabify, and set UTF8"
+(defun indent-buffer()
+  "Indent whole buffer"
   (interactive)
-  (indent-region (point-min) (point-max) nil)
-  (set-buffer-file-coding-system 'utf-8-unix))
+  (indent-region (point-min) (point-max) nil))
 
 (defun dev-hooks()
-  "Update copyright"
-  (interactive)
-  (iwb)
-  (copyright-update))
+  "Progmod hooks"
+  (format-buffer))
 
 (define-minor-mode pluc-mode
   "Clean buffers."

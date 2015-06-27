@@ -11,3 +11,11 @@
 (use-package wrap-region
   :config
   (wrap-region-global-mode t))
+
+;; clang-format
+(use-package clang-format)
+
+(defun format-buffer()
+  "Format buffer if clang-format is available and the buffer is cc-mode derived, otherwise call indent-buffer"
+  (interactive)
+  (unless (and (boundp 'c-buffer-is-cc-mode) c-buffer-is-cc-mode (clang-format-buffer) t) (indent-buffer)))
