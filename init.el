@@ -34,7 +34,7 @@
 ;; https://github.com/jwiegley/use-package			      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (setq use-package-verbose t) ;; Uncomment to see package loading in *Messages*
-(require 'use-package)
+(eval-when-compile (require 'use-package))
 (require 'bind-key)    ;; if you use any :bind variant
 ;; (require 'diminish) ;; if you use :diminish
 
@@ -45,28 +45,26 @@
 ;; Keep track of installed packages using Cask		    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package pallet
+  :ensure
   :demand
   :config (pallet-mode t))
 
 ;; Some non-packaged stuff
 (add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
 
-;; Function to load settings files from pluc/
-(defun include (file)
-  (load (expand-file-name (concat "pluc/" file) user-emacs-directory) t t nil nil))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Submodules
 ;; Comment out the ones you do not want
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Directory where to find submodules
+(eval-and-compile (setq pluc-dir (expand-file-name "pluc/" user-emacs-directory)))
 
-(include "custom") ;; Basic setup
-(include "backup") ;; Backup and autosave
-(include "history") ;; Minibuffer history
-(include "theme") ;; Theme (only zenburn ATM)
-(include "editing") ;; Development
-(include "devel") ;; Development
-(include "ido") ;; InteractivelyDoThings
+(use-package pluc-custom :load-path pluc-dir) ;; Basic setup
+(use-package pluc-theme :load-path pluc-dir) ;; Color theme (only zenburn ATM)
+(use-package pluc-ido :load-path pluc-dir) ;; InteractivelyDoThings
+(use-package pluc-editing :load-path pluc-dir) ;; Common edition settings
+(use-package pluc-devel :load-path pluc-dir) ;; Development settings
+
 
 ;; Ibuffer
 (setq ibuffer-saved-filter-groups
@@ -254,78 +252,6 @@
 
 ;;; Better SQL indentation
 (eval-after-load "sql" (load-library "sql-indent"))
-
-;;; Autocomplete
-(ac-config-default)
-
-(define-key ac-completing-map (kbd "C-n") 'ac-next)
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)
-
-;;; set the trigger key so that it can work together with yasnippet on tab key,
-;;; if the word exists in yasnippet, pressing tab will cause yasnippet to
-;;; activate, otherwise, auto-complete will
-;; (ac-set-trigger-key "TAB")
-;; (ac-set-trigger-key "<tab>")
-
-;; ;;;; Andy Stewart init
-;; (require 'init-auto-complete)
-;; ; default init
-;; (require 'auto-complete-config)
-;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-;; (ac-config-default)
-
-;; ; clang
-;; (require 'auto-complete-clang)
-;; (setq ac-quick-help-delay 0.8)
-;; ;; (ac-set-trigger-key "TAB")
-;; ;; (define-key ac-mode-map  [(control tab)] 'auto-complete)
-;; ; (define-key ac-mode-map  [(control tab)] 'auto-complete)
-
-;; (add-to-list 'ac-sources 'ac-source-dictionary)
-;; (add-to-list 'ac-sources 'ac-source-words-in-same-mode-buffers)
-;; (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
-;; (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
-;; (add-hook 'css-mode-hook 'ac-css-mode-setup)
-;; (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-;; (defun my-ac-cc-mode-setup ()
-;;   (setq ac-sources (append 'ac-source-clang ac-sources)))
-;; (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
-
-;; ;; http://www.cx4a.org/pub/auto-complete-config.el
-;; ;; http://idning.googlecode.com/svn/trunk/config/.emacs.d/auto-install/auto-complete-config.el
-
-;; (defmacro ac-define-dictionary-source (name list)
-;;   "Define dictionary source named `NAME'.
-;; `LIST' is a list of string.
-;; This is useful if you just want to define a dictionary/keywords source."
-;;   `(defvar ,name
-;;      '((candidates . (list ,@list))
-;;        (cache))))
-
-;; (ac-define-dictionary-source
-;;  ac-source-c++-keywords
-;;  '("and" "bool" "compl" "do" "export" "goto" "namespace" "or_eq" "return"
-;;    "struct" "try" "using" "xor" "and_eq" "break" "const" "double" "extern"
-;;    "if" "new" "private" "short" "switch" "typedef" "virtual" "xor_eq" "asm"
-;;    "case" "const_cast" "dynamic_cast" "false" "inline" "not" "protected"
-;;    "signed" "template" "typeid" "void" "auto" "catch" "continue" "else"
-;;    "float" "int" "not_eq" "public" "sizeof" "this" "typename" "volatile"
-;;    "bitand" "char" "default" "enum" "for" "long" "operator" "register"
-;;    "static" "throw" "union" "wchar_t" "bitor" "class" "delete" "explicit"
-;;    "friend" "mutable" "or" "reinterpret_cast" "static_cast" "true"
-;;    "unsigned" "while" "nullptr" "constexpr"))
-
-;; (defun ac-c++-keywords-setup ()
-;;   (push 'ac-source-c++-keywords ac-sources))
-
-;; (defun ac-c++-keywords-initialize ()
-;;   (add-hook 'c++-mode-hook 'ac-c++-keywords-setup)
-;;   t)
-
-;; ;; latex https://bitbucket.org/tequilasunset/auto-complete-latex/
-;; (require 'auto-complete-latex)
-
-;; (global-auto-complete-mode t)
 
 ;; Custom hooks
 (defun dtw()

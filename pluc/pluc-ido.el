@@ -1,4 +1,6 @@
-;; ido (InteractivelyDoThings) better completion for files and buffer, fuzzy matching etc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido (InteractivelyDoThings): better completion for files and buffer, fuzzy matching etc ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq
  ido-enable-flex-matching t ;; Fuzzy matching
@@ -81,3 +83,5 @@
 ;; (global-set-key [(control c) (d)] 'ido-find-tag)
 ;; (global-set-key [(control c) (f)] 'ido-find-tag-other-window)
 ;; (global-set-key [(control c) (g)] 'ido-find-file-in-tags)
+
+(provide 'pluc-ido)

@@ -1,4 +1,6 @@
-;; Misc customization, mainly basic display setup.
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Basic configuration ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq
  frame-title-format "⸗ %b (%&) ⸗" ;; Frame title format: buffer (status)
@@ -28,6 +30,17 @@
 (display-battery-mode 0) ;; Disable battery mode
 (prefer-coding-system 'utf-8) ;; Primary coding system for automatic detection.
 (set-language-environment "UTF-8") ;; Default input method
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Backup, autosaves and history ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq
+ savehist-file (expand-file-name ".history" user-emacs-directory) ;; History file
+ auto-save-default nil ;; Disable autosave for now
+ backup-inhibited t ;; Disable backup for now
+ )
+(savehist-mode nil) ;; save minibuffer history
 
 ;; Gets the mouse out of the cursor
 (use-package avoid
@@ -59,3 +72,5 @@
   (setq split-width-threshold nil) ;; Prevent additional windows creation
   :config
   (golden-ratio-mode 1))
+
+(provide 'pluc-custom)
