@@ -9,6 +9,13 @@
 (setq show-paren-delay 0.01)        ;; Delay before showing
 (show-paren-mode 1)                 ;; Highlights parenthesis
 
+;; Highlight current line
+(use-package hl-line
+  :init
+  (setq global-hl-line-sticky-flag t) ;; Keep highlight in all windows
+  :config
+  (global-hl-line-mode nil))
+
 ;;;;;;;;;;;;;;;;;;
 ;; Key bindings ;;
 ;;;;;;;;;;;;;;;;;;
