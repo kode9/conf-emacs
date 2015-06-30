@@ -31,6 +31,11 @@
 (prefer-coding-system 'utf-8) ;; Primary coding system for automatic detection.
 (set-language-environment "UTF-8") ;; Default input method
 
+;; Customization
+;;; Took from https://github.com/lunaryorn/.emacs.d
+(defconst pluc-custom-file (locate-user-emacs-file "custom.el") "File used to store settings from Customization UI.")
+(use-package cus-edit :defer t :config (setq custom-file pluc-custom-file) :init (load pluc-custom-file 'no-error 'no-message))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup, autosaves and history ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
