@@ -24,4 +24,14 @@
   (interactive)
   (unless (and (boundp 'c-buffer-is-cc-mode) c-buffer-is-cc-mode (clang-format-buffer) t) (indent-buffer)))
 
+;; git-gutter+: View, stage and revert Git changes straight from the
+;; buffer.
+;;; https://github.com/nonsequitur/git-gutter-plus
+(use-package git-gutter+
+  :defer t
+  :functions git-gutter+-mode
+  :diminish git-gutter+-mode
+  :init
+  (add-hook 'prog-mode-hook 'git-gutter+-mode))
+
 (provide 'pluc-devel)

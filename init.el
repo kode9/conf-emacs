@@ -104,10 +104,6 @@
 ;; https://github.com/pmarinov/clean-aindent
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
-;; View, stage and revert Git changes straight from the buffer.
-;;; https://github.com/nonsequitur/git-gutter-plus
-(global-git-gutter+-mode t)
-
 ;; Autoscoll compilation buffer and stop on first error
 (set 'compilation-scroll-output 'first-error)
 ;; Skip warnings when jumping between errors
