@@ -78,4 +78,13 @@
   :config
   (golden-ratio-mode 1))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Paradox: better package menu        ;;
+;; http://github.com/Malabarba/paradox ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package paradox
+  :config
+  (setq paradox-github-token t) ;; Don't ask for GitHub token
+  )
+
 (provide 'pluc-custom)
