@@ -1,7 +1,5 @@
 (source "gnu" "https://elpa.gnu.org/packages/")
 (source melpa)
-;; TLS bug
-;; (source marmalade "https://marmalade-repo.org/packages/")
 
 (depends-on "ac-etags")
 (depends-on "apache-mode")
