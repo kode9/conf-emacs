@@ -34,4 +34,28 @@
   :init
   (add-hook 'prog-mode-hook 'git-gutter+-mode))
 
+;;;;;;;;;;;
+;; Modes ;;
+;;;;;;;;;;;
+
+;; OpenGL shaders
+(use-package glsl-mode
+  :mode "\\.\\(?:vs\\|fs\\|gs\\|glsl\\|vert\\|frag\\|geom\\|ksh\\)\\'")
+
+;; Qt QML
+(use-package qml-mode
+  :mode "\\.qml\\'")
+
+;; NVidia CUDA
+(use-package cuda-mode
+  :mode "\\.cu\\'")
+
+;; Lua
+(use-package lua-mode
+  :mode "\\.lua\\'")
+
+;; Arch Linux PKGBUILD
+(use-package sh-script
+  :mode ("/PKGBUILD\\'" . sh-mode))
+
 (provide 'pluc-devel)

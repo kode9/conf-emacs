@@ -14,12 +14,13 @@
 ;; - better undo/redo (check undo-tree)
 ;; - C++14
 ;; - Search regex
+;; - comment & duplicate
+;; - switch two frames
 ;;
 ;; REMINDER
 ;;   - ffap
 ;;   - re-builder
 ;;   - irony-mode
-;;   - pkgbuild-mode
 ;;   - CMake
 ;;   - gitattributes-mode
 ;;   - gitconfig-mode
@@ -129,17 +130,12 @@
 
 ;; Major modes
 ;;; Load
-(autoload 'glsl-mode "glsl-mode" nil t)
-(autoload 'qml-mode "qml-mode" "QML mode" t)
 (autoload 'markdown-mode "markdown-mode" "Markdown mode" t)
 (autoload 'cmake-mode "cmake-mode" "Cmake Mode." t)
-(autoload 'cuda-mode "cuda-mode" "Cuda Mode." t)
 (autoload 'apache-mode "apache-mode" nil t)
 (autoload 'haxe-mode "haxe-mode" "Haxe Mode." t)
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (autoload 'scilab-mode "scilab-mode" "Scilab mode." t)
 ;;;; Filename patterns
-(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(markdown\\|md\\|mdwn\\|mdml\\)\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\CMakeLists.txt\\'" . cmake-mode))
 (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
@@ -155,8 +151,6 @@
 (add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("\\.xrdb\\'" . conf-xdefaults-mode))
-(add-to-list 'auto-mode-alist '("\\.\\(glsl\\|vert\\|frag\\|geom\\|vs\\|ksh\\|fs\\|gs\\)\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.cu\\'" . cuda-mode))
 (add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
 (add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
 (add-to-list 'auto-mode-alist '("srm\\.conf\\'"    . apache-mode))
@@ -164,8 +158,6 @@
 (add-to-list 'auto-mode-alist '("sites-\\(available\\|enabled\\)/" . apache-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\.lk\\'" . js-mode)) ; LeekScript (LeekWars)
 (add-to-list 'auto-mode-alist '("\\.hx\\'" . haxe-mode))
-(add-to-list 'auto-mode-alist '("PKGBUILD\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
 
 ;; Minor modes
 (autoload 'align-string "align-string" "Align string." t)

@@ -50,6 +50,7 @@
 (depends-on "popup")
 (depends-on "powerline")
 (depends-on "projectile")
+(depends-on "qml-mode")
 (depends-on "s")
 (depends-on "scf-mode")
 (depends-on "shut-up")
