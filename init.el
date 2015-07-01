@@ -33,7 +33,7 @@
 ;; 								        ;;
 ;; Automatic installation and updates of packages listed in a Cask file ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'cask (expand-file-name "cask/cask.el" user-emacs-directory))
+(eval-and-compile (require 'cask (expand-file-name "cask/cask.el" user-emacs-directory)))
 (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
