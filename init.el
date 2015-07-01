@@ -18,6 +18,13 @@
 ;; REMINDER
 ;;   - ffap
 ;;   - re-builder
+;;   - irony-mode
+;;   - pkgbuild-mode
+;;   - CMake
+;;   - gitattributes-mode
+;;   - gitconfig-mode
+;;   - gitignore-mode
+;;   - editorconfig
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -35,8 +42,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (setq use-package-verbose t) ;; Uncomment to see package loading in *Messages*
 (eval-when-compile (require 'use-package))
-(require 'bind-key)    ;; if you use any :bind variant
-;; (require 'diminish) ;; if you use :diminish
+(use-package bind-key :ensure :defer t) ;; :bind support for use-package
+(use-package diminish :ensure :defer t) ;; :diminish support for use-package
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Pallet: A package management tool for Emacs, using Cask. ;;

@@ -39,6 +39,7 @@
 ;; https://github.com/rejeep/drag-stuff.el	    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package drag-stuff
+  :diminish drag-stuff-mode
   :config
   (drag-stuff-global-mode t))
 
@@ -47,6 +48,7 @@
 ;; http://www.emacswiki.org/emacs/VolatileHighlights ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package volatile-highlights
+  :diminish volatile-highlights-mode
   :config
   (volatile-highlights-mode t))
 

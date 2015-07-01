@@ -12,6 +12,7 @@
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el
 (use-package wrap-region
+  :diminish wrap-region-mode
   :config
   (wrap-region-global-mode t))
 
