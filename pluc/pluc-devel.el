@@ -35,6 +35,13 @@
   :init
   (add-hook 'prog-mode-hook 'git-gutter+-mode))
 
+;; which-function: Show function at cursor
+(use-package which-func
+  :init (which-function-mode nil)
+  :config
+  (setq which-func-unknown "∅") ;; Displayed when current function is unknown
+  )
+
 ;;;;;;;;;;;
 ;; Modes ;;
 ;;;;;;;;;;;
