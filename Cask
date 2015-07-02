@@ -27,7 +27,6 @@
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "flycheck")
-(depends-on "git-gutter+")
 (depends-on "glsl-mode")
 (depends-on "golden-ratio")
 (depends-on "google-maps")

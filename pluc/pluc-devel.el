@@ -28,6 +28,7 @@
 ;; buffer.
 ;;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
+  :disabled t
   :defer t
   :functions git-gutter+-mode
   :diminish git-gutter+-mode
