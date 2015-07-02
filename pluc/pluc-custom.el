@@ -87,6 +87,7 @@
   :config
   (setq paradox-github-token t) ;; Don't ask for GitHub token
   (setq paradox-execute-asynchronously nil) ;; Don't try to do things asynchronously
+  (setq paradox-automatically-star nil) ;; Do not star automatically when (un)installing
   )
 
 (provide 'pluc-custom)
