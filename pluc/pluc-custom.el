@@ -86,6 +86,7 @@
 (use-package paradox
   :config
   (setq paradox-github-token t) ;; Don't ask for GitHub token
+  (setq paradox-execute-asynchronously nil) ;; Don't try to do things asynchronously
   )
 
 (provide 'pluc-custom)
