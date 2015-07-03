@@ -162,9 +162,6 @@
 (add-hook 'c-mode-hook 'maybe-cmake-project-hook)
 (add-hook 'c++-mode-hook 'maybe-cmake-project-hook)
 
-;;; Better SQL indentation
-(eval-after-load "sql" (load-library "sql-indent"))
-
 ;; Custom hooks
 (defun dtw()
   "Delete trailing whitespaces"

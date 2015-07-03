@@ -90,4 +90,12 @@
 (use-package scilab-mode
   :mode "\\.\\(?:sci\\|sce\\)\\'")
 
+;; SQL
+(use-package sql
+  :functions sql
+  :mode ("\\.sql\\'" . sql-mode)
+  :config
+  (use-package sql-indent) ;; Better indentation
+  )
+
 (provide 'pluc-devel)
