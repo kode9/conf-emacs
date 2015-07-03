@@ -46,6 +46,10 @@
 ;; Modes ;;
 ;;;;;;;;;;;
 
+;; C++
+(use-package cc-mode
+  :mode ("\\.inl\\'" . c++-mode))
+
 ;; OpenGL shaders
 (use-package glsl-mode
   :mode "\\.\\(?:[vfg]s\\|glsl\\|vert\\|frag\\|geom\\|ksh\\)\\'")
