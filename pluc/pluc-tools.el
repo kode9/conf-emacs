@@ -25,4 +25,19 @@
   ("C-c A R" . ag-project-regexp)
   )
 
+;; magit: Git frontend
+;;; http://magit.vc/
+(use-package magit
+  :bind
+  ("C-c m s" . magit-status)
+  ("C-c m b" . magit-blame)
+  ("C-c m d" . magit-diff-working-tree)
+  ("C-c m l" . magit-log-buffer-file)
+  ("C-c m L" . magit-log-all)
+  :config
+  (setq magit-revert-buffers 'silent) ;; Revert buffers silently
+  (setq magit-save-repository-buffers t) ;; Ask confirmation when saving buffers
+  (setq magit-refs-show-commit-count 'all) ;; Show counts for branches and tags
+  )
+
 (provide 'pluc-tools)
