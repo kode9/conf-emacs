@@ -81,10 +81,10 @@
 ;; CMake
 (use-package cmake-mode
   :mode ("\\.cmake\\'" "/CMakeLists\\.txt\\'")
+  :init
+  (add-hook 'cmake-mode-hook 'cmake-font-lock-activate) ;; Better syntax highlightning
   :config
-  (use-package cmake-font-lock ;; Better syntax highlightning
-    :init
-    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)))
+  (use-package cmake-font-lock))
 
 ;; Scilab
 (use-package scilab-mode
