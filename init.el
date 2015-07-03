@@ -146,7 +146,6 @@
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("\\.xrdb\\'" . conf-xdefaults-mode))
 (add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
 (add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
@@ -242,4 +241,3 @@ sending a five megabyte query string to Netscape.")
     (diff file1 file2)))
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
-

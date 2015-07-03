@@ -65,9 +65,10 @@
 (use-package lua-mode
   :mode "\\.lua\\'")
 
-;; Arch Linux PKGBUILD
+;; Shell scripts
 (use-package sh-script
-  :mode ("/PKGBUILD\\'" . sh-mode))
+  :mode (("/PKGBUILD\\'" . sh-mode) ;; Arch Linux PKGBUILD
+	 ("\\.zsh\\'" . sh-mode)))
 
 ;; CSV
 (use-package csv-mode
