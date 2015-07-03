@@ -12,6 +12,7 @@
 (depends-on "chess")
 (depends-on "clang-format")
 (depends-on "clean-aindent-mode")
+(depends-on "cmake-font-lock")
 (depends-on "cmake-mode")
 (depends-on "cmake-project")
 (depends-on "color-theme")

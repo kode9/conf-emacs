@@ -131,14 +131,11 @@
 ;; Major modes
 ;;; Load
 (autoload 'markdown-mode "markdown-mode" "Markdown mode" t)
-(autoload 'cmake-mode "cmake-mode" "Cmake Mode." t)
 (autoload 'apache-mode "apache-mode" nil t)
 (autoload 'haxe-mode "haxe-mode" "Haxe Mode." t)
 (autoload 'scilab-mode "scilab-mode" "Scilab mode." t)
 ;;;; Filename patterns
 (add-to-list 'auto-mode-alist '("\\.\\(markdown\\|md\\|mdwn\\|mdml\\)\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\CMakeLists.txt\\'" . cmake-mode))
-(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
 (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
 (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(sci\\|sce\\)\\'" . scilab-mode))

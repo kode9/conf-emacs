@@ -73,4 +73,12 @@
 (use-package csv-mode
   :mode "\\.csv\\'")
 
+;; CMake
+(use-package cmake-mode
+  :mode ("\\.cmake\\'" "/CMakeLists\\.txt\\'")
+  :config
+  (use-package cmake-font-lock ;; Better syntax highlightning
+    :init
+    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)))
+
 (provide 'pluc-devel)
