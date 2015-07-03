@@ -2,6 +2,7 @@
 (source melpa)
 
 (depends-on "ac-etags")
+(depends-on "ag")
 (depends-on "apache-mode")
 (depends-on "auctex")
 (depends-on "auto-complete")

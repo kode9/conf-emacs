@@ -72,7 +72,7 @@
 (use-package pluc-ido :load-path pluc-dir) ;; InteractivelyDoThings
 (use-package pluc-editing :load-path pluc-dir) ;; Common edition settings
 (use-package pluc-devel :load-path pluc-dir) ;; Development settings
-
+(use-package pluc-tools :load-path pluc-dir) ;; External tools integration
 
 ;; Ibuffer
 (setq ibuffer-saved-filter-groups
