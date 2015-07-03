@@ -82,4 +82,8 @@
     :init
     (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)))
 
+;; Scilab
+(use-package scilab-mode
+  :mode "\\.\\(?:sci\\|sce\\)\\'")
+
 (provide 'pluc-devel)
