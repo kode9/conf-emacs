@@ -36,6 +36,13 @@
 (defconst pluc-custom-file (locate-user-emacs-file "custom.el") "File used to store settings from Customization UI.")
 (use-package cus-edit :defer t :config (setq custom-file pluc-custom-file) :init (load pluc-custom-file 'no-error 'no-message))
 
+;; Remote access
+(use-package tramp
+  :defer t
+  :config
+  (setq tramp-auto-save-directory (locate-user-emacs-file ".tramp")) ;; Put auto-save files in this directory
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup, autosaves and history ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
