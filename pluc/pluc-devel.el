@@ -48,7 +48,7 @@
 
 ;; OpenGL shaders
 (use-package glsl-mode
-  :mode "\\.\\(?:vs\\|fs\\|gs\\|glsl\\|vert\\|frag\\|geom\\|ksh\\)\\'")
+  :mode "\\.\\(?:[vfg]s\\|glsl\\|vert\\|frag\\|geom\\|ksh\\)\\'")
 
 ;; Qt QML
 (use-package qml-mode
