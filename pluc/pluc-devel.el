@@ -48,7 +48,7 @@
 
 ;; C++
 (use-package cc-mode
-  :mode ("\\.inl\\'" . c++-mode))
+  :mode ("\\.\\(?:inl\\|h\\)\\'" . c++-mode))
 
 ;; OpenGL shaders
 (use-package glsl-mode
