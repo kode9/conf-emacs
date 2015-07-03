@@ -66,4 +66,8 @@
 (use-package sh-script
   :mode ("/PKGBUILD\\'" . sh-mode))
 
+;; CSV
+(use-package csv-mode
+  :mode "\\.csv\\'")
+
 (provide 'pluc-devel)
