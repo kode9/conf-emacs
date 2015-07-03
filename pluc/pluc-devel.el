@@ -55,8 +55,11 @@
   :mode "\\.qml\\'")
 
 ;; NVidia CUDA
+;;; https://github.com/chachi/cuda-mode
+;;; Got errors with the packaged version.
 (use-package cuda-mode
-  :mode "\\.cu\\'")
+  :load-path "vendor/"
+  :mode "\\.cuh?\\'")
 
 ;; Lua
 (use-package lua-mode

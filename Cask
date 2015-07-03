@@ -17,7 +17,6 @@
 (depends-on "color-theme")
 (depends-on "cpputils-cmake")
 (depends-on "csv-mode")
-(depends-on "cuda-mode")
 (depends-on "dash")
 (depends-on "drag-stuff")
 (depends-on "enclose")
