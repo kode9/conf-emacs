@@ -127,29 +127,6 @@
 (autoload 'line-comment-banner "line-comment-banner" "Comment banner" t)
 (global-set-key [(control c) (b)] (lambda () (interactive) (line-comment-banner 80)))
 
-;; Major modes
-;;; Load
-(autoload 'markdown-mode "markdown-mode" "Markdown mode" t)
-(autoload 'apache-mode "apache-mode" nil t)
-(autoload 'haxe-mode "haxe-mode" "Haxe Mode." t)
-;;;; Filename patterns
-(add-to-list 'auto-mode-alist '("\\.\\(markdown\\|md\\|mdwn\\|mdml\\)\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
-(add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
-(add-to-list 'auto-mode-alist '("\\.axl\\'" . xml-mode)) ; Axel modeler
-(add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
-(add-to-list 'auto-mode-alist '("\\.qrc\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.xrdb\\'" . conf-xdefaults-mode))
-(add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
-(add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
-(add-to-list 'auto-mode-alist '("srm\\.conf\\'"    . apache-mode))
-(add-to-list 'auto-mode-alist '("access\\.conf\\'" . apache-mode))
-(add-to-list 'auto-mode-alist '("sites-\\(available\\|enabled\\)/" . apache-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\.lk\\'" . js-mode)) ; LeekScript (LeekWars)
-(add-to-list 'auto-mode-alist '("\\.hx\\'" . haxe-mode))
-
 ;; Minor modes
 (autoload 'align-string "align-string" "Align string." t)
 ;;; Insert operators with surrounding spaces smartly

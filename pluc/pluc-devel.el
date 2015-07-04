@@ -42,9 +42,9 @@
   (setq which-func-unknown "∅") ;; Displayed when current function is unknown
   )
 
-;;;;;;;;;;;
-;; Modes ;;
-;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;
+;; Major Modes ;;
+;;;;;;;;;;;;;;;;;
 
 ;; C++
 (use-package cc-mode
@@ -97,5 +97,18 @@
   :config
   (use-package sql-indent) ;; Better indentation
   )
+
+;; Apache
+(use-package apache-mode
+  :mode "/\\.htaccess\\'")
+
+;; Xdefaults
+(use-package conf-mode
+  :mode ("\\.xrdb\\'" . conf-xdefaults-mode))
+
+;; Markdown
+;;; TODO Have a look at alternative markdown implementations
+(use-package markdown-mode
+  :mode "\\.\\(?:md\\|mdwn\\|mdml\\|markdown\\)\\'")
 
 (provide 'pluc-devel)

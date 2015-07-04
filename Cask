@@ -32,7 +32,6 @@
 (depends-on "glsl-mode")
 (depends-on "golden-ratio")
 (depends-on "google-maps")
-(depends-on "haxe-mode")
 (depends-on "ido-ubiquitous")
 (depends-on "ido-vertical-mode")
 (depends-on "kivy-mode")
