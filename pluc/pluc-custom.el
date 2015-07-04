@@ -22,7 +22,7 @@
 
 (menu-bar-mode 0)        ;; Remove menu
 (tool-bar-mode 0)        ;; Remove toolbar
-(scroll-bar-mode 0)      ;; Remove scrollbar
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode 0)) ;; No scrollbar
 (display-time-mode 0)    ;; Hide current time
 (size-indication-mode 0) ;; Hide buffer size
 (line-number-mode 1)     ;; Display current line
