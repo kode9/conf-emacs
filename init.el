@@ -9,7 +9,6 @@
 ;; - Auto chmod +x: http://www.emacswiki.org/emacs/MakingScriptsExecutableOnSave
 ;; - (setq-default save-place t)
 ;; - more documentation...
-;; - user.el
 ;; - better kill ring (or even helm!)
 ;; - better undo/redo (check undo-tree)
 ;; - C++14
