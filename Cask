@@ -52,7 +52,6 @@
 (depends-on "s")
 (depends-on "scf-mode")
 (depends-on "shut-up")
-(depends-on "smart-operator")
 (depends-on "smex")
 (depends-on "sql-indent")
 (depends-on "use-package")

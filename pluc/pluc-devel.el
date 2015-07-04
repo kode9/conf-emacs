@@ -42,6 +42,16 @@
   (setq which-func-unknown "∅") ;; Displayed when current function is unknown
   )
 
+;; Beautify the operators in codes
+;;; Requires tuning/patching for a lot of things: templates, includes,
+;;; etc. http://www.emacswiki.org/emacs/SmartOperator
+(use-package smart-operator
+  :disabled t
+  :defer t
+  :commands smart-insert-operator-hook
+  :init
+  (add-hook 'c-mode-common-hook 'smart-insert-operator-hook))
+
 ;;;;;;;;;;;;;;;;;
 ;; Major Modes ;;
 ;;;;;;;;;;;;;;;;;

@@ -127,10 +127,6 @@
 (autoload 'line-comment-banner "line-comment-banner" "Comment banner" t)
 (global-set-key [(control c) (b)] (lambda () (interactive) (line-comment-banner 80)))
 
-;; Minor modes
-(autoload 'align-string "align-string" "Align string." t)
-;;; Insert operators with surrounding spaces smartly
-(autoload 'smart-operator "smart-operator-mode" "Smart operator." t)
 ;;; https://github.com/alamaison/emacs-cmake-project
 (autoload 'cmake-project-mode "cmake-project")
 (defun maybe-cmake-project-hook ()
