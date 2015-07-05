@@ -120,13 +120,6 @@
 (autoload 'compilation-always-kill-mode "compilation-always-kill" "Compilation kill" t)
 (compilation-always-kill-mode t)
 
-;; Color FIXME/TODO/BUG/KLUDGE in comments and strings
-(add-hook 'c-mode-common-hook 'turn-on-fic-mode)
-
-;; Banner comments
-(autoload 'line-comment-banner "line-comment-banner" "Comment banner" t)
-(global-set-key [(control c) (b)] (lambda () (interactive) (line-comment-banner 80)))
-
 ;;; https://github.com/alamaison/emacs-cmake-project
 (autoload 'cmake-project-mode "cmake-project")
 (defun maybe-cmake-project-hook ()
