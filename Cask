@@ -17,6 +17,7 @@
 (depends-on "cmake-mode")
 (depends-on "cmake-project")
 (depends-on "color-theme")
+(depends-on "company")
 (depends-on "cpputils-cmake")
 (depends-on "csv-mode")
 (depends-on "dash")

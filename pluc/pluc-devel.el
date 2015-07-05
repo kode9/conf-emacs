@@ -61,6 +61,20 @@
   (setq fic-background-color "#DFAF8F") ;; Orange
   (add-hook 'prog-mode-hook 'turn-on-fic-mode))
 
+;; Auto completion
+(use-package company
+  :diminish company-mode
+  :init
+  (global-company-mode)
+  :config
+  (setq company-idle-delay 0.1) ;; Seconds before starting completion
+  (setq company-minimum-prefix-length 2) ;; Minimum numbers of characters to start completion
+  (setq company-tooltip-align-annotations t) ;; Align annotations to the right tooltip border
+  (setq company-show-numbers  t) ;; Quick access to first 10 candidates
+  (setq company-transformers '(company-sort-by-occurrence)) ;; Sort candidates by occurence
+  (delete 'company-semantic company-backends) ;; Remove semantic backend
+  )
+
 ;;;;;;;;;;;;;;;;;
 ;; Major Modes ;;
 ;;;;;;;;;;;;;;;;;
