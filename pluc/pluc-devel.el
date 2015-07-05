@@ -55,6 +55,7 @@
 ;; Color keywords such as TODO in comments and strings
 (use-package fic-mode
   :defer t
+  :diminish fic-mode
   :init
   (setq fic-highlighted-words '("TODO" "BUG" "HACK" "FIXME" "KLUDGE"))
   (setq fic-foreground-color "#000000") ;; Black
