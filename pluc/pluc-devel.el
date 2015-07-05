@@ -62,6 +62,16 @@
   (setq fic-background-color "#DFAF8F") ;; Orange
   (add-hook 'prog-mode-hook 'turn-on-fic-mode))
 
+;; Projectile: project management
+(use-package projectile
+  :init (projectile-global-mode)
+  :config
+  (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
+  (setq projectile-find-dir-includes-top-level t) ;; Add top-level dir to projectile-find-dir
+  (setq projectile-mode-line '(:propertize
+			       (:eval (concat " " (projectile-project-name)))
+			       face font-lock-constant-face)))
+
 ;; Auto completion
 (use-package company
   :diminish company-mode
