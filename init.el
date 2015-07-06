@@ -121,13 +121,6 @@
 (autoload 'compilation-always-kill-mode "compilation-always-kill" "Compilation kill" t)
 (compilation-always-kill-mode t)
 
-;;; https://github.com/alamaison/emacs-cmake-project
-(autoload 'cmake-project-mode "cmake-project")
-(defun maybe-cmake-project-hook ()
-  (if (file-exists-p "CMakeLists.txt") (cmake-project-mode)))
-(add-hook 'c-mode-hook 'maybe-cmake-project-hook)
-(add-hook 'c++-mode-hook 'maybe-cmake-project-hook)
-
 ;; Custom hooks
 (defun dtw()
   "Delete trailing whitespaces"
