@@ -57,10 +57,18 @@
   :defer t
   :diminish fic-mode
   :init
-  (setq fic-highlighted-words '("TODO" "BUG" "HACK" "FIXME" "KLUDGE"))
-  (setq fic-foreground-color "#000000") ;; Black
-  (setq fic-background-color "#DFAF8F") ;; Orange
-  (add-hook 'prog-mode-hook 'turn-on-fic-mode))
+  (add-hook #'prog-mode-hook #'fic-mode)
+  :config
+  ;; Colors match zenburn (dark gray / yellow)
+  (set-face-attribute 'fic-face nil
+		      :background "#2B2B2B"
+		      :foreground "#F0DFAF")
+  (set-face-attribute 'fic-author-face nil
+		      :background nil
+		      :foreground "#F0DFAF"
+		      :underline nil
+		      :slant 'italic
+		      :height 0.95))
 
 ;; Projectile: project management
 (use-package projectile
@@ -124,11 +132,26 @@
 
 ;; CMake
 (use-package cmake-mode
-  :mode ("\\.cmake\\'" "/CMakeLists\\.txt\\'")
+  :defer t
+  ;; This seems to be already done by the package
+  ;; :mode "\\.cmake\\'" "/CMakeLists\\.txt\\'"
+  )
+
+;; Better syntax highlightning for CMake
+(use-package cmake-font-lock
+  :defer t
+  :commands cmake-font-lock-activate
   :init
-  (add-hook 'cmake-mode-hook 'cmake-font-lock-activate) ;; Better syntax highlightning
-  :config
-  (use-package cmake-font-lock))
+  ;; cmake-font-lock-activate must be called BEFORE fic-mode. Since
+  ;; cmake-mode will call prog-mode hooks and then after cmake-mode
+  ;; hooks, the workaroung is to add cmake-font-lock-activate at the
+  ;; start of the prog-mode hooks.
+  (remove-hook 'cmake-mode-hook 'cmake-font-lock-activate) ;; package autoloads
+  (defun pluc-cmake-font-lock-activate()
+    "Call cmake-font-lock-activate only for cmake-mode."
+    (when (derived-mode-p #'cmake-mode)
+      (cmake-font-lock-activate)))
+  (add-hook 'prog-mode-hook #'pluc-cmake-font-lock-activate))
 
 ;; Scilab
 (use-package scilab-mode
