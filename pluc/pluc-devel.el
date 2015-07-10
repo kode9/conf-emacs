@@ -138,7 +138,10 @@
   )
 
 ;; Better syntax highlightning for CMake
+;;; Disabled: It is VERY slow. I'm not sure if it's a clash with
+;;; something else.
 (use-package cmake-font-lock
+  :disabled t
   :defer t
   :commands cmake-font-lock-activate
   :init
