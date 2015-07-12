@@ -25,6 +25,7 @@
 (depends-on "epl")
 (depends-on "expand-region")
 (depends-on "f")
+(depends-on "fic-mode" :git "https://github.com/lewang/fic-mode.git")
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "flycheck")
@@ -58,7 +59,3 @@
 (depends-on "wcheck-mode")
 (depends-on "wrap-region")
 (depends-on "zenburn-theme")
-;;;pallet-ignore
-(depends-on "fic-mode"
-	    :git
-	    "https://github.com/lewang/fic-mode.git")
