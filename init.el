@@ -30,6 +30,9 @@
 ;;   - key bindinds (yank, undo, ...)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Prefer newest versions of files
+(setq load-prefer-newer t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cask: Project management for Emacs package development	        ;;
 ;; http://github.com/cask/cask					        ;;
