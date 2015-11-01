@@ -21,6 +21,7 @@
 (depends-on "csv-mode")
 (depends-on "dash")
 (depends-on "drag-stuff")
+(depends-on "dynamic-fonts")
 (depends-on "enclose")
 (depends-on "epl")
 (depends-on "esup")
