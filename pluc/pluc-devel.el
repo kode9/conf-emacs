@@ -17,7 +17,8 @@
   (wrap-region-global-mode t))
 
 ;; clang-format
-(use-package clang-format)
+(use-package clang-format
+  :load-path "/usr/share/clang")
 
 (defun format-buffer()
   "Format buffer if clang-format is available and the buffer is cc-mode derived, otherwise call indent-buffer"
