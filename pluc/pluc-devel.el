@@ -182,4 +182,32 @@
 (use-package markdown-mode
   :mode "\\.\\(?:md\\|mdwn\\|mdml\\|markdown\\)\\'")
 
+;; GDB
+;;; TODO
+;;;   * disable golden ratio mode for gdb
+;;;   * configure speedbar (for watch expressions)
+;;;   * configure layout if possible
+(use-package gdb-mi
+  :defer t
+  :init
+  (setq
+   gdb-many-windows t ;; Multiple window layout
+   gdb-show-main t ;; Display both gud and the main source (if no many-windows)
+   gdb-thread-buffer-verbose-names t ;; Show long thread names like ‘Thread 0x4e2ab70 (LWP 1983)’
+   gdb-thread-buffer-arguments t ;; Show function arguments in threads buffer
+   gdb-thread-buffer-locations t ;; Show file information or library names in threads buffer
+   gdb-thread-buffer-addresses t ;; Show addresses for thread frames in threads buffer
+   gdb-non-stop-setting t ;; Try to use non-stop mode
+   gdb-switch-when-another-stopped t ;; Switch to a thread that stopped even if we're already stopped in a thread
+   gdb-show-changed-values t ;; Highlight changed/out of scope variables
+   gdb-delete-out-of-scope nil ;; Keep out of scope variables
+   gdb-use-colon-colon-notation t ;; Use function::variable format
+   gdb-stack-buffer-locations t ;; Show file information or library names in stack buffers
+   gdb-stack-buffer-addresses t ;; Show frame addresses in stack buffers
+   )
+  :bind
+  ("C-c g a" . gdb-display-disassembly-buffer)
+  ("C-c m m" . gdb-display-memory-buffer)
+  ("C-c m m" . gdb-restore-windows))
+
 (provide 'pluc-devel)
