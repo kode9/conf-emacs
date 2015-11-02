@@ -20,6 +20,7 @@
 (depends-on "cpputils-cmake")
 (depends-on "csv-mode")
 (depends-on "dash")
+(depends-on "dokuwiki-mode")
 (depends-on "drag-stuff")
 (depends-on "dynamic-fonts")
 (depends-on "enclose")
