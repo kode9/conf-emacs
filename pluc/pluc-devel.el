@@ -205,6 +205,11 @@
    gdb-stack-buffer-locations t ;; Show file information or library names in stack buffers
    gdb-stack-buffer-addresses t ;; Show frame addresses in stack buffers
    )
+  (defun pluc-gdb ()
+    (interactive)
+    (select-frame (make-frame '((name . "GDB") (window-system . x))))
+    (toggle-frame-maximized)
+    (call-interactively 'gdb))
   :bind
   ("C-c g a" . gdb-display-disassembly-buffer)
   ("C-c m m" . gdb-display-memory-buffer)
