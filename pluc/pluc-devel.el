@@ -184,9 +184,9 @@
 
 ;; GDB
 ;;; TODO
-;;;   * disable golden ratio mode for gdb
 ;;;   * configure speedbar (for watch expressions)
 ;;;   * configure layout if possible
+;;; Check out http://www.emacswiki.org/emacs/Frame_Tiling_Commands
 (use-package gdb-mi
   :defer t
   :init
@@ -205,14 +205,14 @@
    gdb-stack-buffer-locations t ;; Show file information or library names in stack buffers
    gdb-stack-buffer-addresses t ;; Show frame addresses in stack buffers
    )
-  (defun pluc-gdb ()
+  (defun gdb-frame ()
     (interactive)
-    (select-frame (make-frame '((name . "GDB") (window-system . x))))
+    (select-frame (make-frame '((name . "GDB"))))
     (toggle-frame-maximized)
     (call-interactively 'gdb))
   :bind
-  ("C-c g a" . gdb-display-disassembly-buffer)
-  ("C-c m m" . gdb-display-memory-buffer)
-  ("C-c m m" . gdb-restore-windows))
+  (("C-c g a" . gdb-display-disassembly-buffer)
+   ("C-c g m" . gdb-display-memory-buffer)
+   ("C-c g r" . gdb-restore-windows)))
 
 (provide 'pluc-devel)
