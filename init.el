@@ -83,6 +83,7 @@
 (setq ibuffer-saved-filter-groups
       (quote (("default"
 	       ("dired" (mode . dired-mode))
+	       ("grep" (mode . ag-mode)) ;; ag (silver searcher) buffers
                ("ADMS" (filename . "adms/"))
                ("DEV" (or
 		       (mode . c++-mode)
