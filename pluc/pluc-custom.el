@@ -99,6 +99,7 @@
 ;; https://github.com/roman/golden-ratio.el			     ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package golden-ratio
+  :disabled t
   :diminish golden-ratio-mode
   :init
   (setq golden-ratio-auto-scale nil) ;; If not nil, keep frames narrow on wide screens
