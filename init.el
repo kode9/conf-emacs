@@ -48,8 +48,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (setq use-package-verbose t) ;; Uncomment to see package loading in *Messages*
 (eval-when-compile (require 'use-package))
-(use-package bind-key :ensure :defer t) ;; :bind support for use-package
-(use-package diminish :ensure :defer t) ;; :diminish support for use-package
+(use-package diminish :ensure t) ;; :diminish support for use-package
+(use-package bind-key :ensure t) ;; :bind support for use-package
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Pallet: A package management tool for Emacs, using Cask. ;;
