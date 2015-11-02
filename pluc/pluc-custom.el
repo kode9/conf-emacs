@@ -41,18 +41,18 @@
   :init
   (setq
    dynamic-fonts-preferred-monospace-fonts '(
+					     ;; "Fira Code" ;; Needs ligatures support
 					     "Inconsolata"
 					     "Meslo LG L DZ"
 					     "Fira Mono"
 					     "Envy Code R"
-					     "Cousine"
-					     "BPmono"
 					     "Dejavu Sans Mono"
 					     "Droid Sans Mono"
 					     "Liberation Mono"
-					     ;; "Fira Code" ;; Needs ligatures support
+					     "Cousine"
+					     "BPmono"
 					     )
-   dynamic-fonts-preferred-monospace-point-size 11
+   dynamic-fonts-preferred-monospace-point-size 12
    dynamic-fonts-preferred-proportional-point-size 12)
   :config (dynamic-fonts-setup))
 
