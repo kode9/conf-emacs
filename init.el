@@ -72,8 +72,8 @@
 ;; Directory where to find submodules
 (eval-and-compile (setq pluc-dir (expand-file-name "pluc/" user-emacs-directory)))
 
-(use-package pluc-custom :load-path pluc-dir) ;; Basic setup
 (use-package pluc-theme :load-path pluc-dir) ;; Color theme (only zenburn ATM)
+(use-package pluc-custom :load-path pluc-dir) ;; Basic setup
 (use-package pluc-ido :load-path pluc-dir) ;; InteractivelyDoThings
 (use-package pluc-editing :load-path pluc-dir) ;; Common edition settings
 (use-package pluc-devel :load-path pluc-dir) ;; Development settings
