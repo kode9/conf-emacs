@@ -34,4 +34,7 @@
    dynamic-fonts-preferred-proportional-point-size 11)
   :config (dynamic-fonts-setup))
 
+(use-package spaceline-config
+  :config (spaceline-emacs-theme))
+
 (provide 'pluc-theme)

@@ -58,6 +58,7 @@
 (depends-on "scf-mode")
 (depends-on "shut-up")
 (depends-on "smex")
+(depends-on "spaceline")
 (depends-on "sql-indent")
 (depends-on "use-package")
 (depends-on "volatile-highlights")
