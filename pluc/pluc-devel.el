@@ -73,13 +73,15 @@
 
 ;; Projectile: project management
 (use-package projectile
-  :init (projectile-global-mode)
+  :init
+  (setq
+   projectile-find-dir-includes-top-level t ;; Add top-level dir to projectile-find-dir
+   projectile-mode-line '(:propertize
+			  (:eval (concat " " (projectile-project-name)))
+			  face font-lock-constant-face))
   :config
-  (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
-  (setq projectile-find-dir-includes-top-level t) ;; Add top-level dir to projectile-find-dir
-  (setq projectile-mode-line '(:propertize
-			       (:eval (concat " " (projectile-project-name)))
-			       face font-lock-constant-face)))
+  (projectile-global-mode)
+  (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
 
 ;; Auto completion
 (use-package company
