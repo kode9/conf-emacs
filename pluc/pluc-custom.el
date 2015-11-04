@@ -92,7 +92,8 @@
 ;; http://github.com/Malabarba/paradox ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package paradox
-  :config
+  :defer t
+  :init
   (setq paradox-github-token t) ;; Don't ask for GitHub token
   (setq paradox-execute-asynchronously nil) ;; Don't try to do things asynchronously
   (setq paradox-automatically-star nil) ;; Do not star automatically when (un)installing
