@@ -1,13 +1,5 @@
 ;; Development packages and customisation
 
-;; Enclose cursor within punctuation pairs.
-;; https://github.com/rejeep/enclose.el
-(use-package enclose
-  :disabled t
-  ;; :init
-  ;; (add-to-list 'enclose-except-modes 'ido-mode)
-  :config
-  (enclose-global-mode t))
 
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el

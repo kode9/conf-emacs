@@ -24,7 +24,6 @@
 (depends-on "dokuwiki-mode")
 (depends-on "drag-stuff")
 (depends-on "dynamic-fonts")
-(depends-on "enclose")
 (depends-on "epl")
 (depends-on "esup")
 (depends-on "expand-region")
