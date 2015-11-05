@@ -1,5 +1,10 @@
-;; Development packages and customisation
-
+;;; pluc-devel.el --- Development preferences        -*- lexical-binding: t; -*-
+;;
+;; Author: Pierre-Luc Perrier <pluc@the-pluc.net>
+;;
+;;; Commentary:
+;;
+;;; Code:
 
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el
@@ -32,12 +37,12 @@
 (use-package which-func
   :init (which-function-mode nil)
   :config
-  (setq which-func-unknown "∅") ;; Displayed when current function is unknown
+  (setq which-func-unknown "∅") ; Displayed when current function is unknown
   )
 
-;; Beautify the operators in codes
-;;; Requires tuning/patching for a lot of things: templates, includes,
-;;; etc. http://www.emacswiki.org/emacs/SmartOperator
+;; Beautify the operators in codes.Requires tuning/patching for a lot
+;; of things: templates, includes,
+;; etc. http://www.emacswiki.org/emacs/SmartOperator
 (use-package smart-operator
   :disabled t
   :defer t
@@ -67,7 +72,7 @@
 (use-package projectile
   :init
   (setq
-   projectile-find-dir-includes-top-level t ;; Add top-level dir to projectile-find-dir
+   projectile-find-dir-includes-top-level t ; Add top-level dir to projectile-find-dir
    projectile-mode-line '(:propertize
 			  (:eval (concat " " (projectile-project-name)))
 			  face font-lock-constant-face))
@@ -81,12 +86,13 @@
   :init
   (global-company-mode)
   :config
-  (setq company-idle-delay 0.1) ;; Seconds before starting completion
-  (setq company-minimum-prefix-length 2) ;; Minimum numbers of characters to start completion
-  (setq company-tooltip-align-annotations t) ;; Align annotations to the right tooltip border
-  (setq company-show-numbers  t) ;; Quick access to first 10 candidates
-  (setq company-transformers '(company-sort-by-occurrence)) ;; Sort candidates by occurence
-  (delete 'company-semantic company-backends) ;; Remove semantic backend
+  (setq
+   company-idle-delay 0.1				 ; Seconds before starting completion
+   company-minimum-prefix-length 2			 ; Minimum numbers of characters to start completion
+   company-tooltip-align-annotations t			 ; Align annotations to the right tooltip border
+   company-show-numbers  t				 ; Quick access to first 10 candidates
+   company-transformers '(company-sort-by-occurrence))	 ; Sort candidates by occurence
+  (delete 'company-semantic company-backends)		 ; Remove semantic backend
   )
 
 ;;;;;;;;;;;;;;;;;
@@ -118,7 +124,7 @@
 
 ;; Shell scripts
 (use-package sh-script
-  :mode (("/PKGBUILD\\'" . sh-mode) ;; Arch Linux PKGBUILD
+  :mode (("/PKGBUILD\\'" . sh-mode) ; Arch Linux PKGBUILD
 	 ("\\.zsh\\'" . sh-mode)))
 
 ;; CSV
@@ -144,7 +150,7 @@
   ;; cmake-mode will call prog-mode hooks and then after cmake-mode
   ;; hooks, the workaroung is to add cmake-font-lock-activate at the
   ;; start of the prog-mode hooks.
-  (remove-hook 'cmake-mode-hook 'cmake-font-lock-activate) ;; package autoloads
+  (remove-hook 'cmake-mode-hook 'cmake-font-lock-activate) ; package autoloads
   (defun pluc-cmake-font-lock-activate()
     "Call cmake-font-lock-activate only for cmake-mode."
     (when (derived-mode-p #'cmake-mode)
@@ -160,7 +166,7 @@
   :functions sql
   :mode ("\\.sql\\'" . sql-mode)
   :config
-  (use-package sql-indent) ;; Better indentation
+  (use-package sql-indent) ; Better indentation
   )
 
 ;; Apache
@@ -185,19 +191,19 @@
   :defer t
   :init
   (setq
-   gdb-many-windows t ;; Multiple window layout
-   gdb-show-main t ;; Display both gud and the main source (if no many-windows)
-   gdb-thread-buffer-verbose-names t ;; Show long thread names like ‘Thread 0x4e2ab70 (LWP 1983)’
-   gdb-thread-buffer-arguments t ;; Show function arguments in threads buffer
-   gdb-thread-buffer-locations t ;; Show file information or library names in threads buffer
-   gdb-thread-buffer-addresses t ;; Show addresses for thread frames in threads buffer
-   gdb-non-stop-setting t ;; Try to use non-stop mode
-   gdb-switch-when-another-stopped t ;; Switch to a thread that stopped even if we're already stopped in a thread
-   gdb-show-changed-values t ;; Highlight changed/out of scope variables
-   gdb-delete-out-of-scope nil ;; Keep out of scope variables
-   gdb-use-colon-colon-notation t ;; Use function::variable format
-   gdb-stack-buffer-locations t ;; Show file information or library names in stack buffers
-   gdb-stack-buffer-addresses t ;; Show frame addresses in stack buffers
+   gdb-many-windows t			 ; Multiple window layout
+   gdb-show-main t			 ; Display both gud and the main source (if no many-windows)
+   gdb-thread-buffer-verbose-names t	 ; Show long thread names like ‘Thread 0x4e2ab70 (LWP 1983)’
+   gdb-thread-buffer-arguments t	 ; Show function arguments in threads buffer
+   gdb-thread-buffer-locations t	 ; Show file information or library names in threads buffer
+   gdb-thread-buffer-addresses t	 ; Show addresses for thread frames in threads buffer
+   gdb-non-stop-setting t		 ; Try to use non-stop mode
+   gdb-switch-when-another-stopped t	 ; Switch to a thread that stopped even if we're already stopped in a thread
+   gdb-show-changed-values t		 ; Highlight changed/out of scope variables
+   gdb-delete-out-of-scope nil		 ; Keep out of scope variables
+   gdb-use-colon-colon-notation t	 ; Use function::variable format
+   gdb-stack-buffer-locations t		 ; Show file information or library names in stack buffers
+   gdb-stack-buffer-addresses t		 ; Show frame addresses in stack buffers
    )
   (defun gdb-frame ()
     (interactive)
@@ -225,11 +231,12 @@
   (use-package flycheck-tip
     :demand
     :init
-    (setq error-tip-timer-delay 0.1) ; Delay before popup in seconds
+    (setq error-tip-timer-delay 0.1)	 ; Delay before popup in seconds
     :config
-    (flycheck-tip-use-timer 'verbose) ; Replace echo by popup
+    (flycheck-tip-use-timer 'verbose)	 ; Replace echo by popup
     :bind
     ("C-c f f" . flycheck-tip-cycle)
     ("C-c f p" . flycheck-tip-cycle-reverse)))
 
 (provide 'pluc-devel)
+;;; pluc-devel.el ends here
