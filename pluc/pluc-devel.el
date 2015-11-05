@@ -227,6 +227,8 @@
   ;; Colorize the modline
   (use-package flycheck-color-mode-line)
   (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+  (use-package flycheck-cask)
+  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
   ;; Display flycheck errors in a tooltip
   (use-package flycheck-tip
     :demand
