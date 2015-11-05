@@ -217,4 +217,27 @@
    ("C-c g m" . gdb-display-memory-buffer)
    ("C-c g r" . gdb-restore-windows)))
 
+;; On the fly error checking
+(use-package flycheck
+  :init
+  (setq
+   flycheck-highlighting-mode 'lines) ; Highlight the whole line
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :bind
+  ("C-c f l" . flycheck-list-errors)
+  :config
+  ;; Colorize the modline
+  (use-package flycheck-color-mode-line)
+  (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+  ;; Display flycheck errors in a tooltip
+  (use-package flycheck-tip
+    :demand
+    :init
+    (setq error-tip-timer-delay 0.1) ; Delay before popup in seconds
+    :config
+    (flycheck-tip-use-timer 'verbose) ; Replace echo by popup
+    :bind
+    ("C-c f f" . flycheck-tip-cycle)
+    ("C-c f p" . flycheck-tip-cycle-reverse)))
+
 (provide 'pluc-devel)
