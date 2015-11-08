@@ -1,29 +1,27 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Common editing settings ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; pluc-editing.el --- General edition configuration             -*- lexical-binding: t; -*-
+;;
+;; Author: Pierre-Luc Perrier <pluc@the-pluc.net>
+;;
+;;; Commentary:
+;;
+;;; Code:
 
-(delete-selection-mode 1) ;; Typing replaces current selection
+(setq
+ show-paren-style 'expression ; Show full expression
+ show-paren-delay 0.01        ; Delay before showing
+ )
 
-;; Parenthesis
-(setq show-paren-style 'expression) ;; Show full expression
-(setq show-paren-delay 0.01)        ;; Delay before showing
-(show-paren-mode 1)                 ;; Highlights parenthesis
+(delete-selection-mode 1) ; Typing replaces current selection
+(show-paren-mode 1) ; Highlights parenthesis
+
+(bind-key "RET" 'reindent-then-newline-and-indent) ; Indent on new line
 
 ;; Highlight current line
 (use-package hl-line
   :init
-  (setq global-hl-line-sticky-flag t) ;; Keep highlight in all windows
+  (setq global-hl-line-sticky-flag t) ; Keep highlight in all windows
   :config
   (global-hl-line-mode nil))
-
-;;;;;;;;;;;;;;;;;;
-;; Key bindings ;;
-;;;;;;;;;;;;;;;;;;
-
-(use-package bind-key
-  :bind
-  ("RET" . newline-and-indent) ;; Indent on new line
-  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Increase selected region by semantic units  ;;
@@ -93,3 +91,4 @@ With argument N go to the nth entry."
    ("C-n" . undo-tree-visualize)))
 
 (provide 'pluc-editing)
+;;; pluc-editing.el ends here

@@ -10,7 +10,6 @@
 ;; - (setq-default save-place t)
 ;; - more documentation...
 ;; - better kill ring (or even helm!)
-;; - better undo/redo (check undo-tree)
 ;; - C++14
 ;; - Search regex
 ;; - comment & duplicate
@@ -27,7 +26,6 @@
 ;;   - editorconfig
 ;;   - ibuffer-git / ibuffer-projectile
 ;;   - sort-line
-;;   - key bindinds (yank, undo, ...)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Prefer newest versions of files
@@ -48,8 +46,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (setq use-package-verbose t) ;; Uncomment to see package loading in *Messages*
 (eval-when-compile (require 'use-package))
-(use-package diminish :ensure t) ;; :diminish support for use-package
-(use-package bind-key :ensure t) ;; :bind support for use-package
+(use-package diminish :demand t :ensure t) ;; :diminish support for use-package
+(use-package bind-key :demand t :ensure t) ;; :bind support for use-package
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Pallet: A package management tool for Emacs, using Cask. ;;
@@ -70,7 +68,7 @@
 ;; Comment out the ones you do not want
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Directory where to find submodules
-(eval-and-compile (setq pluc-dir (expand-file-name "pluc/" user-emacs-directory)))
+(eval-and-compile (defconst pluc-dir (expand-file-name "pluc/" user-emacs-directory) "Local packages directory"))
 
 (use-package pluc-theme :load-path pluc-dir) ;; Color theme (only zenburn ATM)
 (use-package pluc-custom :load-path pluc-dir) ;; Basic setup
@@ -102,14 +100,6 @@
 
 ;; windmove: move with alt + arrow
 (windmove-default-keybindings 'super)
-
-;; Show region size and maximum column number in mode-line
-;;; http://www.emacswiki.org/emacs/modeline-posn.el
-;;; Does not work with powerline
-(set 'modelinepos-column-limit 100)
-
-;; https://github.com/pmarinov/clean-aindent
-(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; Autoscoll compilation buffer and stop on first error
 (set 'compilation-scroll-output 'first-error)
