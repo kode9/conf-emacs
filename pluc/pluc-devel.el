@@ -80,21 +80,6 @@
   (projectile-global-mode)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
 
-;; Auto completion
-(use-package company
-  :diminish company-mode
-  :init
-  (global-company-mode)
-  :config
-  (setq
-   company-idle-delay 0.1				 ; Seconds before starting completion
-   company-minimum-prefix-length 2			 ; Minimum numbers of characters to start completion
-   company-tooltip-align-annotations t			 ; Align annotations to the right tooltip border
-   company-show-numbers  t				 ; Quick access to first 10 candidates
-   company-transformers '(company-sort-by-occurrence))	 ; Sort candidates by occurence
-  (delete 'company-semantic company-backends)		 ; Remove semantic backend
-  )
-
 ;;;;;;;;;;;;;;;;;
 ;; Major Modes ;;
 ;;;;;;;;;;;;;;;;;
@@ -214,6 +199,26 @@
   (("C-c g a" . gdb-display-disassembly-buffer)
    ("C-c g m" . gdb-display-memory-buffer)
    ("C-c g r" . gdb-restore-windows)))
+
+;; Auto completion
+(use-package company
+  :init
+  (setq
+   company-idle-delay 0.1				 ; Seconds before starting completion
+   company-minimum-prefix-length 2			 ; Minimum numbers of characters to start completion
+   company-tooltip-align-annotations t			 ; Align annotations to the right tooltip border
+   company-show-numbers  t				 ; Quick access to first 10 candidates
+   company-transformers '(company-sort-by-occurrence))	 ; Sort candidates by occurence
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-backends (delete 'company-semantic company-backends)) ; Remove CEDET
+  (use-package company-c-headers
+    :config
+    (add-to-list 'company-c-headers-path-system "/usr/include/c++/v1/")
+    (add-to-list 'company-backends 'company-c-headers nil))
+  (use-package company-quickhelp
+    :init (setq company-quickhelp-delay 0.75)
+    :config (company-quickhelp-mode 1)))
 
 ;; On the fly error checking
 (use-package flycheck
