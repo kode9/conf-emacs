@@ -24,7 +24,6 @@
 ;;   - gitconfig-mode
 ;;   - gitignore-mode
 ;;   - editorconfig
-;;   - ibuffer-git / ibuffer-projectile
 ;;   - sort-line
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -76,24 +75,6 @@
 (use-package pluc-editing :load-path pluc-dir) ;; Common edition settings
 (use-package pluc-devel :load-path pluc-dir) ;; Development settings
 (use-package pluc-tools :load-path pluc-dir) ;; External tools integration
-
-;; Ibuffer
-(setq ibuffer-saved-filter-groups
-      (quote (("default"
-	       ("dired" (mode . dired-mode))
-	       ("grep" (mode . ag-mode)) ;; ag (silver searcher) buffers
-               ("ADMS" (filename . "adms/"))
-               ("DEV" (or
-		       (mode . c++-mode)
-		       (mode . c-mode)
-		       (mode . python-mode)))
-               ))))
-
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "default")))
-
-(global-set-key (kbd "C-x C-b") 'ibuffer) ;; remplace buffermenu
 
 ;; Bookmarks
 (setq bookmark-default-file "~/.emacs.d/bookmarks.cache")

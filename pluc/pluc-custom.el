@@ -103,5 +103,19 @@
   (setq paradox-automatically-star nil)		 ; Do not star automatically when (un)installing
   )
 
+;; Ibuffer
+(use-package ibuffer
+  :init
+  (setq ibuffer-saved-filter-groups
+	(quote (("default"
+		 ("dired" (mode . dired-mode))
+		 ("grep"  (mode . ag-mode)) ; ag (silver searcher) buffers
+		 ("devel" (or
+			   (mode . c++-mode)
+			   (mode . c-mode)
+			   (mode . python-mode))))))
+	ibuffer-filter-group-name-face 'font-lock-string-face)
+  :bind (("C-x C-b" . ibuffer)))
+
 (provide 'pluc-custom)
 ;;; pluc-custom.el ends here
