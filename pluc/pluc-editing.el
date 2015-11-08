@@ -72,4 +72,24 @@ With argument N go to the nth entry."
    ("M-Y" . yank-pop-forwards)
    ("C-S-y" . browse-kill-ring)))
 
+;; Treat undo history as a tree
+(use-package undo-tree
+  :demand t
+  :diminish undo-tree-mode
+  :init
+  (setq
+   undo-tree-auto-save-history t ; Save undo tree to a file
+   undo-tree-history-directory-alist `(("." . ,(expand-file-name ".cache/undo" user-emacs-directory)))
+   undo-tree-enable-undo-in-region t)
+  (defadvice undo-tree-make-history-save-file-name
+      (after undo-tree activate)
+    (setq ad-return-value (concat ad-return-value ".gz"))) ; Compress undo tree files
+  :config
+  (global-undo-tree-mode)
+  :bind*
+  (("C-n" . undo-tree-undo)
+   ("C-," . undo-tree-redo)
+   ("M-n" . undo-tree-switch-branch)
+   ("C-n" . undo-tree-visualize)))
+
 (provide 'pluc-editing)
