@@ -52,4 +52,24 @@
   :config
   (volatile-highlights-mode t))
 
+;; Kill ring visualizer / browser
+(use-package browse-kill-ring
+  :demand t
+  :init
+  (setq browse-kill-ring-highlight-current-entry nil
+	browse-kill-ring-highlight-inserted-item nil
+	browse-kill-ring-separator "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	browse-kill-ring-show-preview t
+	browse-kill-ring-separator-face 'font-lock-comment-face)
+  (defun yank-pop-forwards (n)
+    "Cycle the 'kill-ring' forward (reverse of 'yank-pop').
+With argument N go to the nth entry."
+    (interactive "p")
+    (yank-pop (- n)))
+  :bind*
+  (("C-y" . yank)
+   ("M-y" . yank-pop)
+   ("M-Y" . yank-pop-forwards)
+   ("C-S-y" . browse-kill-ring)))
+
 (provide 'pluc-editing)

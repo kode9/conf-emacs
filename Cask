@@ -10,6 +10,7 @@
 (depends-on "auto-complete-c-headers")
 (depends-on "auto-complete-clang")
 (depends-on "auto-indent-mode")
+(depends-on "browse-kill-ring")
 (depends-on "bug-hunter")
 (depends-on "cask")
 (depends-on "chess")
