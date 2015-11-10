@@ -22,9 +22,9 @@
 ;; use-package: simplify package loading, settings, bindings, and
 ;; more. https://github.com/jwiegley/use-package
 (eval-when-compile
-  (customize-set-variable 'use-package-verbose nil)          ; Report about loading and configuration details.
-  (customize-set-variable 'use-package-debug nil)            ; Display expanded code
-  (customize-set-variable 'use-package-expand-minimally nil) ; Make the expanded code as minimal as possible
+  (customize-set-variable 'use-package-verbose nil)        ; Report about loading and configuration details.
+  (customize-set-variable 'use-package-debug nil)          ; Display expanded code
+  (customize-set-variable 'use-package-expand-minimally t) ; Make the expanded code as minimal as possible
   (require 'use-package))
 
 (use-package diminish :demand t :ensure t) ; :diminish support for use-package
