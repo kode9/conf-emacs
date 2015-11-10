@@ -6,13 +6,32 @@
 ;;
 ;;; Code:
 
-(setq
- show-paren-style 'expression ; Show full expression
- show-paren-delay 0.01        ; Delay before showing
- )
+;;;###autoload
+(progn
+	;; Editing basics
+	(customize-set-variable 'goal-column nil)								; Use 'line-move-visual'
+	(customize-set-variable 'line-move-visual t)						; Move point by visual line
+	(customize-set-variable 'mark-even-if-inactive t)				; Mark stays even when inactive
+	(customize-set-variable 'mode-require-final-newline t)	; Ask major-modes to add a final newline before saving
+	(customize-set-variable 'parse-sexp-ignore-comments t)	; Threat comments as whitespaces
+	(customize-set-variable 'require-final-newline t)				; Add a final new line before saving
+	(customize-set-variable 'shift-select-mode t)						; Mark with shift
+	(customize-set-variable 'show-trailing-whitespace t)		; Highlight trailing whitespaces
+	(customize-set-variable 'tab-width 2)										; Tab stops width (display)
+	(customize-set-variable 'track-eol t)										; Keep vertical motion at the end of the lines
+	(customize-set-variable 'transient-mark-mode t)
+	(customize-set-variable 'words-include-escapes t)				; Treat espace chars as part of the words
+	(when (fboundp 'delete-selection-mode) (delete-selection-mode nil)) ; Typing replaces current selection
 
-(delete-selection-mode 1) ; Typing replaces current selection
-(show-paren-mode 1) ; Highlights parenthesis
+	;; Killing and yanking
+	(customize-set-variable 'delete-active-region 'kill)						; Kill region instead of delete
+	(customize-set-variable 'kill-do-not-save-duplicates t)					; Do not duplicate equivalent consecutive kills
+	(customize-set-variable 'kill-ring-max 4096)										; Kill-ring capacity
+	(customize-set-variable 'kill-whole-line t)											; When killing a whole line, also remove the terminating newline
+	(customize-set-variable 'save-interprogram-paste-before-kill t) ; Save clipboard before killing within emacs
+	(customize-set-variable 'select-active-regions 'only)						; Only temporary region set the selection
+	(customize-set-variable 'x-select-enable-clipboard t)						; Use the clipboard
+	)
 
 (bind-key "RET" 'reindent-then-newline-and-indent) ; Indent on new line
 
@@ -55,10 +74,10 @@
   :demand t
   :init
   (setq browse-kill-ring-highlight-current-entry nil
-	browse-kill-ring-highlight-inserted-item nil
-	browse-kill-ring-separator "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	browse-kill-ring-show-preview t
-	browse-kill-ring-separator-face 'font-lock-comment-face)
+				browse-kill-ring-highlight-inserted-item nil
+				browse-kill-ring-separator "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+				browse-kill-ring-show-preview t
+				browse-kill-ring-separator-face 'font-lock-comment-face)
   (defun yank-pop-forwards (n)
     "Cycle the 'kill-ring' forward (reverse of 'yank-pop').
 With argument N go to the nth entry."

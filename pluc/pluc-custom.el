@@ -7,33 +7,80 @@
 ;;
 ;;; Code:
 
-(setq
- frame-title-format "⸗ %b (%&) ⸗"				 ; Frame title format: buffer (status)
- display-time-24hr-format nil
- display-time-day-and-date nil
- python-python-command "python3"
- show-trailing-whitespace t
- inhibit-startup-screen t					 ; Do not show the welcome message
- initial-scratch-message nil
- message-log-max 200						 ; Disable off message buffer
- visible-bell nil						 ; Get rid of bells
- ring-bell-function 'ignore
- vc-follow-symlinks t						 ; Automatically follow symlinks to files under CVS
- uniquify-buffer-name-style 'post-forward-angle-brackets	 ; Identify multiple buffers with the same file name
- kill-ring-max 500						 ; Kill-ring capacity
- kill-whole-line t						 ; When killing a whole line, also remove the terminating newline
- )
+;;;###autoload
+(progn
+  (setq frame-title-format "⸗ %b (%&) ⸗")
 
-(menu-bar-mode 0)					 ; Remove menu
-(tool-bar-mode 0)					 ; Remove toolbar
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode 0))	 ; No scrollbar
-(display-time-mode 0)					 ; Hide current time
-(size-indication-mode 0)				 ; Hide buffer size
-(line-number-mode 1)					 ; Display current line
-(column-number-mode 1)					 ; Display current column
-(display-battery-mode 0)				 ; Disable battery mode
-(prefer-coding-system 'utf-8)				 ; Primary coding system for automatic detection.
-(set-language-environment "UTF-8")			 ; Default input method
+	(defalias 'yes-or-no-p 'y-or-n-p) ; Just use 'y'/'n' even for yes-or-no-p
+
+	;; Initialization
+	(customize-set-variable 'inhibit-startup-screen t)							; Inhibits the startup screen
+	(customize-set-variable 'initial-buffer-choice t)								; Starts with the *scratch* buffer
+	(customize-set-variable 'initial-major-mode 'fundamental-mode)	; Major mode for the *scratch* buffer
+	(customize-set-variable 'initial-scratch-message nil)						; No message in the *scratch* buffer
+
+	;; Display
+	(customize-set-variable 'ctl-arrow nil)														; Display control characters as '\xx'
+	(customize-set-variable 'cursor-type '(hbar . 4))									; Cursor when window is selected
+	(customize-set-variable 'cursor-in-non-selected-windows 'hollow)	; Cursor when window is not selected
+	(customize-set-variable 'highlight-nonselected-windows t)					; Keep Highlightning region
+	(customize-set-variable 'visible-bell nil)												; Don't try the flash
+	(customize-set-variable 'ring-bell-function nil)									; Don't ring the bell
+	(customize-set-variable 'truncate-lines nil)											; Don't truncate long lines (avoid horizontal scrolling)
+	(customize-set-variable 'truncate-partial-width-windows 40)				; Well still truncate if frame width is small
+	(customize-set-variable 'word-wrap t)															; Wrap long lines
+
+	;; Uniquify buffer names
+	(customize-set-variable 'uniquify-after-kill-buffer-p t)						; Update buffer names when one is killed
+	(customize-set-variable 'uniquify-buffer-name-style 'post-forward)	; 'name|foo/bar'
+	(customize-set-variable 'uniquify-separator "/")										; pose-forward becomes 'name/foo/bar'
+	(customize-set-variable 'uniquify-strip-common-suffix t)						; Strip common directories
+
+	;; Debug
+	(customize-set-variable 'message-log-max 500) ; Keep that many lines in the message buffer
+
+	(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))														; No menu
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))														; No toolbar
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))												; No scrollbar
+  (when (fboundp 'display-time-mode) (display-time-mode -1))										; No time / load / mail in modeline
+  (when (fboundp 'size-indication-mode) (size-indication-mode -1))							; No buffer size in modeline
+  (when (fboundp 'line-number-mode) (line-number-mode nil))											; Display current line in modeline
+  (when (fboundp 'column-number-mode) (column-number-mode nil))									; Display current column in modecolumn
+  (when (fboundp 'display-battery-mode) (display-battery-mode -1))							; No battery status in modeline
+  (when (fboundp 'prefer-coding-system) (prefer-coding-system 'utf-8))					; Give priority to UTF-8
+  (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
+
+  ;; Minibuffer history
+  (customize-set-variable 'savehist-file (locate-user-emacs-file ".cache/history")) ; Minibuffer history location
+  (savehist-mode nil)																																; Enable minibuffer history
+
+  ;; Auto-saving
+  (customize-set-variable 'auto-save-default t)						; Enable auto-save
+  (customize-set-variable 'auto-save-file-name-transforms ; File names
+													`((".*" ,(locate-user-emacs-file ".cache/auto-save/") t)))
+  (customize-set-variable 'auto-save-list-file-prefix			; Auto-save list
+													(locate-user-emacs-file ".cache/auto-save/list-"))
+  (customize-set-variable 'auto-save-timeout 31)
+  (customize-set-variable 'auto-save-visited-file-name nil)
+  (customize-set-variable 'delete-auto-save-files t)			; Delete when buffer is saved or killed without modifications
+
+  ;; Automatic backup on first save
+  (customize-set-variable 'backup-by-copying t)				; Always copy (no rename)
+  (customize-set-variable 'backup-directory-alist `(("." . ,(locate-user-emacs-file ".cache/backup/"))))
+  (customize-set-variable 'delete-old-versions t)
+  (customize-set-variable 'kept-old-versions 5)				; Number of oldest backups
+  (customize-set-variable 'kept-new-versions 5)				; Number of newest backups
+  (customize-set-variable 'make-backup-files t)				; Enabel backup on first save
+  (customize-set-variable 'vc-make-backup-files nil)	; Let VCS' do their job
+  (customize-set-variable 'version-control t)					; Use numbered backups
+
+	(customize-set-variable 'show-paren-style 'expression)	; Show full expression
+	(customize-set-variable 'show-paren-delay 0.01)					; Delay before showing
+	(when (fboundp 'show-paren-mode) (show-paren-mode nil)) ; Highlights parenthesis
+
+	;; VCS
+	(customize-set-variable 'vc-follow-symlinks t) ; Always follow symlinks to files under VC
+  )
 
 ;; Customization
 ;;; Took from https://github.com/lunaryorn/.emacs.d
@@ -46,17 +93,6 @@
   :config
   (setq tramp-auto-save-directory (locate-user-emacs-file ".tramp")) ;; Put auto-save files in this directory
   )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Backup, autosaves and history ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(setq
- savehist-file (expand-file-name ".history" user-emacs-directory)	 ; History file
- auto-save-default nil							 ; Disable autosave for now
- backup-inhibited t							 ; Disable backup for now
- )
-(savehist-mode nil)							 ; save minibuffer history
 
 ;; Gets the mouse out of the cursor
 (use-package avoid
@@ -107,14 +143,14 @@
 (use-package ibuffer
   :init
   (setq ibuffer-saved-filter-groups
-	(quote (("default"
-		 ("dired" (mode . dired-mode))
-		 ("grep"  (mode . ag-mode)) ; ag (silver searcher) buffers
-		 ("devel" (or
-			   (mode . c++-mode)
-			   (mode . c-mode)
-			   (mode . python-mode))))))
-	ibuffer-filter-group-name-face 'font-lock-string-face)
+				(quote (("default"
+								 ("dired" (mode . dired-mode))
+								 ("grep"  (mode . ag-mode)) ; ag (silver searcher) buffers
+								 ("devel" (or
+													 (mode . c++-mode)
+													 (mode . c-mode)
+													 (mode . python-mode))))))
+				ibuffer-filter-group-name-face 'font-lock-string-face)
   :bind (("C-x C-b" . ibuffer)))
 
 (provide 'pluc-custom)
