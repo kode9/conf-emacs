@@ -33,6 +33,14 @@
   (customize-set-variable 'x-select-enable-clipboard t)           ; Use the clipboard
   )
 
+;;;###autoload
+(defun align-comments (begin end)
+  "Align comments within region between BEGIN and END."
+  (interactive "*r")
+  (let ((indent-tabs-mode nil))
+    (align-regexp begin end (concat "\\(\\s-*\\)"
+                                    (regexp-quote comment-start)))))
+
 (bind-keys
  ("RET" . reindent-then-newline-and-indent) ; Indent on new line
  ("C-c s" . sort-lines))

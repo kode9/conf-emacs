@@ -48,6 +48,8 @@
 (use-package pluc-devel :load-path pluc-dir)   ; Development settings
 (use-package pluc-tools :load-path pluc-dir)   ; External tools integration
 
+(bind-key* "C-c S" 'align-comments)
+
 (customize-set-variable 'indent-tabs-mode nil)                 ; Do not insert tabs when indenting
 (customize-set-variable 'tab-always-indent 'complete)          ; TAB indent or complete
 (customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
@@ -148,13 +150,6 @@ sending a five megabyte query string to Netscape.")
   (let ((file1 (pop command-line-args-left))
         (file2 (pop command-line-args-left)))
     (diff file1 file2)))
-
-(defun align-comments (beginning end)
-  "Align comments within marked region."
-  (interactive "*r")
-  (let (indent-tabs-mode align-to-tab-stop)
-    (align-regexp beginning end (concat "\\(\\s-*\\)"
-                                        (regexp-quote comment-start)))))
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
 
