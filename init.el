@@ -1,59 +1,31 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs configuration file
-;; Pierre-Luc Perrier <pluc@the-pluc.net>
+;;; init.el --- Pluc's GNU Emacs configuration       -*- lexical-binding: t; -*-
 ;;
-;; TODO
-;; - Better backup and autosave
-;;     '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
-;;     '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
-;; - Auto chmod +x: http://www.emacswiki.org/emacs/MakingScriptsExecutableOnSave
-;; - (setq-default save-place t)
-;; - more documentation...
-;; - better kill ring (or even helm!)
-;; - C++14
-;; - Search regex
-;; - comment & duplicate
-;; - switch two frames
+;; Author: Pierre-Luc Perrier <pluc@the-pluc.net>
 ;;
-;; REMINDER
-;;   - ffap
-;;   - re-builder
-;;   - irony-mode
-;;   - CMake
-;;   - gitattributes-mode
-;;   - gitconfig-mode
-;;   - gitignore-mode
-;;   - editorconfig
-;;   - sort-line
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Commentary:
+;;
+;;; Code:
 
-;; Prefer newest versions of files
-(setq load-prefer-newer t)
+(customize-set-variable 'load-prefer-newer t) ; Don't load expired byte-compiled files
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Cask: Project management for Emacs package development	        ;;
-;; http://github.com/cask/cask					        ;;
-;; 								        ;;
-;; Automatic installation and updates of packages listed in a Cask file ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Cask: Automatic installation and updates of packages listed in a
+;; Cask file. http://github.com/cask/cask
 (eval-and-compile (require 'cask (expand-file-name "cask/cask.el" user-emacs-directory)))
 (cask-initialize)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; use-package: A use-package declaration for simplifying your .emacs ;;
-;; https://github.com/jwiegley/use-package			      ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (setq use-package-verbose t) ;; Uncomment to see package loading in *Messages*
-(eval-when-compile (require 'use-package))
-(use-package diminish :demand t :ensure t) ;; :diminish support for use-package
-(use-package bind-key :demand t :ensure t) ;; :bind support for use-package
+;; use-package: simplify package loading, settings, bindings, and
+;; more. https://github.com/jwiegley/use-package
+(eval-when-compile
+  (customize-set-variable 'use-package-verbose nil)          ; Report about loading and configuration details.
+  (customize-set-variable 'use-package-debug nil)            ; Display expanded code
+  (customize-set-variable 'use-package-expand-minimally nil) ; Make the expanded code as minimal as possible
+  (require 'use-package))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Pallet: A package management tool for Emacs, using Cask. ;;
-;; https://github.com/rdallasgray/pallet		    ;;
-;; 							    ;;
-;; Keep track of installed packages using Cask		    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package diminish :demand t :ensure t) ; :diminish support for use-package
+(use-package bind-key :demand t :ensure t) ; :bind support for use-package
+
+;; Pallet: Keep track of package installations in concordance with
+;; Cask. https://github.com/rdallasgray/pallet
 (use-package pallet
   :ensure
   :demand
@@ -69,12 +41,17 @@
 ;; Directory where to find submodules
 (eval-and-compile (defconst pluc-dir (expand-file-name "pluc/" user-emacs-directory) "Local packages directory"))
 
-(use-package pluc-theme :load-path pluc-dir) ;; Color theme (only zenburn ATM)
-(use-package pluc-custom :load-path pluc-dir) ;; Basic setup
-(use-package pluc-ido :load-path pluc-dir) ;; InteractivelyDoThings
-(use-package pluc-editing :load-path pluc-dir) ;; Common edition settings
-(use-package pluc-devel :load-path pluc-dir) ;; Development settings
-(use-package pluc-tools :load-path pluc-dir) ;; External tools integration
+(use-package pluc-theme :load-path pluc-dir)   ; Color theme (only zenburn ATM)
+(use-package pluc-custom :load-path pluc-dir)  ; Basic setup
+(use-package pluc-ido :load-path pluc-dir)     ; InteractivelyDoThings
+(use-package pluc-editing :load-path pluc-dir) ; Common edition settings
+(use-package pluc-devel :load-path pluc-dir)   ; Development settings
+(use-package pluc-tools :load-path pluc-dir)   ; External tools integration
+
+(customize-set-variable 'indent-tabs-mode nil)                 ; Do not insert tabs when indenting
+(customize-set-variable 'tab-always-indent 'complete)          ; TAB indent or complete
+(customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
+(customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
 
 ;; Bookmarks
 (setq bookmark-default-file "~/.emacs.d/bookmarks.cache")
@@ -87,14 +64,12 @@
 ;; Skip warnings when jumping between errors
 (set 'compilation-skip-threshold 2)
 
-;; Shorten long file-name targets
-;;; https://github.com/lewang/scf-mode
-;;; Seems to work in grep, but not in compile :(
+;; Shorten long file-name targets. https://github.com/lewang/scf-mode
 (autoload 'scf-mode "scf-mode" "SCF Mode" t)
 (add-hook 'compilation-mode-hook (lambda () (scf-mode t)))
 
-;; Stop asking yes/no before compile when a compilation is already running
-;;; ftp://download.tuxfamily.org/user42/compilation-always-kill.el
+;; Stop asking yes/no before compile when a compilation is already
+;; running. ftp://download.tuxfamily.org/user42/compilation-always-kill.el
 (autoload 'compilation-always-kill-mode "compilation-always-kill" "Compilation kill" t)
 (compilation-always-kill-mode t)
 
@@ -159,7 +134,7 @@ sending a five megabyte query string to Netscape.")
       (message "Region not active"))))
 
 (bind-keys ("C-c f s" . duckduckgo-region)
-	   ("C-c f q" . duckduckgo-web))
+           ("C-c f q" . duckduckgo-web))
 
 ;; keys
 (global-set-key [(control c) (c)] 'comment-or-uncomment-region)
@@ -182,3 +157,6 @@ sending a five megabyte query string to Netscape.")
                                         (regexp-quote comment-start)))))
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
+
+(provide 'init)
+;;; init.el ends here
