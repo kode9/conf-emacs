@@ -109,6 +109,11 @@
   (interactive)
   (indent-region (point-min) (point-max) nil))
 
+(defun untab-buffer()
+  "Transform tabs to spaces in the whole buffer"
+  (interactive)
+  (untabify (point-min) (point-max) nil))
+
 (defun dev-hooks()
   "Progmod hooks"
   (format-buffer))
@@ -168,5 +173,12 @@ sending a five megabyte query string to Netscape.")
   (let ((file1 (pop command-line-args-left))
         (file2 (pop command-line-args-left)))
     (diff file1 file2)))
+
+(defun align-comments (beginning end)
+  "Align comments within marked region."
+  (interactive "*r")
+  (let (indent-tabs-mode align-to-tab-stop)
+    (align-regexp beginning end (concat "\\(\\s-*\\)"
+                                        (regexp-quote comment-start)))))
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
