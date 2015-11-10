@@ -16,13 +16,13 @@
 ;; use-package: simplify package loading, settings, bindings, and
 ;; more. https://github.com/jwiegley/use-package
 (eval-when-compile
-  (customize-set-variable 'use-package-verbose t)							; Report about loading and configuration details.
-  (customize-set-variable 'use-package-debug nil)							; Display expanded code
-  (customize-set-variable 'use-package-expand-minimally nil)	; Make the expanded code as minimal as possible
+  (customize-set-variable 'use-package-verbose nil)          ; Report about loading and configuration details.
+  (customize-set-variable 'use-package-debug nil)            ; Display expanded code
+  (customize-set-variable 'use-package-expand-minimally nil) ; Make the expanded code as minimal as possible
   (require 'use-package))
 
-(use-package diminish :demand t :ensure t)	; :diminish support for use-package
-(use-package bind-key :demand t :ensure t)	; :bind support for use-package
+(use-package diminish :demand t :ensure t) ; :diminish support for use-package
+(use-package bind-key :demand t :ensure t) ; :bind support for use-package
 
 ;; Pallet: Keep track of package installations in concordance with
 ;; Cask. https://github.com/rdallasgray/pallet
@@ -41,17 +41,17 @@
 ;; Directory where to find submodules
 (eval-and-compile (defconst pluc-dir (expand-file-name "pluc/" user-emacs-directory) "Local packages directory"))
 
-(use-package pluc-theme :load-path pluc-dir)		; Color theme (only zenburn ATM)
-(use-package pluc-custom :load-path pluc-dir)		; Basic setup
-(use-package pluc-ido :load-path pluc-dir)			; InteractivelyDoThings
-(use-package pluc-editing :load-path pluc-dir)	; Common edition settings
-(use-package pluc-devel :load-path pluc-dir)		; Development settings
-(use-package pluc-tools :load-path pluc-dir)		; External tools integration
+(use-package pluc-theme :load-path pluc-dir)   ; Color theme (only zenburn ATM)
+(use-package pluc-custom :load-path pluc-dir)  ; Basic setup
+(use-package pluc-ido :load-path pluc-dir)     ; InteractivelyDoThings
+(use-package pluc-editing :load-path pluc-dir) ; Common edition settings
+(use-package pluc-devel :load-path pluc-dir)   ; Development settings
+(use-package pluc-tools :load-path pluc-dir)   ; External tools integration
 
-(customize-set-variable 'indent-tabs-mode nil)									; Do not insert tabs when indenting
-(customize-set-variable 'tab-always-indent 'complete)						; TAB indent or complete
-(customize-set-variable 'fill-column 80)												; Columns before line wrapping
-(customize-set-variable 'emacs-lisp-docstring-fill-column nil)	; Respect fill-column
+(customize-set-variable 'indent-tabs-mode nil)                 ; Do not insert tabs when indenting
+(customize-set-variable 'tab-always-indent 'complete)          ; TAB indent or complete
+(customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
+(customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
 
 ;; Bookmarks
 (setq bookmark-default-file "~/.emacs.d/bookmarks.cache")
@@ -152,7 +152,7 @@ sending a five megabyte query string to Netscape.")
 (defun align-comments (beginning end)
   "Align comments within marked region."
   (interactive "*r")
-  (let ((indent-tabs-mode t))
+  (let (indent-tabs-mode align-to-tab-stop)
     (align-regexp beginning end (concat "\\(\\s-*\\)"
                                         (regexp-quote comment-start)))))
 
