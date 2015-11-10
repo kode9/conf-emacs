@@ -7,6 +7,28 @@
 ;;
 ;;; Code:
 
+;; Remote access
+(use-package tramp
+  :defer t
+  :init
+  (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
+  (customize-set-variable 'tramp-auto-save-directory
+                          (expand-file-name ".cache/tramp/auto-save" user-emacs-directory)) ; Keep auto-save files in local
+  (customize-set-variable 'tramp-backup-directory-alist
+                          `(("." . ,(expand-file-name ".cache/tramp/backup" user-emacs-directory)))) ; Backup files
+  (customize-set-variable 'tramp-persistency-file-name
+                          (expand-file-name ".cache/tramp/history" user-emacs-directory)) ; Connection history
+  :config
+  (setenv "SHELL" "/bin/bash"))
+
+
+;; http://www.emacswiki.org/emacs/TrampMode
+;;;###autoload
+(defun toggle-sudo ()
+  "Reopen the current file as root."
+  (interactive)
+  (when buffer-file-name (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
 ;; ag the silver searcher: a better grep alternative
 (use-package ag
   :init

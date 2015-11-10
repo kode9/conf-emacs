@@ -86,13 +86,6 @@
   (when (fboundp 'windmove-default-keybindings) (windmove-default-keybindings 'super)) ; Use super + arrows
   )
 
-;; Remote access
-(use-package tramp
-  :defer t
-  :config
-  (setq tramp-auto-save-directory (locate-user-emacs-file ".tramp")) ;; Put auto-save files in this directory
-  )
-
 ;; Gets the mouse out of the cursor
 (use-package avoid
   :init

@@ -55,6 +55,7 @@
 (use-package pluc-tools :load-path pluc-dir)   ; External tools integration
 
 (bind-key* "C-c S" 'align-comments)
+(bind-key* "C-x C-r" 'toggle-sudo)
 
 ;; Autoscoll compilation buffer and stop on first error
 (set 'compilation-scroll-output 'first-error)
