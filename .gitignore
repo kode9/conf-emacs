@@ -1,9 +1,3 @@
 .cache/
 .cask/
-.history
-.ido.last
-ac-comphist.dat
-auto-save-list/
-backups/
-tramp
-/custom.el
+local/
