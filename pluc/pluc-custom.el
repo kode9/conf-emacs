@@ -80,6 +80,10 @@
 
   ;; VCS
   (customize-set-variable 'vc-follow-symlinks t) ; Always follow symlinks to files under VC
+
+  ;; windmove: Navigate between windows using directions
+  (customize-set-variable 'windmove-wrap-around t) ; Cycle
+  (when (fboundp 'windmove-default-keybindings) (windmove-default-keybindings 'super)) ; Use super + arrows
   )
 
 ;; Customization

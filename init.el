@@ -50,12 +50,6 @@
 
 (bind-key* "C-c S" 'align-comments)
 
-;; Bookmarks
-(setq bookmark-default-file "~/.emacs.d/bookmarks.cache")
-
-;; windmove: move with alt + arrow
-(windmove-default-keybindings 'super)
-
 ;; Autoscoll compilation buffer and stop on first error
 (set 'compilation-scroll-output 'first-error)
 ;; Skip warnings when jumping between errors
