@@ -31,6 +31,12 @@
   (customize-set-variable 'save-interprogram-paste-before-kill t) ; Save clipboard before killing within emacs
   (customize-set-variable 'select-active-regions 'only)           ; Only temporary region set the selection
   (customize-set-variable 'x-select-enable-clipboard t)           ; Use the clipboard
+
+  ;; Indentation
+  (customize-set-variable 'indent-tabs-mode nil)                 ; Do not insert tabs when indenting
+  (customize-set-variable 'tab-always-indent 'complete)          ; TAB indent or complete
+  (customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
+  (customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
   )
 
 ;;;###autoload
