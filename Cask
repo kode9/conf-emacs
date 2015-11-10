@@ -49,6 +49,7 @@
 (depends-on "package-build")
 (depends-on "pallet")
 (depends-on "paradox")
+(depends-on "pcache")
 (depends-on "php+-mode")
 (depends-on "php-mode")
 (depends-on "pkg-info")
