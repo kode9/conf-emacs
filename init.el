@@ -158,8 +158,8 @@ sending a five megabyte query string to Netscape.")
       (beep)
       (message "Region not active"))))
 
-(global-set-key [(control c) (control s)] 'duckduckgo-web)
-(global-set-key [(control c) (s)] 'duckduckgo-region)
+(bind-keys ("C-c f s" . duckduckgo-region)
+	   ("C-c f q" . duckduckgo-web))
 
 ;; keys
 (global-set-key [(control c) (c)] 'comment-or-uncomment-region)

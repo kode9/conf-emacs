@@ -33,7 +33,9 @@
   (customize-set-variable 'x-select-enable-clipboard t)           ; Use the clipboard
   )
 
-(bind-key "RET" 'reindent-then-newline-and-indent) ; Indent on new line
+(bind-keys
+ ("RET" . reindent-then-newline-and-indent) ; Indent on new line
+ ("C-c s" . sort-lines))
 
 ;; Highlight current line
 (use-package hl-line
