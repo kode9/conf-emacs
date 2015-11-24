@@ -63,6 +63,7 @@
 (depends-on "smex")
 (depends-on "spaceline")
 (depends-on "sql-indent")
+(depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "volatile-highlights")
 (depends-on "wcheck-mode")
