@@ -59,14 +59,14 @@
   :config
   ;; Colors match zenburn (dark gray / yellow)
   (set-face-attribute 'fic-face nil
-		      :background "#2B2B2B"
-		      :foreground "#F0DFAF")
+                      :background "#2B2B2B"
+                      :foreground "#F0DFAF")
   (set-face-attribute 'fic-author-face nil
-		      :background nil
-		      :foreground "#F0DFAF"
-		      :underline nil
-		      :slant 'italic
-		      :height 0.95))
+                      :background nil
+                      :foreground "#F0DFAF"
+                      :underline nil
+                      :slant 'italic
+                      :height 0.95))
 
 ;; Projectile: project management
 (use-package projectile
@@ -74,8 +74,8 @@
   (setq
    projectile-find-dir-includes-top-level t ; Add top-level dir to projectile-find-dir
    projectile-mode-line '(:propertize
-			  (:eval (concat " " (projectile-project-name)))
-			  face font-lock-constant-face))
+                          (:eval (concat " " (projectile-project-name)))
+                          face font-lock-constant-face))
   :config
   (projectile-global-mode)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
@@ -110,7 +110,7 @@
 ;; Shell scripts
 (use-package sh-script
   :mode (("/PKGBUILD\\'" . sh-mode) ; Arch Linux PKGBUILD
-	 ("\\.zsh\\'" . sh-mode)))
+         ("\\.zsh\\'" . sh-mode)))
 
 ;; CSV
 (use-package csv-mode
