@@ -6,6 +6,7 @@
 (depends-on "async")
 (depends-on "auctex")
 (depends-on "auto-indent-mode")
+(depends-on "bind-key")
 (depends-on "browse-kill-ring")
 (depends-on "bug-hunter")
 (depends-on "cask")
@@ -19,7 +20,9 @@
 (depends-on "company-quickhelp")
 (depends-on "cpputils-cmake")
 (depends-on "csv-mode")
+(depends-on "cuda-mode")
 (depends-on "dash")
+(depends-on "diminish")
 (depends-on "dokuwiki-mode")
 (depends-on "drag-stuff")
 (depends-on "dynamic-fonts")
@@ -27,7 +30,6 @@
 (depends-on "esup")
 (depends-on "expand-region")
 (depends-on "f")
-(depends-on "fic-mode" :git "https://github.com/lewang/fic-mode.git")
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "flycheck")
@@ -37,8 +39,8 @@
 (depends-on "git-commit")
 (depends-on "glsl-mode")
 (depends-on "golden-ratio")
-(depends-on "google-maps")
 (depends-on "ibuffer-vc")
+(depends-on "ido-completing-read+")
 (depends-on "ido-ubiquitous")
 (depends-on "ido-vertical-mode")
 (depends-on "kivy-mode")
@@ -71,3 +73,10 @@
 (depends-on "with-editor")
 (depends-on "wrap-region")
 (depends-on "zenburn-theme")
+;;;pallet-ignore
+(depends-on "fic-mode" :git "https://github.com/lewang/fic-mode.git")
+;; Dependencies
+;; jedi-core epc -> concurrent -> deferred
+;;               -> ctable
+;;
+;; ido-ubiquitous -> ido-completing-read+
