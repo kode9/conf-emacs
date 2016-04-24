@@ -71,6 +71,8 @@
 ;; Projectile: project management
 (use-package projectile
   :init
+  (customize-set-variable 'projectile-known-projects-file
+                          (expand-file-name ".cache/projectile-bookmarks.eld" user-emacs-directory)) ; known projects file
   (setq
    projectile-find-dir-includes-top-level t ; Add top-level dir to projectile-find-dir
    projectile-mode-line '(:propertize
