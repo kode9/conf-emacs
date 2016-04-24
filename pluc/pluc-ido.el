@@ -6,7 +6,7 @@
  ido-enable-flex-matching t ;; Fuzzy matching
  ido-use-filename-at-point nil ;; Do not match filename at point
  ido-enable-last-directory-history t ;; Remember latest selected directories
- ido-save-directory-list-file (expand-file-name ".ido.last" user-emacs-directory) ;; ido cache file
+ ido-save-directory-list-file (expand-file-name ".cache/.ido.last" user-emacs-directory) ;; ido cache file
  ido-max-work-directory-list 30 ;; Max working directory history
  ido-max-work-file-list 100 ;; Max file history
  ido-confirm-unique-completion nil ;; Do not wait for RET, even with unique completion
