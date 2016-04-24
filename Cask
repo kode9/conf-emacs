@@ -13,6 +13,7 @@
 (depends-on "chess")
 (depends-on "clean-aindent-mode")
 (depends-on "cmake-font-lock")
+(depends-on "cmake-ide")
 (depends-on "cmake-mode")
 (depends-on "color-theme")
 (depends-on "company")

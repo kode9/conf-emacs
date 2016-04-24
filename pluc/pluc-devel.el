@@ -202,6 +202,14 @@
    ("C-c g m" . gdb-display-memory-buffer)
    ("C-c g r" . gdb-restore-windows)))
 
+;; cmake-ide
+(use-package cmake-ide
+  :disabled t
+  :config
+  (customize-set-variable 'cmake-ide-src-extensions  ; A list of file extensions that qualify as source files.
+                          '(".c" ".cpp" ".C" ".cxx" ".cc" ".cu"))
+  (cmake-ide-setup))
+
 ;; Auto completion
 (use-package company
   :init
