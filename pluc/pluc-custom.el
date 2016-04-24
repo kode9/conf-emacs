@@ -38,6 +38,7 @@
 
   ;; Debug
   (customize-set-variable 'message-log-max 500) ; Keep that many lines in the message buffer
+  (customize-set-variable 'ad-redefinition-action 'accept) ; Do not warn about advice redefinitions
 
   (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))                            ; No menu
   (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))                            ; No toolbar
