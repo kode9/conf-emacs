@@ -55,6 +55,10 @@
   (customize-set-variable 'savehist-file (locate-user-emacs-file ".cache/history")) ; Minibuffer history location
   (savehist-mode nil)                                                               ; Enable minibuffer history
 
+  ;; Buffers
+  (customize-set-variable 'confirm-nonexistent-file-or-buffer
+                          'after-completion) ; Ask confirmation for new file/buffer only after completion
+
   ;; Auto-saving
   (customize-set-variable 'auto-save-default t)           ; Enable auto-save
   (customize-set-variable 'auto-save-file-name-transforms ; File names
