@@ -19,6 +19,7 @@
 (depends-on "dynamic-fonts")
 (depends-on "esup")
 (depends-on "expand-region")
+(depends-on "fic-mode" :git "https://github.com/lewang/fic-mode.git")
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "flycheck")
@@ -43,11 +44,3 @@
 (depends-on "volatile-highlights")
 (depends-on "wrap-region")
 (depends-on "zenburn-theme")
-;;;pallet-ignore
-(depends-on "fic-mode" :git "https://github.com/lewang/fic-mode.git")
-
-;; Dependencies
-;; jedi-core epc -> concurrent -> deferred
-;;               -> ctable
-;;
-;; ido-ubiquitous -> ido-completing-read+

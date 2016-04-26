@@ -33,8 +33,7 @@
 ;; Pallet: Keep track of package installations in concordance with
 ;; Cask. https://github.com/rdallasgray/pallet
 (use-package pallet
-  :ensure
-  :demand
+  :disabled t
   :config (pallet-mode t))
 
 ;; Some non-packaged stuff
