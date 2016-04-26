@@ -54,6 +54,14 @@
 (use-package pluc-devel :load-path pluc-dir)   ; Development settings
 (use-package pluc-tools :load-path pluc-dir)   ; External tools integration
 
+;; Debug init file
+(use-package bug-hunter
+  :defer t)
+
+;; Profile emacs startup
+(use-package esup
+  :defer t)
+
 (bind-key* "C-c S" 'align-comments)
 (bind-key* "C-x C-r" 'toggle-sudo)
 
