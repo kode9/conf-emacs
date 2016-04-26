@@ -101,10 +101,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when (fboundp 'winner-mode) (winner-mode 1))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs server (emacsclient) ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package server :config (unless (server-running-p) (server-start)))
+;; Emacs server (emacsclient)
+(use-package server
+  :if (display-graphic-p nil)
+  :init
+  (defun pluc-server-start () (unless (server-running-p) (server-start)))
+  (add-hook 'after-init-hook 'pluc-server-start))
 
 ;; Automatic resizing of windows using the golden ration and keeping
 ;; the one with the focus
