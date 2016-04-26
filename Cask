@@ -34,7 +34,6 @@
 (depends-on "flx-ido")
 (depends-on "flycheck")
 (depends-on "flycheck-cask")
-(depends-on "flycheck-color-mode-line")
 (depends-on "flycheck-tip")
 (depends-on "git-commit")
 (depends-on "glsl-mode")
