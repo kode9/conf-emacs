@@ -116,32 +116,6 @@
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "firefox")
 
-;; DuckDuckGo
-(require 'ddg-search) ;; Search functions. Need both ddg (packaged) and ddg-mode
-
-;;; Additional function to search the current region. Copy/paste from google-search.el
-(defvar ddg-search-maxlen 50
-  "Maximum string length of search term.  This prevents you from accidentally
-sending a five megabyte query string to Netscape.")
-
-(defun duckduckgo-region ()
-  "Search the current region on DuckDuckGo."
-  (interactive)
-  (let (start end term url)
-    (if (or (not (fboundp 'region-exists-p)) (region-exists-p))
-        (progn
-          (setq start (region-beginning)
-                end   (region-end))
-          (if (> (- start end) ddg-search-maxlen)
-              (setq term (buffer-substring start (+ start ddg-search-maxlen)))
-            (setq term (buffer-substring start end)))
-          (duckduckgo-web term))
-      (beep)
-      (message "Region not active"))))
-
-(bind-keys ("C-c f s" . duckduckgo-region)
-           ("C-c f q" . duckduckgo-web))
-
 ;; keys
 (global-set-key [(control c) (c)] 'comment-or-uncomment-region)
 ;; (global-set-key [(control c) (v)] 'uncomment-region)
