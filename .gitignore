@@ -1,4 +1,5 @@
 .cache/
 .cask/
+flycheck_init.el
 local/
 var/
