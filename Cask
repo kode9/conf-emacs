@@ -7,6 +7,7 @@
 (depends-on "browse-kill-ring")
 (depends-on "bug-hunter")
 (depends-on "cask")
+(depends-on "clang-format")
 (depends-on "cmake-ide")
 (depends-on "cmake-mode")
 (depends-on "company")

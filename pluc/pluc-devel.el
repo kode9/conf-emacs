@@ -15,7 +15,7 @@
 
 ;; clang-format
 (use-package clang-format
-  :load-path ("/usr/share/emacs/site-lisp/clang-format-3.5/clang-format.el" "/usr/share/clang"))
+  :load-path ("/usr/share/clang"))
 
 (defun format-buffer()
   "Format buffer if clang-format is available and the buffer is cc-mode derived, otherwise call indent-buffer"
