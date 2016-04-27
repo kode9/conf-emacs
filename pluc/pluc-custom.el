@@ -53,6 +53,7 @@
 
   ;; History file
   (customize-set-variable 'savehist-file (locate-user-emacs-file ".cache/history")) ; Minibuffer history location
+  (customize-set-variable 'recentf-save-file (locate-user-emacs-file ".cache/recentf")) ; Recent list location
 
   ;; Minibuffer history
   (customize-set-variable 'history-length 100) ; Maximum history
