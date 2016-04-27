@@ -211,6 +211,7 @@
 
 ;; Auto completion
 (use-package company
+  :diminish company-mode
   :init
   (setq
    company-idle-delay 0.1				 ; Seconds before starting completion
@@ -231,6 +232,7 @@
 
 ;; On the fly error checking
 (use-package flycheck
+  :diminish flycheck-mode
   :init
   (setq
    flycheck-highlighting-mode 'lines) ; Highlight the whole line

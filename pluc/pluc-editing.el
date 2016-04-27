@@ -127,6 +127,7 @@ With argument N go to the nth entry."
 
 (use-package auto-highlight-symbol
   :commands global-auto-highlight-symbol-mode
+  :diminish auto-highlight-symbol-mode
   :init
   (add-hook 'after-init-hook #'global-auto-highlight-symbol-mode)
   (customize-set-variable 'ahs-idle-interval 0.2))

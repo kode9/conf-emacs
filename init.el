@@ -78,6 +78,9 @@
 (autoload 'compilation-always-kill-mode "compilation-always-kill" "Compilation kill" t)
 (compilation-always-kill-mode t)
 
+(diminish 'compilation-in-progress)
+(diminish 'auto-revert-mode)
+
 ;; Custom hooks
 (defun dtw()
   "Delete trailing whitespaces"
