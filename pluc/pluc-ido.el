@@ -19,7 +19,7 @@
   (customize-set-variable 'ido-max-work-directory-list 50) ; Max working directory history
   (customize-set-variable 'ido-max-work-file-list 100) ; Max file history
   (customize-set-variable 'ido-confirm-unique-completion nil) ; Do not wait for RET on unique completion
-  (customize-set-variable 'ido-use-virtual-buffers 'auto) ; Use virtual buffers
+  (customize-set-variable 'ido-use-virtual-buffers 't) ; Use virtual buffers
   (customize-set-variable 'ido-use-faces t) ; Enable ido highlights
   :config
   (ido-mode t)
