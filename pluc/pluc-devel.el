@@ -204,7 +204,6 @@
 
 ;; cmake-ide
 (use-package cmake-ide
-  :disabled t
   :config
   (customize-set-variable 'cmake-ide-src-extensions  ; A list of file extensions that qualify as source files.
                           '(".c" ".cpp" ".C" ".cxx" ".cc" ".cu"))
