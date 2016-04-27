@@ -35,20 +35,20 @@
   (setq ag-reuse-buffer t)     ; Use a single buffer
   :bind*
   ;; Search STRING in DIR
-  ("C-c a a" . ag)
-  ("C-c a A" . ag-project)
+  ("C-c a A" . ag)
+  ("C-c a a" . ag-project)
   ;; Search REGEX in DIR
-  ("C-c a r" . ag-regexp)
-  ("C-c a R" . ag-project-regexp)
+  ("C-c a R" . ag-regexp)
+  ("C-c a r" . ag-project-regexp)
   ;; Search STRING in DIR, limited FILE TYPES
-  ("C-c a f" . ag-files)
-  ("C-c a F" . ag-project-files)
+  ("C-c a s" . ag-files)
+  ("C-c a S" . ag-project-files)
   ;; Find FILES in DIR
-  ("C-c A d" . ag-dired)
-  ("C-c A D" . ag-project-dired)
+  ("C-c a F" . ag-dired)
+  ("C-c a f" . ag-project-dired)
   ;; Find FILES matching REGEX in DIR
-  ("C-c A r" . ag-dired-regexp)
-  ("C-c A R" . ag-project-regexp)
+  ("C-c a D" . ag-dired-regexp)
+  ("C-c a d" . ag-project-regexp)
   :config
   ;; Edit ag buffers inplace
   (use-package wgrep-ag
