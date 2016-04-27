@@ -3,6 +3,7 @@
 
 (depends-on "ag")
 (depends-on "apache-mode")
+(depends-on "auto-highlight-symbol")
 (depends-on "bind-key")
 (depends-on "browse-kill-ring")
 (depends-on "bug-hunter")

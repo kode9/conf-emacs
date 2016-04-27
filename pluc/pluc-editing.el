@@ -125,5 +125,11 @@ With argument N go to the nth entry."
    ("M-n" . undo-tree-switch-branch)
    ("C-n" . undo-tree-visualize)))
 
+(use-package auto-highlight-symbol
+  :commands global-auto-highlight-symbol-mode
+  :init
+  (add-hook 'after-init-hook #'global-auto-highlight-symbol-mode)
+  (customize-set-variable 'ahs-idle-interval 0.2))
+
 (provide 'pluc-editing)
 ;;; pluc-editing.el ends here
