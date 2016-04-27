@@ -51,9 +51,13 @@
   (when (fboundp 'prefer-coding-system) (prefer-coding-system 'utf-8))          ; Give priority to UTF-8
   (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
 
-  ;; Minibuffer history
+  ;; History file
   (customize-set-variable 'savehist-file (locate-user-emacs-file ".cache/history")) ; Minibuffer history location
-  (savehist-mode nil)                                                               ; Enable minibuffer history
+
+  ;; Minibuffer history
+  (customize-set-variable 'history-length 100) ; Maximum history
+  (customize-set-variable 'history-delete-duplicates t) ; Remove duplicates
+  (savehist-mode nil) ; Enable minibuffer history
 
   ;; Buffers
   (customize-set-variable 'confirm-nonexistent-file-or-buffer
