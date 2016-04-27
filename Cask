@@ -42,5 +42,6 @@
 (depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "volatile-highlights")
+(depends-on "wgrep-ag")
 (depends-on "wrap-region")
 (depends-on "zenburn-theme")

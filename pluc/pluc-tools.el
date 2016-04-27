@@ -21,7 +21,6 @@
   :config
   (setenv "SHELL" "/bin/bash"))
 
-
 ;; http://www.emacswiki.org/emacs/TrampMode
 ;;;###autoload
 (defun toggle-sudo ()
@@ -50,7 +49,11 @@
   ;; Find FILES matching REGEX in DIR
   ("C-c A r" . ag-dired-regexp)
   ("C-c A R" . ag-project-regexp)
-  )
+  :config
+  ;; Edit ag buffers inplace
+  (use-package wgrep-ag
+    :commands wgrep-ag-setup
+    :init (add-hook 'ag-mode-hook #'wgrep-ag-setup)))
 
 ;; magit: (awesome) git frontend
 (use-package magit
