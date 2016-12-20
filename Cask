@@ -26,7 +26,7 @@
 (depends-on "flx-ido")
 (depends-on "flycheck")
 (depends-on "flycheck-cask")
-(depends-on "flycheck-tip")
+(depends-on "flycheck-pos-tip")
 (depends-on "glsl-mode")
 (depends-on "ido-ubiquitous")
 (depends-on "ido-vertical-mode")

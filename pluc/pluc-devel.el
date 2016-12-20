@@ -234,24 +234,21 @@
 (use-package flycheck
   :diminish flycheck-mode
   :init
-  (setq
-   flycheck-highlighting-mode 'lines) ; Highlight the whole line
+  (customize-set-variable 'flycheck-highlighting-mode 'sexps) ; Highlight whole expression around the error column
   (add-hook 'after-init-hook #'global-flycheck-mode)
   :bind
-  ("C-c f l" . flycheck-list-errors)
+  (("C-c f f" . flycheck-next-error)
+   ("C-c f p" . flycheck-previous-error)
+   ("C-c f l" . flycheck-list-errors)
+   ("C-c f c" . flycheck-clear))
   :config
   (use-package flycheck-cask)
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
-  ;; Display flycheck errors in a tooltip
-  (use-package flycheck-tip
-    :demand
+  (use-package flycheck-pos-tip ; Show errors under point in pos-tip popups
     :init
-    (setq error-tip-timer-delay 0.1)	 ; Delay before popup in seconds
+    (customize-set-variable 'flycheck-pos-tip-timeout 10)
     :config
-    (flycheck-tip-use-timer 'verbose)	 ; Replace echo by popup
-    :bind
-    ("C-c f f" . flycheck-tip-cycle)
-    ("C-c f p" . flycheck-tip-cycle-reverse)))
+    (flycheck-pos-tip-mode)))
 
 (provide 'pluc-devel)
 ;;; pluc-devel.el ends here
