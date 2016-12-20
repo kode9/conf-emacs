@@ -14,6 +14,9 @@
 
 (customize-set-variable 'load-prefer-newer t) ; Don't load expired byte-compiled files
 
+;; Required by package.el
+(when (boundp 'package-initialize) (package-initialize 'no-activate))
+
 ;; Cask: Automatic installation and updates of packages listed in a
 ;; Cask file. http://github.com/cask/cask
 (eval-and-compile (require 'cask (expand-file-name "cask/cask.el" user-emacs-directory)))
