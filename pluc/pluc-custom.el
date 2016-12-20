@@ -47,7 +47,6 @@
   (when (fboundp 'size-indication-mode) (size-indication-mode -1))              ; No buffer size in modeline
   (when (fboundp 'line-number-mode) (line-number-mode nil))                     ; Display current line in modeline
   (when (fboundp 'column-number-mode) (column-number-mode nil))                 ; Display current column in modecolumn
-  (when (fboundp 'display-battery-mode) (display-battery-mode -1))              ; No battery status in modeline
   (when (fboundp 'prefer-coding-system) (prefer-coding-system 'utf-8))          ; Give priority to UTF-8
   (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
 
