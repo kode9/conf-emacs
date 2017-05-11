@@ -20,7 +20,12 @@
 (defun format-buffer()
   "Format buffer if clang-format is available and the buffer is cc-mode derived, otherwise call indent-buffer"
   (interactive)
-  (unless (and (boundp 'c-buffer-is-cc-mode) c-buffer-is-cc-mode (clang-format-buffer) t) (indent-buffer)))
+  (unless
+      (and
+       (member major-mode '(c-mode c++-mode))
+       (clang-format-buffer)
+       t)
+    (indent-buffer)))
 
 ;; git-gutter+: View, stage and revert Git changes straight from the
 ;; buffer.
