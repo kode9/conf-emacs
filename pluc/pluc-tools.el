@@ -64,6 +64,7 @@
   ("C-c m l" . magit-log-buffer-file)
   ("C-c m L" . magit-log-all)
   :config
+  (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)) ; Tell VC to not handle git
   (setq magit-revert-buffers 'silent)      ; Revert buffers silently
   (setq magit-save-repository-buffers t)   ; Ask confirmation when saving buffers
   (setq magit-refs-show-commit-count 'all) ; Show counts for branches and tags
