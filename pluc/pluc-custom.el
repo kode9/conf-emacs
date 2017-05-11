@@ -97,6 +97,10 @@
   ;; windmove: Navigate between windows using directions
   (customize-set-variable 'windmove-wrap-around t) ; Cycle
   (when (fboundp 'windmove-default-keybindings) (windmove-default-keybindings 'super)) ; Use super + arrows
+
+  ;; Set default browser
+  (customize-set-variable 'browse-url-generic-program "xdg-open") ; The browser used by browse-url-generic
+  (customize-set-variable 'browse-url-browser-function 'browse-url-generic)
   )
 
 ;; Gets the mouse out of the cursor

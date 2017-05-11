@@ -110,10 +110,6 @@
 (add-hook 'before-save-hook 'dtw)
 (add-hook 'prog-mode-hook #'pluc-mode)
 
-;; Set default browser
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "firefox")
-
 ;; keys
 (global-set-key [(control c) (c)] 'comment-or-uncomment-region)
 ;; (global-set-key [(control c) (v)] 'uncomment-region)
