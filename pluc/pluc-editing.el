@@ -37,6 +37,7 @@
   (customize-set-variable 'tab-always-indent 'complete)          ; TAB indent or complete
   (customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
   (customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
+  (customize-set-variable 'c-basic-offset 2)                     ; Indentation offset
   )
 
 ;;;###autoload
