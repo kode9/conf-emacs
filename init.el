@@ -6,12 +6,6 @@
 ;;
 ;;; Code:
 
-;; Store custom variables in a different file
-(defconst pluc-custom-file (expand-file-name "local/custom.el" user-emacs-directory)
-  "File used to store settings from Customization UI.")
-(setq custom-file pluc-custom-file)
-(load custom-file 'no-error 'no-message)
-
 (customize-set-variable 'load-prefer-newer t) ; Don't load expired byte-compiled files
 
 ;; Required by package.el

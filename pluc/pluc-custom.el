@@ -7,6 +7,8 @@
 ;;
 ;;; Code:
 
+(require 'pluc-settings)
+
 ;;;###autoload
 (progn
   (setq frame-title-format "⸗ %b (%&) ⸗")
@@ -51,8 +53,10 @@
   (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
 
   ;; History file
-  (customize-set-variable 'savehist-file (locate-user-emacs-file ".cache/history")) ; Minibuffer history location
-  (customize-set-variable 'recentf-save-file (locate-user-emacs-file ".cache/recentf")) ; Recent list location
+  (customize-set-variable 'savehist-file
+                          (expand-file-name "history" pluc-cache-dir)) ; Minibuffer history location
+  (customize-set-variable 'recentf-save-file
+                          (expand-file-name "recentf" pluc-cache-dir)) ; Recent list location
 
   ;; Minibuffer history
   (customize-set-variable 'history-length 100) ; Maximum history
