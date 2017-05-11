@@ -42,6 +42,7 @@
 (depends-on "php-mode")
 (depends-on "projectile")
 (depends-on "qml-mode")
+(depends-on "rainbow-mode")
 (depends-on "scf-mode")
 (depends-on "smex")
 (depends-on "spaceline")
