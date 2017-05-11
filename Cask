@@ -1,6 +1,7 @@
 (source gnu)
 (source melpa)
 
+(depends-on "adoc-mode")
 (depends-on "ag")
 (depends-on "apache-mode")
 (depends-on "auto-highlight-symbol")

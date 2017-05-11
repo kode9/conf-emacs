@@ -132,5 +132,9 @@ With argument N go to the nth entry."
   (add-hook 'after-init-hook #'global-auto-highlight-symbol-mode)
   (customize-set-variable 'ahs-idle-interval 0.2))
 
+;; AsciiDoc
+(use-package adoc-mode
+  :mode "\\.a\\(?:scii\\)?doc\\'")
+
 (provide 'pluc-editing)
 ;;; pluc-editing.el ends here
