@@ -6,15 +6,21 @@
 ;;
 ;;; Code:
 
-(customize-set-variable 'load-prefer-newer t) ; Don't load expired byte-compiled files
-
 ;; Required by package.el
-(when (boundp 'package-initialize) (package-initialize 'no-activate))
+;; (package-initialize)
+
+;; Don't load expired byte-compiled files
+(customize-set-variable 'load-prefer-newer t)
 
 ;; Cask: Automatic installation and updates of packages listed in a
 ;; Cask file. http://github.com/cask/cask
 (eval-and-compile (require 'cask (expand-file-name "cask/cask.el" user-emacs-directory)))
 (cask-initialize)
+
+;; Pallet: Keep track of package installations in concordance with
+;; Cask. https://github.com/rdallasgray/pallet
+(require 'pallet)
+(pallet-mode t)
 
 ;; use-package: simplify package loading, settings, bindings, and
 ;; more. https://github.com/jwiegley/use-package
@@ -27,27 +33,21 @@
 (use-package diminish :demand t :ensure t) ; :diminish support for use-package
 (use-package bind-key :demand t :ensure t) ; :bind support for use-package
 
-;; Pallet: Keep track of package installations in concordance with
-;; Cask. https://github.com/rdallasgray/pallet
-(use-package pallet
-  :config (pallet-mode t))
-
 ;; Some non-packaged stuff
 (add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Submodules
-;; Comment out the ones you do not want
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Directory where to find submodules
-(eval-and-compile (defconst pluc-dir (expand-file-name "pluc/" user-emacs-directory) "Local packages directory"))
+(eval-and-compile (defconst pluc-site-dir (expand-file-name "pluc" user-emacs-directory)
+                    "Local packages directory"))
+(add-to-list 'load-path pluc-site-dir)
 
-(use-package pluc-theme :load-path pluc-dir)   ; Color theme (only zenburn ATM)
-(use-package pluc-custom :load-path pluc-dir)  ; Basic setup
-(use-package pluc-ido :load-path pluc-dir)     ; InteractivelyDoThings
-(use-package pluc-editing :load-path pluc-dir) ; Common edition settings
-(use-package pluc-devel :load-path pluc-dir)   ; Development settings
-(use-package pluc-tools :load-path pluc-dir)   ; External tools integration
+(use-package pluc-settings) ;
+(use-package pluc-theme)    ; Color theme (only zenburn ATM)
+(use-package pluc-custom)   ; Basic setup
+(use-package pluc-ido)      ; InteractivelyDoThings
+(use-package pluc-editing)  ; Common edition settings
+(use-package pluc-devel)    ; Development settings
+(use-package pluc-tools)    ; External tools integration
 
 ;; Debug init file
 (use-package bug-hunter
