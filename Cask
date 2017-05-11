@@ -38,6 +38,7 @@
 (depends-on "markdown-mode")
 (depends-on "pallet")
 (depends-on "paradox")
+(depends-on "pass")
 (depends-on "php-mode")
 (depends-on "projectile")
 (depends-on "qml-mode")
