@@ -1,6 +1,5 @@
 .cask/
 flycheck_init.el
-local/
 var/
 # x-win.el emacs-session-filename does not provide customization
 session.*
