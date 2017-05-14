@@ -33,6 +33,7 @@
 (depends-on "glsl-mode")
 (depends-on "ido-ubiquitous")
 (depends-on "ido-vertical-mode")
+(depends-on "less-css-mode")
 (depends-on "lua-mode")
 (depends-on "magit")
 (depends-on "markdown-mode")
