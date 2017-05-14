@@ -50,6 +50,7 @@
 (depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "volatile-highlights")
+(depends-on "web-mode")
 (depends-on "wgrep-ag")
 (depends-on "wrap-region")
 (depends-on "zenburn-theme")

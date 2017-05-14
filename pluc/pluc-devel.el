@@ -256,5 +256,14 @@
     :config
     (flycheck-pos-tip-mode)))
 
+(use-package web-mode
+  :init
+  (customize-set-variable 'web-mode-code-indent-offset 2)
+  (setq web-mode-engines-alist
+        '(("php"    . "\\.phtml\\'")
+          ("blade"  . "\\.blade\\.")))
+  :mode
+  "\\.php\\'")
+
 (provide 'pluc-devel)
 ;;; pluc-devel.el ends here
