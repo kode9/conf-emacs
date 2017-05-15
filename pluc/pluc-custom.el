@@ -31,6 +31,7 @@
   (customize-set-variable 'truncate-lines nil)                     ; Don't truncate long lines (avoid horizontal scrolling)
   (customize-set-variable 'truncate-partial-width-windows 40)      ; Well still truncate if frame width is small
   (customize-set-variable 'word-wrap t)                            ; Wrap long lines
+  (customize-set-variable 'mouse-wheel-progressive-speed nil)      ; Constant mouse wheel speed
 
   ;; Uniquify buffer names
   (customize-set-variable 'uniquify-after-kill-buffer-p t)           ; Update buffer names when one is killed
