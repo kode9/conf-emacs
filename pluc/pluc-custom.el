@@ -148,6 +148,12 @@
   (setq paradox-automatically-star nil)     ; Do not star automatically when (un)installing
   )
 
+;; Dired
+(use-package dired
+  :bind (:map dired-mode-map
+              ("C-s" . dired-isearch-filenames) ; Search only in filenames
+              ))
+
 ;; Ibuffer
 (use-package ibuffer
   :init
