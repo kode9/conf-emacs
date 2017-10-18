@@ -29,7 +29,7 @@
     :init (customize-set-variable 'flx-ido-use-faces nil) ; Disable flx highlights
     :config (flx-ido-mode t))
   ;; ido everywhere and more
-  (use-package ido-ubiquitous
+  (use-package ido-completing-read+
     :config (ido-ubiquitous-mode t))
   ;; Makes ido-mode display vertically
   (use-package ido-vertical-mode

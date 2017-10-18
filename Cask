@@ -31,7 +31,7 @@
 (depends-on "flycheck-pos-tip")
 (depends-on "git-commit")
 (depends-on "glsl-mode")
-(depends-on "ido-ubiquitous")
+(depends-on "ido-completing-read+")
 (depends-on "ido-vertical-mode")
 (depends-on "less-css-mode")
 (depends-on "lua-mode")
