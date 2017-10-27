@@ -125,5 +125,15 @@
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
 
+;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
+(use-package ansi-color
+  :init
+  (defun pluc/colorize-compilation ()
+    "Colorize from `compilation-filter-start' to `point'."
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region compilation-filter-start (point))))
+  (add-hook 'compilation-filter-hook #'pluc/colorize-compilation)
+  (customize-set-variable 'compilation-environment #'("TERM=xterm")))
+
 (provide 'init)
 ;;; init.el ends here
