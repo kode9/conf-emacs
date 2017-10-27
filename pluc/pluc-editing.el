@@ -137,5 +137,23 @@ With argument N go to the nth entry."
 (use-package adoc-mode
   :mode "\\.a\\(?:scii\\)?doc\\'")
 
+;; Ispell/Flyspell
+;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
+(use-package ispell
+  :defer t
+  :init
+  (customize-set-variable 'ispell-dictionary "english") ; default dictionnary
+  (customize-set-variable 'ispell-program-name (cond ((executable-find "aspell")) ((executable-find "hunspell"))))
+  (if
+      (string-match  "aspell$" ispell-program-name)
+      ;; http://aspell.net/man-html/Notes-on-the-Different-Suggestion-Modes.html
+      (customize-set-variable 'ispell-extra-args
+                              '("--sug-mode=normal"
+                                "--run-together"
+                                "--run-together-limit=4"
+                                "--run-together-min=2")))
+  (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  (add-hook 'text-mode-hook #'flyspell-mode))
+
 (provide 'pluc-editing)
 ;;; pluc-editing.el ends here
