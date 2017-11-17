@@ -18,6 +18,15 @@
                           `(("." . ,(expand-file-name ".cache/tramp/backup" user-emacs-directory)))) ; Backup files
   (customize-set-variable 'tramp-persistency-file-name
                           (expand-file-name ".cache/tramp/history" user-emacs-directory)) ; Connection history
+  ;; Disable version control for tramp files
+  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+  (use-package vc
+    :defer t
+    :init
+    (customize-set-variable 'vc-ignore-dir-regexp
+                            (format "\\(%s\\)\\|\\(%s\\)"
+                                    vc-ignore-dir-regexp
+                                    tramp-file-name-regexp)))
   :config
   (setenv "SHELL" "/bin/bash"))
 
