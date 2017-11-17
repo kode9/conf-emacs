@@ -77,12 +77,15 @@
 (use-package projectile
   :init
   (customize-set-variable 'projectile-known-projects-file
-                          (expand-file-name ".cache/projectile-bookmarks.eld" user-emacs-directory)) ; known projects file
-  (setq
-   projectile-find-dir-includes-top-level t ; Add top-level dir to projectile-find-dir
-   projectile-mode-line '(:propertize
-                          (:eval (concat " " (projectile-project-name)))
-                          face font-lock-constant-face))
+                          (expand-file-name
+                           ".cache/projectile-bookmarks.eld" user-emacs-directory)) ; known projects file
+  (customize-set-variable 'projectile-switch-project-action #'magit-status) ; Function to call when switching project
+  (customize-set-variable 'projectile-find-dir-includes-top-level t) ; Add top-level dir to projectile-find-dir
+  (customize-set-variable 'projectile-mode-line '(:propertize
+                                                  (:eval
+                                                   (format "[%s]"
+                                                           (projectile-project-name)))
+                                                  face font-lock-constant-face)) ; modeline
   :config
   (projectile-global-mode)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
