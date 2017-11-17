@@ -54,4 +54,5 @@
 (depends-on "web-mode")
 (depends-on "wgrep-ag")
 (depends-on "wrap-region")
+(depends-on "yaml-mode")
 (depends-on "zenburn-theme")
