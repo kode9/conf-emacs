@@ -87,7 +87,7 @@
                                                            (projectile-project-name)))
                                                   face font-lock-constant-face)) ; modeline
   :config
-  (projectile-global-mode)
+  (projectile-mode t)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
 
 ;;;;;;;;;;;;;;;;;
