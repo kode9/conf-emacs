@@ -79,14 +79,14 @@
   (customize-set-variable 'delete-auto-save-files t)      ; Delete when buffer is saved or killed without modifications
 
   ;; Automatic backup on first save
-  (customize-set-variable 'backup-by-copying t)      ; Always copy (no rename)
+  (customize-set-variable 'backup-by-copying t) ; Always copy (no rename)
   (customize-set-variable 'backup-directory-alist `(("." . ,(locate-user-emacs-file ".cache/backup/"))))
   (customize-set-variable 'delete-old-versions t)
-  (customize-set-variable 'kept-old-versions 5)      ; Number of oldest backups
-  (customize-set-variable 'kept-new-versions 5)      ; Number of newest backups
-  (customize-set-variable 'make-backup-files t)      ; Enabel backup on first save
-  (customize-set-variable 'vc-make-backup-files nil) ; Let VCS' do their job
-  (customize-set-variable 'version-control t)        ; Use numbered backups
+  (customize-set-variable 'kept-old-versions 0)    ; Number of oldest backups
+  (customize-set-variable 'kept-new-versions 10)   ; Number of newest backups
+  (customize-set-variable 'make-backup-files t)    ; Enable backup on first save
+  (customize-set-variable 'vc-make-backup-files t) ; Also backup files under VCS
+  (customize-set-variable 'version-control t)      ; Use numbered backups
 
   (customize-set-variable 'show-paren-style 'expression)  ; Show full expression
   (customize-set-variable 'show-paren-delay 0.01)         ; Delay before showing
