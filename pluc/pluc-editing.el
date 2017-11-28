@@ -155,5 +155,13 @@ With argument N go to the nth entry."
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   (add-hook 'text-mode-hook #'flyspell-mode))
 
+(use-package backup-each-save
+  :defer t
+  :init
+  (setq
+   backup-each-save-mirror-location (locate-user-emacs-file ".cache/backup/")
+   backup-each-save-time-format "%Y%m%d-%H%M%S")
+  (add-hook 'after-save-hook #'backup-each-save))
+
 (provide 'pluc-editing)
 ;;; pluc-editing.el ends here
