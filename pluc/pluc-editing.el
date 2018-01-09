@@ -38,7 +38,9 @@
   (customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
   (customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
   (customize-set-variable 'c-basic-offset 2)                     ; Indentation offset
-  )
+
+  (customize-set-variable 'sh-indentation 2)
+  (customize-set-variable 'sh-basic-offset 2))
 
 ;;;###autoload
 (defun align-comments (begin end)
