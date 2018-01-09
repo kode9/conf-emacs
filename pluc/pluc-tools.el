@@ -28,7 +28,9 @@
                                     vc-ignore-dir-regexp
                                     tramp-file-name-regexp)))
   :config
-  (setenv "SHELL" "/bin/bash"))
+  (setenv "SHELL" "/bin/bash")
+  ;; Reuse the path settings of the remote on log in
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; http://www.emacswiki.org/emacs/TrampMode
 ;;;###autoload
