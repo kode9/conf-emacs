@@ -277,5 +277,10 @@
     :init
     (add-hook 'flycheck-mode-hook #'flycheck-yamllint-setup)))
 
+(use-package dockerfile-mode
+  :defer t
+  :init
+  (customize-set-variable 'dockerfile-use-sudo t))
+
 (provide 'pluc-devel)
 ;;; pluc-devel.el ends here

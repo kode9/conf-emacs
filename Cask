@@ -20,6 +20,7 @@
 (depends-on "csv-mode")
 (depends-on "cuda-mode")
 (depends-on "diminish")
+(depends-on "dockerfile-mode")
 (depends-on "drag-stuff")
 (depends-on "dynamic-fonts")
 (depends-on "esup")
