@@ -72,7 +72,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Drag stuff (lines, words, region, etc...) around ;;
-;; https://github.com/rejeep/drag-stuff.el				  ;;
+;; https://github.com/rejeep/drag-stuff.el          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package drag-stuff
   :diminish drag-stuff-mode
@@ -80,7 +80,7 @@
   (drag-stuff-global-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Visual feedback on yanks, undo, etc							 ;;
+;; Visual feedback on yanks, undo, etc               ;;
 ;; http://www.emacswiki.org/emacs/VolatileHighlights ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package volatile-highlights
