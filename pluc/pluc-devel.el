@@ -186,19 +186,19 @@
   :defer t
   :init
   (setq
-   gdb-many-windows t			 ; Multiple window layout
-   gdb-show-main t			 ; Display both gud and the main source (if no many-windows)
-   gdb-thread-buffer-verbose-names t	 ; Show long thread names like ‘Thread 0x4e2ab70 (LWP 1983)’
-   gdb-thread-buffer-arguments t	 ; Show function arguments in threads buffer
-   gdb-thread-buffer-locations t	 ; Show file information or library names in threads buffer
-   gdb-thread-buffer-addresses t	 ; Show addresses for thread frames in threads buffer
-   gdb-non-stop-setting t		 ; Try to use non-stop mode
-   gdb-switch-when-another-stopped t	 ; Switch to a thread that stopped even if we're already stopped in a thread
-   gdb-show-changed-values t		 ; Highlight changed/out of scope variables
-   gdb-delete-out-of-scope nil		 ; Keep out of scope variables
-   gdb-use-colon-colon-notation t	 ; Use function::variable format
-   gdb-stack-buffer-locations t		 ; Show file information or library names in stack buffers
-   gdb-stack-buffer-addresses t		 ; Show frame addresses in stack buffers
+   gdb-many-windows t                ; Multiple window layout
+   gdb-show-main t                   ; Display both gud and the main source (if no many-windows)
+   gdb-thread-buffer-verbose-names t ; Show long thread names like ‘Thread 0x4e2ab70 (LWP 1983)’
+   gdb-thread-buffer-arguments t     ; Show function arguments in threads buffer
+   gdb-thread-buffer-locations t     ; Show file information or library names in threads buffer
+   gdb-thread-buffer-addresses t     ; Show addresses for thread frames in threads buffer
+   gdb-non-stop-setting t            ; Try to use non-stop mode
+   gdb-switch-when-another-stopped t ; Switch to a thread that stopped even if we're already stopped in a thread
+   gdb-show-changed-values t         ; Highlight changed/out of scope variables
+   gdb-delete-out-of-scope nil       ; Keep out of scope variables
+   gdb-use-colon-colon-notation t    ; Use function::variable format
+   gdb-stack-buffer-locations t      ; Show file information or library names in stack buffers
+   gdb-stack-buffer-addresses t      ; Show frame addresses in stack buffers
    )
   (defun gdb-frame ()
     (interactive)
@@ -223,11 +223,11 @@
   :diminish company-mode
   :init
   (setq
-   company-idle-delay 0.1				 ; Seconds before starting completion
-   company-minimum-prefix-length 2			 ; Minimum numbers of characters to start completion
-   company-tooltip-align-annotations t			 ; Align annotations to the right tooltip border
-   company-show-numbers  t				 ; Quick access to first 10 candidates
-   company-transformers '(company-sort-by-occurrence))	 ; Sort candidates by occurence
+   company-idle-delay 0.1                              ; Seconds before starting completion
+   company-minimum-prefix-length 2                     ; Minimum numbers of characters to start completion
+   company-tooltip-align-annotations t                 ; Align annotations to the right tooltip border
+   company-show-numbers  t                             ; Quick access to first 10 candidates
+   company-transformers '(company-sort-by-occurrence)) ; Sort candidates by occurence
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-backends (delete 'company-semantic company-backends)) ; Remove CEDET
