@@ -268,5 +268,14 @@
   :mode
   "\\.php\\'")
 
+;; YAML
+(use-package yaml-mode
+  :defer t
+  :init
+  (use-package flycheck-yamllint
+    :defer t
+    :init
+    (add-hook 'flycheck-mode-hook #'flycheck-yamllint-setup)))
+
 (provide 'pluc-devel)
 ;;; pluc-devel.el ends here

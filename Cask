@@ -30,6 +30,7 @@
 (depends-on "flycheck")
 (depends-on "flycheck-cask")
 (depends-on "flycheck-pos-tip")
+(depends-on "flycheck-yamllint")
 (depends-on "git-commit")
 (depends-on "glsl-mode")
 (depends-on "ido-completing-read+")
