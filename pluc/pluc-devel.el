@@ -281,6 +281,28 @@
 (use-package toml-mode
   :defer t)
 
+;; rust
+(use-package rust-mode
+  :defer t
+  :init
+  (customize-set-variable 'rust-format-on-save t) ; run rustfmt on save
+  ;; cargo commands
+  (use-package cargo
+    :defer t
+    :init
+    (add-hook 'rust-mode-hook #'cargo-minor-mode))
+  ;; Flycheck integration
+  (use-package flycheck-rust
+    :defer t
+    :init
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  ;; Code completion
+  (use-package racer
+    :defer t
+    :init
+    (add-hook 'rust-mode-hook #'racer-mode)
+    (add-hook 'racer-mode-hook #'eldoc-mode)))
+
 (use-package dockerfile-mode
   :defer t
   :init
