@@ -277,6 +277,10 @@
     :init
     (add-hook 'flycheck-mode-hook #'flycheck-yamllint-setup)))
 
+;; TOML
+(use-package toml-mode
+  :defer t)
+
 (use-package dockerfile-mode
   :defer t
   :init

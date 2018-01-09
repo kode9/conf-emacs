@@ -51,6 +51,7 @@
 (depends-on "smex")
 (depends-on "spaceline")
 (depends-on "sql-indent")
+(depends-on "toml-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "volatile-highlights")
