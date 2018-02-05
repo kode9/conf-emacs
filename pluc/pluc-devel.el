@@ -154,6 +154,7 @@
 
 ;; Scilab
 (use-package scilab-mode
+  :ensure nil
   :mode "\\.\\(?:sci\\|sce\\)\\'")
 
 ;; SQL

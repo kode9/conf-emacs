@@ -1,13 +1,26 @@
-;;; init.el --- Pluc's GNU Emacs configuration       -*- lexical-binding: t; -*-
-;;
-;; Author: Pierre-Luc Perrier <pluc@the-pluc.net>
-;;
-;;; Commentary:
-;;
-;;; Code:
+;;; init.el --- Pluc's GNU Emacs Initialization File -*- lexical-binding: t; -*-
 
-;; Required by package.el
-;; (package-initialize)
+;; Copyright (C) 2012-2018  Pierre-Luc Perrier
+
+;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
+
+;; Licensed under the Apache License, Version 2.0 (the "License");
+;; you may not use this file except in compliance with the License.
+;; You may obtain a copy of the License at
+
+;;     http://www.apache.org/licenses/LICENSE-2.0
+
+;; Unless required by applicable law or agreed to in writing, software
+;; distributed under the License is distributed on an "AS IS" BASIS,
+;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+;; See the License for the specific language governing permissions and
+;; limitations under the License.
+
+;;; Commentary:
+
+;;
+
+;;; Code:
 
 ;; Don't load expired byte-compiled files
 (customize-set-variable 'load-prefer-newer t)
@@ -30,8 +43,8 @@
   (customize-set-variable 'use-package-expand-minimally t) ; Make the expanded code as minimal as possible
   (require 'use-package))
 
-(use-package diminish :demand t :ensure t) ; :diminish support for use-package
-(use-package bind-key :demand t :ensure t) ; :bind support for use-package
+(use-package diminish) ; :diminish support for use-package
+(use-package bind-key) ; :bind support for use-package
 
 ;; Some non-packaged stuff
 (add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
@@ -134,6 +147,9 @@
       (ansi-color-apply-on-region compilation-filter-start (point))))
   (add-hook 'compilation-filter-hook #'pluc/colorize-compilation)
   (customize-set-variable 'compilation-environment #'("TERM=xterm")))
+
+;; Required by package.el
+;; (package-initialize)
 
 (provide 'init)
 ;;; init.el ends here
