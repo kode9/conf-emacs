@@ -22,7 +22,7 @@
 
 ;;; Code:
 
-(use-package zenburn-theme :demand)
+(use-package zenburn-theme)
 
 ;; Fonts
 (use-package dynamic-fonts
