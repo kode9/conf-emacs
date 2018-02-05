@@ -5,7 +5,7 @@
 (depends-on "ag")
 (depends-on "apache-mode")
 (depends-on "auto-highlight-symbol")
-(depends-on "backup-each-save")
+(depends-on "backup-each-save" :git "https://github.com/emacsmirror/backup-each-save.git")
 (depends-on "bind-key")
 (depends-on "browse-kill-ring")
 (depends-on "bug-hunter")
