@@ -102,8 +102,8 @@
                                     magit-insert-tags-header
                                     magit-insert-upstream-header
                                     magit-insert-head-header))
-  (setq magit-status-buffer-name-format "*magit-status＠%b*"); Status buffer name format
-  )
+  ;; Status buffer name format
+  (setq magit-status-buffer-name-format "*magit-status＠%b*"))
 
 (use-package pass :defer t)
 
