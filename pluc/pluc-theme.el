@@ -30,7 +30,7 @@
   (customize-set-variable 'dynamic-fonts-set-alternatives t) ; Fill up alternative fonts
   (customize-set-variable 'dynamic-fonts-preferred-monospace-point-size 8)
   (customize-set-variable 'dynamic-fonts-preferred-monospace-fonts
-                          '("Monoid" "Hack" "Dejavu Sans Mono" "courier" "fixed"))
+                          '("Monoisome" "Monoid" "Hack" "Dejavu Sans Mono" "courier" "fixed"))
   (customize-set-variable 'dynamic-fonts-preferred-proportional-fonts
                           '("Open Sans" "Roboto" "Dejavu Sans" "arial" "fixed"))
   (customize-set-variable 'dynamic-fonts-preferred-proportional-point-size 10)
