@@ -105,7 +105,9 @@
   ;; Status buffer name format
   (setq magit-status-buffer-name-format "*magit-status＠%b*"))
 
-(use-package pass :defer t)
+(when (> emacs-major-version 24)
+  (use-package pass
+    :defer t))
 
 (provide 'pluc-tools)
 ;;; pluc-tools.el ends here
