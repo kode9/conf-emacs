@@ -56,6 +56,7 @@
 (depends-on "smex")
 (depends-on "spaceline")
 (depends-on "sql-indent")
+(depends-on "ssh-config-mode")
 (depends-on "toml-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
