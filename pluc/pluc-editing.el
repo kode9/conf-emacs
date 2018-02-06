@@ -55,6 +55,9 @@
   (customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
   (customize-set-variable 'c-basic-offset 2)                     ; Indentation offset
 
+  (customize-set-variable 'undo-outer-limit 26214400) ; Maximum information in a single undo command. 25MiB
+  (customize-set-variable 'warning-suppress-types '((undo discard-info))) ; Be quiet
+
   (customize-set-variable 'sh-indentation 2)
   (customize-set-variable 'sh-basic-offset 2))
 
