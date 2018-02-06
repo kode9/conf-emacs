@@ -54,13 +54,13 @@
                     "Local packages directory"))
 (add-to-list 'load-path pluc-site-dir)
 
-(use-package pluc-settings :ensure nil) ;
-(use-package pluc-theme    :ensure nil) ; Color theme (only zenburn ATM)
-(use-package pluc-custom   :ensure nil) ; Basic setup
-(use-package pluc-ido      :ensure nil) ; InteractivelyDoThings
-(use-package pluc-editing  :ensure nil) ; Common edition settings
-(use-package pluc-devel    :ensure nil) ; Development settings
-(use-package pluc-tools    :ensure nil) ; External tools integration
+(use-package pluc-settings   :ensure nil) ;
+(use-package pluc-theme      :ensure nil) ; Color theme (only zenburn ATM)
+(use-package pluc-custom     :ensure nil) ; Basic setup
+(use-package pluc-completion :ensure nil) ; Completion framework
+(use-package pluc-editing    :ensure nil) ; Common edition settings
+(use-package pluc-devel      :ensure nil) ; Development settings
+(use-package pluc-tools      :ensure nil) ; External tools integration
 
 ;; Debug init file
 (use-package bug-hunter
