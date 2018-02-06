@@ -141,10 +141,17 @@
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
   :init
+  (defun pluc/colorize-region (start end)
+    "Colorize from `start` to `end`"
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region start end)))
+  (defun pluc-colorize-buffer ()
+    "Colorize the current buffer"
+    (interactive)
+    (pluc/colorize-region (point-min) (point-max)))
   (defun pluc/colorize-compilation ()
     "Colorize from `compilation-filter-start' to `point'."
-    (let ((inhibit-read-only t))
-      (ansi-color-apply-on-region compilation-filter-start (point))))
+    (pluc/colorize-region compilation-filter-start (point)))
   (add-hook 'compilation-filter-hook #'pluc/colorize-compilation)
   (customize-set-variable 'compilation-environment #'("TERM=xterm")))
 
