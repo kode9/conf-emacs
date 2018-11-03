@@ -147,7 +147,9 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; C++
 (use-package cc-mode
-  :mode ("\\.\\(?:inl\\|h\\)\\'" . c++-mode))
+  :mode ("\\.\\(?:inl\\|h\\)\\'" . c++-mode)
+  :config
+  (c-toggle-auto-newline 1))
 
 ;; OpenGL shaders
 (use-package glsl-mode
