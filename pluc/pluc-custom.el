@@ -118,7 +118,8 @@
   ;; Set default browser
   (customize-set-variable 'browse-url-generic-program "xdg-open") ; The browser used by browse-url-generic
   (customize-set-variable 'browse-url-browser-function 'browse-url-generic)
-  )
+  ;; Always select the help window
+  (customize-set-variable 'help-window-select t))
 
 ;; Gets the mouse out of the cursor
 (use-package avoid
