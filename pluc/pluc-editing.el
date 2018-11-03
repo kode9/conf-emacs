@@ -145,7 +145,7 @@ With argument N go to the nth entry."
   :bind*
   (("C-n" . undo-tree-undo)
    ("C-," . undo-tree-redo)
-   ("M-n" . undo-tree-switch-branch)
+   ;; ("M-n" . undo-tree-switch-branch)
    ("C-n" . undo-tree-visualize)))
 
 (use-package auto-highlight-symbol
