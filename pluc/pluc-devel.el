@@ -22,6 +22,41 @@
 
 ;;; Code:
 
+;;;###autoload
+(cl-defun abz-process-window (process &optional (all-frames (selected-frame)))
+  "Get the window currently displaying the buffer of PROCESS, or nil if none.
+
+ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
+"
+  (get-buffer-window (process-buffer process) all-frames))
+
+;;;###autoload
+(defun abz-select-process-window (process)
+  "Select the window currently displaying the buffer of PROCESS."
+  (select-window (abz-process-window process) 'norecord))
+
+;; Compilation
+(use-package compile
+  :ensure nil
+  :defer t
+  :init
+  ;; Kill a running compilation process without asking before starting a new one
+  (customize-set-variable 'compilation-always-kill t)
+  ;; Autoscoll compilation buffer and stop on first error
+  (customize-set-variable 'compilation-scroll-output 'first-error)
+  ;; Automatically jump to the first error during compilation
+  (customize-set-variable 'compilation-auto-jump-to-first-error nil)
+  ;; Skip 'info' and 'warnings' when jumping between errors
+  (customize-set-variable 'compilation-skip-threshold 2)
+  :bind (:map compilation-mode-map
+              ("n" . compilation-next-error)
+              ("p" . compilation-previous-error)
+              ("M-p" . compilation-previous-file)
+              ("M-n" . compilation-next-file))
+  :hook
+  ;; Switch to compilation buffer window
+  (compilation-start . abz-select-process-window))
+
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el
 (use-package wrap-region

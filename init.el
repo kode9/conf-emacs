@@ -73,21 +73,10 @@
 (bind-key* "C-c S" 'align-comments)
 (bind-key* "C-x C-r" 'toggle-sudo)
 
-;; Autoscoll compilation buffer and stop on first error
-(set 'compilation-scroll-output 'first-error)
-;; Skip warnings when jumping between errors
-(set 'compilation-skip-threshold 2)
-
 ;; Shorten long file-name targets. https://github.com/lewang/scf-mode
 (autoload 'scf-mode "scf-mode" "SCF Mode" t)
 (add-hook 'compilation-mode-hook (lambda () (scf-mode t)))
 
-;; Stop asking yes/no before compile when a compilation is already
-;; running. ftp://download.tuxfamily.org/user42/compilation-always-kill.el
-(autoload 'compilation-always-kill-mode "compilation-always-kill" "Compilation kill" t)
-(compilation-always-kill-mode t)
-
-(diminish 'compilation-in-progress)
 (diminish 'auto-revert-mode)
 
 ;; Custom hooks
