@@ -171,7 +171,7 @@ With argument N go to the nth entry."
       ;; http://aspell.net/man-html/Notes-on-the-Different-Suggestion-Modes.html
       (customize-set-variable 'ispell-extra-args
                               '("--sug-mode=normal"
-                                "--run-together"
+                                "--dont-run-together"
                                 "--run-together-limit=4"
                                 "--run-together-min=2")))
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
