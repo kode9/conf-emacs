@@ -137,8 +137,7 @@
   :init
   (setq mouse-avoidance-threshold 10) ; When is it too close
   :config
-  (mouse-avoidance-mode 'jump)     ; Exile it to top-right corder, but allow it to come back
-  )
+  (mouse-avoidance-mode 'jump))       ; Exile it to top-right corder, but allow it to come back
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Allow undo/redo windows configuration ;;
