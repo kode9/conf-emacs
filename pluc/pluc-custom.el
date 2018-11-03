@@ -179,9 +179,12 @@
 ;; Dired
 (use-package dired
   :ensure nil
+  :init
+  ;; Try to guess a default target directory
+  (customize-set-variable 'dired-dwim-target t)
   :bind (:map dired-mode-map
-              ("C-s" . dired-isearch-filenames) ; Search only in filenames
-              ))
+              ;; Search only in filenames
+              ("C-s" . dired-isearch-filenames)))
 
 ;; Ibuffer
 (use-package ibuffer
