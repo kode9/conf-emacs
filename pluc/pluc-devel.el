@@ -364,5 +364,14 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 (use-package ssh-config-mode)
 
+;; Buttonize URL and e-mail addresses in comments and strings.
+(use-package goto-addr
+  :ensure nil
+  :defer t
+  :hook (prog-mode . goto-address-prog-mode))
+
+;; Highlight and follow bug references in comments and strings
+(add-hook 'prog-mode-hook 'bug-reference-prog-mode)
+
 (provide 'pluc-devel)
 ;;; pluc-devel.el ends here
