@@ -77,8 +77,6 @@
 (autoload 'scf-mode "scf-mode" "SCF Mode" t)
 (add-hook 'compilation-mode-hook (lambda () (scf-mode t)))
 
-(diminish 'auto-revert-mode)
-
 ;; Custom hooks
 (defun dtw()
   "Delete trailing whitespaces"

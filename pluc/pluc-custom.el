@@ -121,6 +121,17 @@
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
 
+;; Autorevert
+(use-package autorevert
+  :ensure nil
+  :diminish auto-revert-mode
+  :init
+  ;; Also auto-revert buffer-menu and dired buffers
+  (customize-set-variable 'global-auto-revert-non-file-buffers t)
+  ;; Be quiet
+  (customize-set-variable 'auto-revert-verbose nil)
+  :hook (after-init . global-auto-revert-mode))
+
 ;; Gets the mouse out of the cursor
 (use-package avoid
   :init
