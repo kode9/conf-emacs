@@ -364,7 +364,8 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   :init
   (customize-set-variable 'dockerfile-use-sudo t))
 
-(use-package ssh-config-mode)
+(use-package ssh-config-mode
+  :defer t)
 
 ;; Buttonize URL and e-mail addresses in comments and strings.
 (use-package goto-addr
