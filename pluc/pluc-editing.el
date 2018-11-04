@@ -165,9 +165,10 @@ With argument N go to the nth entry."
   :defer t
   :init
   (customize-set-variable 'ispell-dictionary "english") ; default dictionnary
-  (customize-set-variable 'ispell-program-name (cond ((executable-find "aspell")) ((executable-find "hunspell"))))
-  (if
-      (string-match  "aspell$" ispell-program-name)
+  (customize-set-variable 'ispell-program-name (cond ((executable-find "aspell"))
+                                                     ((executable-find "hunspell"))
+                                                     ((executable-find "ispell"))))
+  (if (and ispell-program-name (string-match  "aspell$" ispell-program-name))
       ;; http://aspell.net/man-html/Notes-on-the-Different-Suggestion-Modes.html
       (customize-set-variable 'ispell-extra-args
                               '("--sug-mode=normal"
