@@ -187,5 +187,8 @@ With argument N go to the nth entry."
    backup-each-save-time-format "%Y%m%d-%H%M%S")
   (add-hook 'after-save-hook #'backup-each-save))
 
+(use-package rainbow-mode
+  :defer t)
+
 (provide 'pluc-editing)
 ;;; pluc-editing.el ends here
