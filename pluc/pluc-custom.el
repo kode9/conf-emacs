@@ -23,6 +23,7 @@
 ;;; Code:
 
 (require 'pluc-settings)
+(require 'cl-lib)
 
 ;;;###autoload
 (defun abz--init-custom ()
