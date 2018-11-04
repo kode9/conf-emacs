@@ -35,10 +35,12 @@
   :type 'file
   :group 'pluc)
 
-(ignore-errors (make-directory pluc-cache-dir))
-
-(setq custom-file pluc-custom-file)
-(load custom-file 'no-error 'no-message)
+;;;###autoload
+(defun abz--init-settings ()
+  "Initialise settings."
+  (ignore-errors (make-directory pluc-cache-dir))
+  (setq custom-file pluc-custom-file)
+  (load custom-file 'no-error 'no-message))
 
 (provide 'pluc-settings)
 ;;; pluc-settings.el ends here

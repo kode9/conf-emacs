@@ -25,7 +25,8 @@
 (require 'pluc-settings)
 
 ;;;###autoload
-(progn
+(defun abz--init-custom ()
+  "Initialise custom configuration variables."
   (setq frame-title-format "⸗ %b (%&) ⸗")
 
   (defalias 'yes-or-no-p 'y-or-n-p) ; Just use 'y'/'n' even for yes-or-no-p
