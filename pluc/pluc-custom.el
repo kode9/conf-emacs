@@ -78,8 +78,6 @@
   ;; History file
   (customize-set-variable 'savehist-file
                           (expand-file-name "history" pluc-cache-dir)) ; Minibuffer history location
-  (customize-set-variable 'recentf-save-file
-                          (expand-file-name "recentf" pluc-cache-dir)) ; Recent list location
 
   ;; Minibuffer history
   (customize-set-variable 'history-length 100) ; Maximum history
@@ -134,6 +132,16 @@
         (expand-file-name "local/" user-emacs-directory))
   (setq no-littering-var-directory
         (expand-file-name ".cache/" user-emacs-directory)))
+
+;; List of recently visited files (built-in)
+(use-package recentf
+  :demand t
+  :straight nil
+  :init
+  (customize-set-variable 'recentf-max-saved-items 40)
+  :config
+  (add-to-list 'recentf-exclude pluc-local-dir)
+  (add-to-list 'recentf-exclude pluc-cache-dir))
 
 ;; Autorevert
 (use-package autorevert
