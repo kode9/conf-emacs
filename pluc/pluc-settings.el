@@ -23,6 +23,12 @@
 ;;; Code:
 
 ;;;###autoload
+(defcustom pluc-local-dir (expand-file-name "local" user-emacs-directory)
+  "Directory used to store local configuration files."
+  :type 'directory
+  :group 'pluc)
+
+;;;###autoload
 (defcustom pluc-cache-dir (expand-file-name ".cache" user-emacs-directory)
   "Directory used to store runtime cache files."
   :type 'directory
@@ -34,6 +40,12 @@
   :set-after '(pluc-cache-dir)
   :type 'file
   :group 'pluc)
+
+(use-package no-littering
+  :demand t
+  :init
+  (setq no-littering-etc-directory pluc-local-dir)
+  (setq no-littering-var-directory pluc-cache-dir))
 
 ;;;###autoload
 (defun abz--init-settings ()

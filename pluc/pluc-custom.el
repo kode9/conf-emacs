@@ -125,14 +125,6 @@
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
 
-(use-package no-littering
-  :demand t
-  :init
-  (setq no-littering-etc-directory
-        (expand-file-name "local/" user-emacs-directory))
-  (setq no-littering-var-directory
-        (expand-file-name ".cache/" user-emacs-directory)))
-
 ;; List of recently visited files (built-in)
 (use-package recentf
   :demand t
