@@ -30,10 +30,10 @@
                 (const :tag "Helm" helm))
   :group 'pluc)
 
-(case pluc-completion-framework
-  ('ido (use-package pluc-ido :ensure nil))
-  ('ivy nil)
-  ('helm nil))
+(use-package pluc-ido
+  :if (eql pluc-completion-framework 'ido)
+  :demand t
+  :straight nil)
 
 (provide 'pluc-completion)
 ;;; pluc-completion.el ends here

@@ -25,26 +25,37 @@
 ;; Don't load expired byte-compiled files
 (customize-set-variable 'load-prefer-newer t)
 
-;; Cask: Automatic installation and updates of packages listed in a
-;; Cask file. http://github.com/cask/cask
-(eval-and-compile (require 'cask (expand-file-name "cask/cask.el" user-emacs-directory)))
-(cask-initialize)
+;; Bootstrap straight.el (https://github.com/raxod502/straight.el)
 
-;; Pallet: Keep track of package installations in concordance with
-;; Cask. https://github.com/rdallasgray/pallet
-(require 'pallet)
-(pallet-mode t)
+;; Use radox502's mirror of GNU ELPA (https://github.com/emacs-straight)
+(customize-set-variable 'straight-recipes-gnu-elpa-use-mirror t)
 
-;; use-package: simplify package loading, settings, bindings, and
-;; more. https://github.com/jwiegley/use-package
-(eval-when-compile
-  (customize-set-variable 'use-package-verbose nil)        ; Report about loading and configuration details.
-  (customize-set-variable 'use-package-debug nil)          ; Display expanded code
-  (customize-set-variable 'use-package-expand-minimally t) ; Make the expanded code as minimal as possible
-  (require 'use-package))
+(defvar bootstrap-version)
 
-(use-package diminish) ; :diminish support for use-package
-(use-package bind-key) ; :bind support for use-package
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
+(eval-when-compile (straight-use-package 'use-package))
+(customize-set-variable 'straight-use-package-by-default t) ; Install packages by default in `use-package` forms
+(customize-set-variable 'use-package-always-defer nil)      ; Use deferred loading by default
+(customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
+(customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
+(customize-set-variable 'use-package-verbose nil)           ; Report about loading and configuration details
+
+;; Customize mode lighters. use-package integration with `:diminish`.
+(use-package diminish)
+;; Macros to define key bindings. use-package integration with `:bind`.
+(use-package bind-key)
 
 ;; Some non-packaged stuff
 (add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
@@ -54,28 +65,44 @@
                     "Local packages directory"))
 (add-to-list 'load-path pluc-site-dir)
 
+;; This emacs configuration variables
 (use-package pluc-settings
-  :ensure nil
   :demand t
+  :straight nil
   :config
   (abz--init-settings))
 
 ;; Basic setup
 (use-package pluc-custom
-  :ensure nil
   :demand t
+  :straight nil
   :config
   (abz--init-custom))
 
 ;; Color theme (only zenburn ATM)
 (use-package pluc-theme
-  :ensure nil
-  :demand t)
+  :demand t
+  :straight nil)
 
-(use-package pluc-completion :ensure nil) ; Completion framework
-(use-package pluc-editing    :ensure nil) ; Common edition settings
-(use-package pluc-devel      :ensure nil) ; Development settings
-(use-package pluc-tools      :ensure nil) ; External tools integration
+;; Completion framework
+(use-package pluc-completion
+  :demand t
+  :straight nil)
+
+;; Common edition settings
+(use-package pluc-editing
+  :demand t
+  :straight nil)
+
+;; Development settings
+(use-package pluc-devel
+  :demand t
+  :straight nil)
+
+;; External tools integration
+(use-package pluc-tools
+  :demand t
+  :straight nil)
 
 ;; Debug init file
 (use-package bug-hunter
@@ -89,8 +116,9 @@
 (bind-key* "C-x C-r" 'toggle-sudo)
 
 ;; Shorten long file-name targets. https://github.com/lewang/scf-mode
-(autoload 'scf-mode "scf-mode" "SCF Mode" t)
-(add-hook 'compilation-mode-hook (lambda () (scf-mode t)))
+(use-package scf-mode
+  :init
+  (add-hook 'compilation-mode-hook (lambda () (scf-mode t))))
 
 ;; Custom hooks
 (defun dtw()

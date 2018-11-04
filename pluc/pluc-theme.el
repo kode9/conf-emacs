@@ -38,6 +38,7 @@
   (dynamic-fonts-setup))
 
 (use-package spaceline-config
+  :straight spaceline
   :config (spaceline-emacs-theme))
 
 (provide 'pluc-theme)

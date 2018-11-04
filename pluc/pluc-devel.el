@@ -37,7 +37,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Compilation
 (use-package compile
-  :ensure nil
+  :straight nil
   :defer t
   :init
   ;; Kill a running compilation process without asking before starting a new one
@@ -209,7 +209,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Scilab
 (use-package scilab-mode
-  :ensure nil
+  :straight nil
   :mode "\\.\\(?:sci\\|sce\\)\\'")
 
 ;; SQL
@@ -368,7 +368,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Buttonize URL and e-mail addresses in comments and strings.
 (use-package goto-addr
-  :ensure nil
+  :straight nil
   :defer t
   :hook (prog-mode . goto-address-prog-mode))
 

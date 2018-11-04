@@ -124,7 +124,7 @@
 
 ;; Autorevert
 (use-package autorevert
-  :ensure nil
+  :straight nil
   :diminish auto-revert-mode
   :init
   ;; Also auto-revert buffer-menu and dired buffers
@@ -179,7 +179,7 @@
 
 ;; Dired
 (use-package dired
-  :ensure nil
+  :straight nil
   :init
   ;; Try to guess a default target directory
   (customize-set-variable 'dired-dwim-target t)

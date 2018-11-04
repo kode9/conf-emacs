@@ -1,7 +1,4 @@
 *
-!Cask
-!cask/*.el
-!cask/bin/cask
 !init.el
 !local/
 !pluc/
