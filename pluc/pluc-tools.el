@@ -95,13 +95,15 @@
   (setq magit-save-repository-buffers t)   ; Ask confirmation when saving buffers
   (setq magit-refs-show-commit-count 'all) ; Show counts for branches and tags
   ;; Status header format
-  (setq magit-status-headers-hook '(magit-insert-repo-header
+  (setq magit-status-headers-hook '(magit-insert-error-header
+                                    magit-insert-repo-header
                                     magit-insert-user-header
                                     magit-insert-diff-filter-header
                                     magit-insert-remote-header
-                                    magit-insert-tags-header
-                                    magit-insert-upstream-header
-                                    magit-insert-head-header))
+                                    magit-insert-upstream-branch-header
+                                    magit-insert-push-branch-header
+                                    magit-insert-head-branch-header
+                                    magit-insert-tags-header))
   ;; Status buffer name format
   (setq magit-status-buffer-name-format "*magit-status＠%b*"))
 
