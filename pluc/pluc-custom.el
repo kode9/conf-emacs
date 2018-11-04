@@ -33,7 +33,7 @@
 
   ;; Initialization
   (customize-set-variable 'inhibit-startup-screen t)             ; Inhibits the startup screen
-  (customize-set-variable 'initial-buffer-choice t)              ; Starts with the *scratch* buffer
+  (customize-set-variable 'initial-buffer-choice nil)            ; Starts with the *scratch* buffer if no file passed
   (customize-set-variable 'initial-major-mode 'fundamental-mode) ; Major mode for the *scratch* buffer
   (customize-set-variable 'initial-scratch-message nil)          ; No message in the *scratch* buffer
 
