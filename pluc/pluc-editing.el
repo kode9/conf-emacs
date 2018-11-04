@@ -152,7 +152,8 @@ With argument N go to the nth entry."
   :commands global-auto-highlight-symbol-mode
   :diminish auto-highlight-symbol-mode
   :init
-  (add-hook 'after-init-hook #'global-auto-highlight-symbol-mode)
+  ;; FIXME
+  ;; (add-hook 'after-init-hook #'global-auto-highlight-symbol-mode)
   (customize-set-variable 'ahs-idle-interval 0.2))
 
 ;; AsciiDoc
