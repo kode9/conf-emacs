@@ -137,6 +137,8 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
                                                    (format "[%s]"
                                                            (projectile-project-name)))
                                                   face font-lock-constant-face)) ; modeline
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
   :config
   (projectile-mode t)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
