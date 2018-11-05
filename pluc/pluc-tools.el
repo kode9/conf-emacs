@@ -80,8 +80,12 @@
 (use-package ag
   :if (eql abz-grep-command 'ag)
   :init
-  (setq ag-highlight-search t) ; Highlight search terms
-  (setq ag-reuse-buffer t)     ; Use a single buffer
+  (customize-set-variable 'ag-arguments #'("--smart-case"))      ; Additional arguments
+  (customize-set-variable 'ag-context-lines nil)                 ; Number of context lines
+  (customize-set-variable 'ag-executable (executable-find "ag")) ; Command to use
+  (customize-set-variable 'ag-group-matches t)                   ; Group matches by file
+  (customize-set-variable 'ag-highlight-search t)                ; Highlight search terms
+  (customize-set-variable 'ag-reuse-buffers t)                   ; Use a single buffer
   :bind*
   ;; Search STRING in DIR
   ("C-c a A" . ag)
@@ -97,12 +101,13 @@
   ("C-c a f" . ag-project-dired)
   ;; Find FILES matching REGEX in DIR
   ("C-c a D" . ag-dired-regexp)
-  ("C-c a d" . ag-project-regexp)
-  :config
-  ;; Edit ag buffers inplace
-  (use-package wgrep-ag
-    :commands wgrep-ag-setup
-    :init (add-hook 'ag-mode-hook #'wgrep-ag-setup)))
+  ("C-c a d" . ag-project-regexp))
+
+;; Edit ag buffers inplace
+(use-package wgrep-ag
+  :after ag
+  :commands wgrep-ag-setup
+  :hook (ag-mode . wgrep-ag-setup))
 
 ;; magit: (awesome) git frontend
 (use-package magit
