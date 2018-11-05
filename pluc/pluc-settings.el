@@ -22,24 +22,37 @@
 
 ;;; Code:
 
+(defgroup abz nil
+  "Custom group."
+  :prefix "abz-"
+  :prefix "pluc-"
+  :group 'emacs
+  :link '(url-link :tag "Homepage" "https://git.the-pluc.net/conf-emacs.git/"))
+
 ;;;###autoload
 (defcustom pluc-local-dir (expand-file-name "local" user-emacs-directory)
   "Directory used to store local configuration files."
   :type 'directory
-  :group 'pluc)
+  :tag "Local configuration directory"
+  :group 'abz
+  :group 'environment)
 
 ;;;###autoload
 (defcustom pluc-cache-dir (expand-file-name ".cache" user-emacs-directory)
   "Directory used to store runtime cache files."
   :type 'directory
-  :group 'pluc)
+  :tag "Local cache directory"
+  :group 'abz
+  :group 'environment)
 
 ;;;###autoload
 (defcustom pluc-custom-file (expand-file-name "custom.el" pluc-local-dir)
   "File used to store settings from Customization UI."
   :set-after '(pluc-local-dir)
+  :tag "Custom file location"
   :type 'file
-  :group 'pluc)
+  :group 'abz
+  :group 'environment)
 
 (use-package no-littering
   :demand t

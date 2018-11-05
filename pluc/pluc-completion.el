@@ -28,7 +28,9 @@
   :type '(radio (const :tag "Ido" ido)
                 (const :tag "Ivy" ivy)
                 (const :tag "Helm" helm))
-  :group 'pluc)
+  :tag "Completion framework"
+  :group 'abz
+  :group 'convenience)
 
 (use-package pluc-ido
   :if (eql pluc-completion-framework 'ido)
