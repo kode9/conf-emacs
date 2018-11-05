@@ -37,7 +37,7 @@
 ;;;###autoload
 (defcustom pluc-custom-file (expand-file-name "custom.el" pluc-local-dir)
   "File used to store settings from Customization UI."
-  :set-after '(pluc-cache-dir)
+  :set-after '(pluc-local-dir)
   :type 'file
   :group 'pluc)
 
