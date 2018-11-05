@@ -22,6 +22,28 @@
 
 ;;; Code:
 
+(require 'pluc-settings)
+(require 'files)
+
+;; https://github.com/BurntSushi/ripgrep
+;; https://github.com/ggreer/the_silver_searcher
+;; https://github.com/monochromegane/the_platinum_searcher
+;; https://sift-tool.org/
+;; https://github.com/gvansickle/ucg
+;; https://git-scm.com/docs/git-grep
+;;;###autoload
+(defcustom abz-grep-command
+  (cond
+   ((executable-find "ripgrep") 'ripgrep)
+   ((executable-find "ag") 'ag)
+   ((executable-find "pt") 'pt)
+   ((executable-find "sift") 'sift)
+   ((executable-find "ucg") 'ucg)
+   ((executable-find "grep") 'grep))
+  "The search tool to use."
+  :type 'symbol
+  :group 'pluc)
+
 ;; Remote access
 (use-package tramp
   :defer t
@@ -56,6 +78,7 @@
 
 ;; ag the silver searcher: a better grep alternative
 (use-package ag
+  :if (eql abz-grep-command 'ag)
   :init
   (setq ag-highlight-search t) ; Highlight search terms
   (setq ag-reuse-buffer t)     ; Use a single buffer
