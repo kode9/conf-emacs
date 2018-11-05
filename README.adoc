@@ -1,0 +1,65 @@
+= conf-emacs
+Pierre-Luc Perrier <dev@the-pluc.net>
+:description: Emacs configuration
+:keywords: gnu,emacs,configuration,dotfiles,straight,use-package,elisp
+:toc: preamble
+:nofooter:
+:icons: font
+:sectanchors:
+:hide-uri-scheme:
+:linkattrs:
+:source-highlighter: prettify
+
+This is my GNU https://www.gnu.org/software/emacs[Emacs^] configuration.
+
+== Installation
+
+NOTE: Only tested on Emacs version 25+.
+
+The configuration is maintained using https://github.com/raxod502/straight.el[straight.el^] for package management and https://github.com/jwiegley/use-package[use-package^] for package initialization and configuration.
+
+Everything is self-contained in `init.el` and other elisp files. The package manager is _bootstraped_ if needed. Simply clone and launch emacs:
+
+[source,shell]
+----
+mv -v ~/.emacs.d{,.old}
+git clone https://github.com/kode9/conf-emacs.git ~/.emacs.d
+emacs --debug-init &
+----
+
+CAUTION: The first start might take some time as dependencies are cloned and built.
+
+== External dependencies
+
+The configuration provides integration of external tools:
+
+* https://git-scm.com/[Git^] with https://magit.vc/[Magit^]
+* https://github.com/ggreer/the_silver_searcher[AG the silver searcher^] with https://github.com/Wilfred/ag.el[ag.el^]
+* A spell checker such as http://aspell.net/[Aspell^] or https://hunspell.github.io/[Hunspell^] for the https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html[built-in spell checker^] and https://www.flycheck.org/en/latest/[Flycheck^]
+
+== Customization
+
+== TODO
+
+* Finish to cleanup
+* Set `use-package-always-defer` to t
+* Experiment the following packages
+** Helm
+** Ivy/Counsel
+** Hydra
+** diminish alternatives (blackout/delight/dim)
+* Window management
+** Swap windows
+* Check existing searcher (ripgrep, ag, grep)
+* chmod
+* easymenu
+* keymaps
+* use functions in pluc/abz.el
+
+== License
+
+----
+include::NOTICE[]
+----
+
+//  LocalWords:  toc uri linkattrs conf emacs

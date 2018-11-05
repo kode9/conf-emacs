@@ -4,3 +4,4 @@ var/
 # x-win.el emacs-session-filename does not provide customization
 session.*
 straight/
+README.html
