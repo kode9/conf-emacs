@@ -32,17 +32,17 @@
 
 (defvar bootstrap-version)
 
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(eval-and-compile (let ((bootstrap-file
+                         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+                        (bootstrap-version 5))
+                    (unless (file-exists-p bootstrap-file)
+                      (with-current-buffer
+                          (url-retrieve-synchronously
+                           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+                           'silent 'inhibit-cookies)
+                        (goto-char (point-max))
+                        (eval-print-last-sexp)))
+                    (load bootstrap-file nil 'nomessage)))
 
 ;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
 (eval-when-compile (straight-use-package 'use-package))
@@ -117,27 +117,26 @@
 
 ;; Shorten long file-name targets. https://github.com/lewang/scf-mode
 (use-package scf-mode
-  :init
-  (add-hook 'compilation-mode-hook (lambda () (scf-mode t))))
+  :hook (compilation-mode . (lambda () (scf-mode t))))
 
 ;; Custom hooks
 (defun dtw()
-  "Delete trailing whitespaces"
+  "Delete trailing whitespaces."
   (interactive)
   (delete-trailing-whitespace))
 
 (defun indent-buffer()
-  "Indent whole buffer"
+  "Indent whole buffer."
   (interactive)
   (indent-region (point-min) (point-max) nil))
 
 (defun untab-buffer()
-  "Transform tabs to spaces in the whole buffer"
+  "Transform tabs to spaces in the whole buffer."
   (interactive)
   (untabify (point-min) (point-max) nil))
 
 (defun dev-hooks()
-  "Progmod hooks"
+  "Progmod hooks."
   (format-buffer))
 
 (define-minor-mode pluc-mode
@@ -160,8 +159,8 @@
 (global-set-key [(meta g)] 'goto-line)
 (global-set-key [(control x) (control k)] 'kill-some-buffers)
 
-;; Usage: emacs -diff file1 file2
-(defun command-line-diff (switch)
+(defun command-line-diff ()
+  "Usage: Emacs -diff file1 file2."
   (let ((file1 (pop command-line-args-left))
         (file2 (pop command-line-args-left)))
     (diff file1 file2)))
@@ -170,6 +169,7 @@
 
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
+  :commands (ansi-color-apply-on-region pluc/colorize-region)
   :init
   (defun pluc/colorize-region (start end)
     "Colorize from `start` to `end`"
@@ -182,11 +182,12 @@
   (defun pluc/colorize-compilation ()
     "Colorize from `compilation-filter-start' to `point'."
     (pluc/colorize-region compilation-filter-start (point)))
-  (add-hook 'compilation-filter-hook #'pluc/colorize-compilation)
-  (customize-set-variable 'compilation-environment #'("TERM=xterm")))
+  (customize-set-variable 'compilation-environment #'("TERM=xterm"))
+  :hook (compilation-filter pluc/colorize-compilation))
 
 ;; Required by package.el
 ;; (package-initialize)
 
 (provide 'init)
+
 ;;; init.el ends here
