@@ -37,8 +37,8 @@
   (customize-set-variable 'initial-buffer-choice nil)            ; Starts with the *scratch* buffer if no file passed
   (customize-set-variable 'initial-major-mode 'fundamental-mode) ; Major mode for the *scratch* buffer
   (customize-set-variable 'initial-scratch-message nil)          ; No message in the *scratch* buffer
-  ;; Start the initial frame full-screen
-  (add-hook #'emacs-startup-hook (lambda () (cl-pushnew (cons 'fullscreen 'fullboth) initial-frame-alist)))
+  ;; Start the initial frame maximized
+  (add-hook #'emacs-startup-hook (lambda () (cl-pushnew (cons 'fullscreen 'maximized) initial-frame-alist)))
   ;; Start subsequent frames maximized
   (add-hook #'emacs-startup-hook (lambda () (cl-pushnew (cons 'fullscreen 'maximized) default-frame-alist)))
 
