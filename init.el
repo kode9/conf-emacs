@@ -169,6 +169,7 @@
 
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
+  :disabled t
   :commands (ansi-color-apply-on-region pluc/colorize-region)
   :init
   (defun pluc/colorize-region (start end)
