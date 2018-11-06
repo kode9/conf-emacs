@@ -299,21 +299,28 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 (use-package flycheck
   :diminish flycheck-mode
   :init
-  (customize-set-variable 'flycheck-highlighting-mode 'sexps) ; Highlight whole expression around the error column
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (customize-set-variable 'flycheck-highlighting-mode 'sexps)           ; Highlight whole expression around the error column
+  (customize-set-variable 'flycheck-emacs-lisp-load-path 'inherit)      ; Use the current session `load-path`
+  (customize-set-variable 'flycheck-emacs-lisp-initialize-packages nil) ; Don't call `package-initialize`
   :bind
   (("C-c f f" . flycheck-next-error)
    ("C-c f p" . flycheck-previous-error)
    ("C-c f l" . flycheck-list-errors)
    ("C-c f c" . flycheck-clear))
+  :hook (after-init . global-flycheck-mode))
+
+;; Show errors under point in pos-tip popups
+(use-package flycheck-pos-tip
+  :init
+  (customize-set-variable 'flycheck-pos-tip-timeout 10)
   :config
-  (use-package flycheck-cask)
-  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
-  (use-package flycheck-pos-tip ; Show errors under point in pos-tip popups
-    :init
-    (customize-set-variable 'flycheck-pos-tip-timeout 10)
-    :config
-    (flycheck-pos-tip-mode)))
+  (flycheck-pos-tip-mode)
+  :after flycheck)
+
+(use-package flycheck-cask
+  :defer t
+  :hook (flycheck-mode . flycheck-cask-setup)
+  :after flycheck)
 
 (use-package web-mode
   :init
