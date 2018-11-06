@@ -9,6 +9,7 @@ Pierre-Luc Perrier <dev@the-pluc.net>
 :hide-uri-scheme:
 :linkattrs:
 :source-highlighter: prettify
+:experimental:
 
 This is my GNU https://www.gnu.org/software/emacs[Emacs^] configuration.
 
@@ -39,6 +40,8 @@ The configuration provides integration of external tools:
 
 == Customization
 
+Type `kbd:[M-x] customize-group kbd:[RET] abz kbd:[RET]` to see available custom variables.
+
 == TODO
 
 * Finish to cleanup
@@ -55,6 +58,7 @@ The configuration provides integration of external tools:
 * easymenu
 * keymaps
 * use functions in pluc/abz.el
+* Check custom variables behavior on change (see `:set`)
 
 == License
 
