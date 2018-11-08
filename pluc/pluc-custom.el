@@ -163,10 +163,16 @@
 
 ;; Emacs server (emacsclient)
 (use-package server
+  :straight nil
   :if (display-graphic-p nil)
+  :commands server-running-p
+  :functions server-start
   :init
-  (defun pluc-server-start () (unless (server-running-p) (server-start)))
-  (add-hook 'after-init-hook 'pluc-server-start))
+  (defun abz--server-start ()
+    "Starts Emacs server if necessary."
+    (unless (server-running-p)
+      (server-start)))
+  :hook (after-init . abz--server-start))
 
 ;; Automatic resizing of windows using the golden ration and keeping
 ;; the one with the focus
