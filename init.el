@@ -184,7 +184,7 @@
     "Colorize from `compilation-filter-start' to `point'."
     (pluc/colorize-region compilation-filter-start (point)))
   (customize-set-variable 'compilation-environment #'("TERM=xterm"))
-  :hook (compilation-filter pluc/colorize-compilation))
+  :hook (compilation-filter . pluc/colorize-compilation))
 
 ;; Required by package.el
 ;; (package-initialize)
