@@ -79,10 +79,12 @@
   (customize-set-variable 'savehist-file
                           (expand-file-name "history" pluc-cache-dir)) ; Minibuffer history location
 
-  ;; Minibuffer history
-  (customize-set-variable 'history-length 100) ; Maximum history
-  (customize-set-variable 'history-delete-duplicates t) ; Remove duplicates
-  (savehist-mode nil) ; Enable minibuffer history
+  ;; Minibuffer
+  (customize-set-variable 'enable-recursive-minibuffers t)   ; Allow minibuffer commands while in the minibuffer
+  (customize-set-variable 'minibuffer-depth-indicate-mode t) ; Show recursion depth in the minibuffer
+  (customize-set-variable 'history-length 100)               ; Maximum history
+  (customize-set-variable 'history-delete-duplicates t)      ; Remove duplicates
+  (savehist-mode nil)                                        ; Enable minibuffer history
 
   ;; Buffers
   (customize-set-variable 'confirm-nonexistent-file-or-buffer
