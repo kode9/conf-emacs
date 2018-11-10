@@ -108,6 +108,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Color keywords such as TODO in comments and strings
 (use-package fic-mode
+  :disabled t
   :defer t
   :diminish fic-mode
   :init
@@ -384,4 +385,5 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 (add-hook 'prog-mode-hook 'bug-reference-prog-mode)
 
 (provide 'pluc-devel)
+
 ;;; pluc-devel.el ends here
