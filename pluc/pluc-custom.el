@@ -163,12 +163,16 @@
   (customize-set-variable 'auto-revert-verbose nil)               ; Be quiet
   :hook (after-init . global-auto-revert-mode))
 
-;; Gets the mouse out of the cursor
+;; avoid: Gets the mouse out of the cursor (built-in)
 (use-package avoid
+  :straight nil
+  :if (display-mouse-p)
   :init
-  (setq mouse-avoidance-threshold 10) ; When is it too close
-  :config
-  (mouse-avoidance-mode 'jump))       ; Exile it to top-right corder, but allow it to come back
+  (customize-set-variable 'mouse-avoidance-threshold 12)
+  (customize-set-variable 'mouse-avoidance-nudge-dist 18)
+  (defun abz--mouse-avoidance-mode ()
+    (mouse-avoidance-mode 'jump))
+  :hook (after-init . abz--mouse-avoidance-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Allow undo/redo windows configuration ;;
