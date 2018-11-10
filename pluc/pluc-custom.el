@@ -67,7 +67,6 @@
   (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))                            ; No menu
   (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))                            ; No toolbar
   (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))                        ; No scrollbar
-  (when (fboundp 'tooltip-mode) (tooltip-mode -1))                              ; Tooltips in minibuffer
   (when (fboundp 'display-time-mode) (display-time-mode -1))                    ; No time / load / mail in modeline
   (when (fboundp 'size-indication-mode) (size-indication-mode -1))              ; No buffer size in modeline
   (when (fboundp 'line-number-mode) (line-number-mode nil))                     ; Display current line in modeline
@@ -124,8 +123,26 @@
   ;; Set default browser
   (customize-set-variable 'browse-url-generic-program "xdg-open") ; The browser used by browse-url-generic
   (customize-set-variable 'browse-url-browser-function 'browse-url-generic)
+
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
+
+;; Tooltips (built-in)
+(use-package tooltip
+  :straight nil
+  :defer t
+  :init
+  (customize-set-variable 'tooltip-delay 0.4)            ; Secondes before showing tooltips
+  (customize-set-variable 'tooltip-hide-delay 59)        ; Secondes before showing tooltips (0 disables tooltips)
+  (customize-set-variable 'tooltip-reuse-hidden-frame t) ; Don't recreate tooltip frames all the time
+  (customize-set-variable 'x-gtk-use-system-tooltips t)  ; t: use system tooltips, nil: use built-in
+  (customize-set-variable 'tooltip-frame-parameters '((name . "tooltip")
+                                                      (internal-border-width . 6)
+                                                      (border-width . 0)
+                                                      (no-special-glyphs . t)))
+  :config
+  ;; If nil show tooltip at mouse, if negative show in minibuffer
+  (tooltip-mode nil))
 
 ;; List of recently visited files (built-in)
 (use-package recentf
@@ -223,4 +240,5 @@
   :bind (("C-x C-b" . ibuffer)))
 
 (provide 'pluc-custom)
+
 ;;; pluc-custom.el ends here
