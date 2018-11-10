@@ -196,17 +196,16 @@
       (server-start)))
   :hook (after-init . abz--server-start))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Paradox: better package menu        ;;
-;; http://github.com/Malabarba/paradox ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Paradox: better package menu
+;; http://github.com/Malabarba/paradox
 (use-package paradox
+  :straight nil
+  :disabled t
   :defer t
   :init
   (setq paradox-github-token t)             ; Don't ask for GitHub token
   (setq paradox-execute-asynchronously nil) ; Don't try to do things asynchronously
-  (setq paradox-automatically-star nil)     ; Do not star automatically when (un)installing
-  )
+  (setq paradox-automatically-star nil))    ; Do not star automatically when (un)installing
 
 ;; Dired
 (use-package dired
