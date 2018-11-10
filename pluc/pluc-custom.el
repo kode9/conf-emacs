@@ -146,23 +146,21 @@
 
 ;; List of recently visited files (built-in)
 (use-package recentf
-  :demand t
   :straight nil
+  :demand t
   :init
   (customize-set-variable 'recentf-max-saved-items 40)
   :config
   (add-to-list 'recentf-exclude pluc-local-dir)
   (add-to-list 'recentf-exclude pluc-cache-dir))
 
-;; Autorevert
+;; Auto-Revert: revert files when they change on disk (built-in)
 (use-package autorevert
   :straight nil
   :diminish auto-revert-mode
   :init
-  ;; Also auto-revert buffer-menu and dired buffers
-  (customize-set-variable 'global-auto-revert-non-file-buffers t)
-  ;; Be quiet
-  (customize-set-variable 'auto-revert-verbose nil)
+  (customize-set-variable 'global-auto-revert-non-file-buffers t) ; Also auto-revert buffer-menu and dired buffers
+  (customize-set-variable 'auto-revert-verbose nil)               ; Be quiet
   :hook (after-init . global-auto-revert-mode))
 
 ;; Gets the mouse out of the cursor
