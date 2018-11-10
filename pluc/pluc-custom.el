@@ -196,18 +196,6 @@
       (server-start)))
   :hook (after-init . abz--server-start))
 
-;; Automatic resizing of windows using the golden ration and keeping
-;; the one with the focus
-;; bigger. https://github.com/roman/golden-ratio.el
-(use-package golden-ratio
-  :disabled t
-  :diminish golden-ratio-mode
-  :init
-  (setq golden-ratio-auto-scale nil) ; If not nil, keep frames narrow on wide screens
-  (setq split-width-threshold nil)   ; Prevent additional windows creation
-  :config
-  (golden-ratio-mode 1))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Paradox: better package menu        ;;
 ;; http://github.com/Malabarba/paradox ;;
