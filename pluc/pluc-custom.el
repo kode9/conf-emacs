@@ -174,11 +174,14 @@
     (mouse-avoidance-mode 'jump))
   :hook (after-init . abz--mouse-avoidance-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Allow undo/redo windows configuration ;;
-;; Keys: "C-c LEFT" and "C-c RIGHT"  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when (fboundp 'winner-mode) (winner-mode 1))
+;; Winner: record window configuration and allow undo/redo (built-in)
+;; Default keybindings: `C-c <left>` and `C-c <right>`
+(use-package winner
+  :straight nil
+  :init
+  (defun abz--winner-mode ()
+    (winner-mode 1))
+  :hook (after-init . abz--winner-mode))
 
 ;; Emacs server (emacsclient)
 (use-package server
