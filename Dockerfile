@@ -17,4 +17,4 @@ WORKDIR /home/emacs/.emacs.d
 # https://github.com/bbatsov/prelude/issues/938
 RUN sed -i 's/load-prefer-newer t/load-prefer-newer nil/' init.el
 
-CMD ["emacs", "-Q", "--no-window-system", "--batch", "--kill", "--script", "test.el"]
+CMD ["time", "emacs", "-Q", "--no-window-system", "--batch", "--kill", "--script", "test.el"]
