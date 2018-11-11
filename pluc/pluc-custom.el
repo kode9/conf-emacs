@@ -207,15 +207,33 @@
   (setq paradox-execute-asynchronously nil) ; Don't try to do things asynchronously
   (setq paradox-automatically-star nil))    ; Do not star automatically when (un)installing
 
-;; Dired
+;; Dired file explorer (built-in)
 (use-package dired
   :straight nil
   :init
   ;; Try to guess a default target directory
   (customize-set-variable 'dired-dwim-target t)
   :bind (:map dired-mode-map
-              ;; Search only in filenames
-              ("C-s" . dired-isearch-filenames)))
+              ("C-s" . dired-isearch-filenames) ;; Search only in filenames
+              ("C-P" . dired-up-directory)))
+
+;; Open dired at the directory of the current file (built-in)
+(use-package dired-x
+  :straight nil
+  :defer t
+  :init
+  (customize-set-variable 'dired-bind-jump t))
+
+;; Various dired improvements
+;;
+;; TODO Configure & enable.
+(use-package dired-hacks
+  :disabled t
+  :straight nil
+  :bind (:map dired-mode-map
+              ([remap dired-previous-line] . dired-hacks-previous-file)
+              ([remap dired-next-line] . dired-hacks-next-file))
+  :after dired)
 
 ;; Ibuffer
 (use-package ibuffer
