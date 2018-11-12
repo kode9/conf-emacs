@@ -236,19 +236,57 @@
               ([remap dired-next-line] . dired-hacks-next-file))
   :after dired)
 
-;; Ibuffer
+;; Ibuffer: buffer list (built-in)
+;;
+;; TODO Define a sort function (`define-ibuffer-sorter`) that sort a) by recently used and b) by mode (e.g dired)
 (use-package ibuffer
+  :straight nil
+  :defer t
   :init
-  (setq ibuffer-saved-filter-groups
-        (quote (("default"
-                 ("dired" (mode . dired-mode))
-                 ("grep"  (mode . ag-mode)) ; ag (silver searcher) buffers
-                 ("devel" (or
-                           (mode . c++-mode)
-                           (mode . c-mode)
-                           (mode . python-mode))))))
-        ibuffer-filter-group-name-face 'font-lock-string-face)
-  :bind (("C-x C-b" . ibuffer)))
+  ;; TODO Add custom for major-mode list to hide.
+  (defun abz--ibuffer-hidden-buffers-predicate (buffer)
+    (with-current-buffer buffer
+      (member major-mode '(Buffer-menu-mode
+                           ibuffer-mode
+                           minibuffer-inactive-mode))))
+  ;; Buffers to never show
+  (customize-set-variable 'ibuffer-never-show-predicates #'(abz--ibuffer-hidden-buffers-predicate))
+  ;; Buffers to show conditionally (`C-u g`)
+  (customize-set-variable 'ibuffer-maybe-show-predicates '("^\\*Warnings\\*$"
+                                                           "^\\*Compile-Log\\*$"
+                                                           "^\\*straight-process\\*$"))
+  (customize-set-variable 'ibuffer-use-other-window t)           ; Show in another window by default
+  (customize-set-variable 'ibuffer-show-empty-filter-groups nil) ; Hide empty groups
+  :bind ([remap list-buffers] . ibuffer))
+
+;; Group buffers in ibuffer list by projectile project
+(use-package ibuffer-projectile
+  :after ibuffer
+  :commands ibuffer-projectile-set-filter-groups
+  :init
+  (defun abz--ibuffer-set-filter-groups ()
+    (setq ibuffer-filter-groups
+          (append (ibuffer-projectile-generate-filter-groups)
+                  #'(("Prog" (or
+                              (derived-mode . prog-mode)
+                              (derived-mode . cmake-mode)))
+                     ("Search" (or (mode . grep-mode)
+                                   (mode . ag-mode)))
+                     ("Doc" (or (mode . Info-mode)
+                                (mode . Man-mode)))
+                     ("Dired" (mode . dired-mode))
+                     ("Magit" (derived-mode . magit-mode))
+                     ("Special" (name . "^ *\\*.*\\*$"))))))
+  (defun abz--ibuffer-group-by-projectile ()
+    (setq ibuffer-hook #'abz--ibuffer-set-filter-groups)
+    (let ((ibuf (get-buffer "*Ibuffer*")))
+      (when ibuf
+        (with-current-buffer ibuf
+          (pop-to-buffer ibuf)
+          (ibuffer-update nil t)))))
+  ;; TODO Find something better if there is a font with symbols
+  (customize-set-variable 'ibuffer-projectile-prefix "∞ ")
+  :hook (ibuffer . abz--ibuffer-group-by-projectile))
 
 (provide 'pluc-custom)
 
