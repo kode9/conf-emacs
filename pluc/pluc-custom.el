@@ -211,8 +211,9 @@
 (use-package dired
   :straight nil
   :init
-  ;; Try to guess a default target directory
-  (customize-set-variable 'dired-dwim-target t)
+  (customize-set-variable 'dired-auto-revert-buffer t)                      ; Revert buffer on revisiting
+  (customize-set-variable 'dired-clean-confirm-killing-deleted-buffers nil) ; Don't ask to kill buffer visiting deleted files
+  (customize-set-variable 'dired-dwim-target t)                             ; Try to guess a default target directory
   :bind (:map dired-mode-map
               ("C-s" . dired-isearch-filenames) ;; Search only in filenames
               ("C-P" . dired-up-directory)))
