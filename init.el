@@ -22,6 +22,24 @@
 
 ;;; Code:
 
+;; Raise garbage collector thresholds for initialization to improve startup
+;; time. They will be restored after initialization.
+;; https://emacs.stackexchange.com/a/34367
+(customize-set-variable 'gc-cons-threshold (* 1000 1000 1000))
+(customize-set-variable 'gc-cons-percentage 90)
+
+(defun abz--restore-gc-parameters ()
+  "Restore garbage collector thresholds to sane values."
+  (customize-set-variable 'gc-cons-threshold (* 4 1000 1000))
+  (customize-set-variable 'gc-cons-percentage 0.5))
+
+(defun abz--restore-gc-parameters-when-idle ()
+  "Call `abz--restore-gc-parameters' when Emacs becomes idle."
+  (run-with-idle-timer 61 nil #'abz--restore-gc-parameters))
+
+;; Launch idle timer to restore GC after startup
+(add-hook 'emacs-startup-hook #'abz--restore-gc-parameters-when-idle)
+
 ;; Don't load expired byte-compiled files
 (customize-set-variable 'load-prefer-newer t)
 
