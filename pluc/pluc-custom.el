@@ -89,16 +89,6 @@
   (customize-set-variable 'confirm-nonexistent-file-or-buffer
                           'after-completion) ; Ask confirmation for new file/buffer only after completion
 
-  ;; Auto-saving
-  (customize-set-variable 'auto-save-default t)           ; Enable auto-save
-  (customize-set-variable 'auto-save-file-name-transforms ; File names
-                          `((".*" ,(locate-user-emacs-file ".cache/auto-save/") t)))
-  (customize-set-variable 'auto-save-list-file-prefix     ; Auto-save list
-                          (locate-user-emacs-file ".cache/auto-save/list-"))
-  (customize-set-variable 'auto-save-timeout 31)
-  (customize-set-variable 'auto-save-visited-file-name nil)
-  (customize-set-variable 'delete-auto-save-files t)      ; Delete when buffer is saved or killed without modifications
-
   ;; Automatic backup on first save
   (customize-set-variable 'backup-by-copying t) ; Always copy (no rename)
   (customize-set-variable 'backup-directory-alist `(("." . ,(locate-user-emacs-file ".cache/backup/"))))
@@ -143,6 +133,33 @@
   :config
   ;; If nil show tooltip at mouse, if negative show in minibuffer
   (tooltip-mode nil))
+
+;; Auto-Saving (built-in)
+;; Saves visited files in a separate flags at regular intervals.
+;;
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Save.html
+;;
+;; auto-save-list-file-prefix handled by no-littering
+;;
+;; TODO Check
+;;  * https://github.com/bbatsov/super-save/
+;;  * https://github.com/ChillarAnand/real-auto-save
+(use-package files
+  :straight nil
+  :defer t
+  :init
+  ;; Enable Auto-save in separated file
+  (customize-set-variable 'auto-save-default t)
+  ;; Disable 'real' auto-save (auto-save to the visited file)
+  (if (version< "26.1" emacs-version)
+      (customize-set-variable 'auto-save-visited-file-name nil)
+    (customize-set-variable 'auto-save-visited-mode nil))
+  ;; Save all files in `pluc-cache-dir` instead of in the same directory as the visited file
+  (customize-set-variable 'auto-save-file-name-transforms
+                          `((".*" ,(expand-file-name (convert-standard-filename "auto-save/") pluc-cache-dir) t)))
+  (customize-set-variable 'auto-save-interval 1000)   ; Number of inputs between auto-saves
+  (customize-set-variable 'auto-save-timeout 101)     ; Idle time before auto-save
+  (customize-set-variable 'delete-auto-save-files t)) ; Keep auto-save files
 
 ;; List of recently visited files (built-in)
 (use-package recentf
