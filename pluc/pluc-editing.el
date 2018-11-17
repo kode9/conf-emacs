@@ -25,6 +25,7 @@
 ;;;###autoload
 (progn
   ;; Editing basics
+  (customize-set-variable 'delete-trailing-lines t)                   ; Ask `delete-trailing-whitespace' to remove trailing lines
   (customize-set-variable 'goal-column nil)                           ; Use 'line-move-visual'
   (customize-set-variable 'line-move-visual t)                        ; Move point by visual line
   (customize-set-variable 'mark-even-if-inactive t)                   ; Mark stays even when inactive
@@ -54,12 +55,11 @@
   (customize-set-variable 'fill-column 80)                       ; Columns before line wrapping
   (customize-set-variable 'emacs-lisp-docstring-fill-column nil) ; Respect fill-column
   (customize-set-variable 'c-basic-offset 2)                     ; Indentation offset
-
-  (customize-set-variable 'undo-outer-limit 26214400) ; Maximum information in a single undo command. 25MiB
-  (customize-set-variable 'warning-suppress-types '((undo discard-info))) ; Be quiet
-
   (customize-set-variable 'sh-indentation 2)
-  (customize-set-variable 'sh-basic-offset 2))
+  (customize-set-variable 'sh-basic-offset 2)
+
+  (customize-set-variable 'undo-outer-limit 26214400)                      ; Maximum information in a single undo command. 25MiB
+  (customize-set-variable 'warning-suppress-types '((undo discard-info)))) ; Be quiet
 
 ;;;###autoload
 (defun align-comments (begin end)
@@ -191,4 +191,5 @@ With argument N go to the nth entry."
   :defer t)
 
 (provide 'pluc-editing)
+
 ;;; pluc-editing.el ends here
