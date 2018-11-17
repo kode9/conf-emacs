@@ -137,39 +137,6 @@
 (use-package scf-mode
   :hook (compilation-mode . (lambda () (scf-mode t))))
 
-;; Custom hooks
-(defun dtw()
-  "Delete trailing whitespaces."
-  (interactive)
-  (delete-trailing-whitespace))
-
-(defun indent-buffer()
-  "Indent whole buffer."
-  (interactive)
-  (indent-region (point-min) (point-max) nil))
-
-(defun untab-buffer()
-  "Transform tabs to spaces in the whole buffer."
-  (interactive)
-  (untabify (point-min) (point-max) nil))
-
-(defun dev-hooks()
-  "Progmod hooks."
-  (format-buffer))
-
-(define-minor-mode pluc-mode
-  "Clean buffers."
-  :lighter " pluc"
-  :global t
-  (if pluc-mode
-      (progn
-        (add-hook 'before-save-hook 'dev-hooks nil t))
-    (remove-hook 'before-save-hook 'dev-hooks t)))
-
-;; Clean for any files
-(add-hook 'before-save-hook 'dtw)
-(add-hook 'prog-mode-hook #'pluc-mode)
-
 ;; keys
 (global-set-key [(control c) (c)] 'comment-or-uncomment-region)
 ;; (global-set-key [(control c) (v)] 'uncomment-region)

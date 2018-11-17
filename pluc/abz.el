@@ -22,6 +22,10 @@
 
 ;;; Code:
 
+(require 'files)
+(require 'simple)
+(require 'tabify)
+
 (defalias 'abz-beginning-of-line? 'bolp)
 
 (defalias 'abz-end-of-line? 'eolp)
@@ -97,5 +101,39 @@ no such line exists."
     (goto-char (- (point) (- end beg)))
     (when (abz-empty-line?) (forward-line))))
 
+;;;###autoload
+(defun abz-delete-trailing-whitespace ()
+  "Deletes trailing whitespaces and lines.
+
+Acts as `delete-trailing-whitespace' with `delete-trailing-lines' and
+`require-final-newline' set to true."
+  (interactive)
+  (let ((delete-trailing-lines t)
+        (require-final-newline t))
+    (call-interactively #'delete-trailing-whitespace)))
+
+;;;###autoload
+(defun abz-indent-dwim ()
+  "Indent a region or a buffer.
+
+Same as `indent-region' but indents the whole buffer no region is active."
+  (interactive)
+  (let ((inhibit-message t))
+    (if (use-region-p)
+        (progn
+          (call-interactively #'indent-region))
+      (indent-region (point-min) (point-max) nil))))
+
+;;;###autoload
+(defun abz-untabify-dwim ()
+  "Convert all tabs to spaces in a region or a buffer.
+
+Same as `untabify' but indents the whole buffer no region is active."
+  (interactive)
+  (if (use-region-p)
+      (call-interactively #'untabify)
+    (untabify (point-min) (point-max) nil)))
+
 (provide 'abz)
+
 ;;; abz.el ends here

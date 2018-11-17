@@ -68,16 +68,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 (use-package clang-format
   :load-path ("/usr/share/clang"))
 
-(defun format-buffer()
-  "Format buffer if clang-format is available and the buffer is cc-mode derived, otherwise call indent-buffer"
-  (interactive)
-  (unless
-      (and
-       (member major-mode '(c-mode c++-mode))
-       (clang-format-buffer)
-       t)
-    (indent-buffer)))
-
 ;; git-gutter+: View, stage and revert Git changes straight from the
 ;; buffer.
 ;;; https://github.com/nonsequitur/git-gutter-plus
@@ -383,6 +373,10 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Highlight and follow bug references in comments and strings
 (add-hook 'prog-mode-hook 'bug-reference-prog-mode)
+
+(use-package abz-clean-mode
+  :straight nil
+  :hook (after-init . abz-clean-global-mode))
 
 (provide 'pluc-devel)
 
