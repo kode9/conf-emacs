@@ -171,6 +171,10 @@
   (customize-set-variable 'compilation-environment #'("TERM=xterm"))
   :hook (compilation-filter . pluc/colorize-compilation))
 
+(use-package keyfreq
+  :hook ((after-init . keyfreq-mode)
+         (after-init . keyfreq-autosave-mode)))
+
 ;; Required by package.el
 ;; (package-initialize)
 
