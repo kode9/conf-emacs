@@ -24,11 +24,21 @@
 
 (require 'abz)
 
+(defvar abz--clean-mode-dont-indent-parent-modes
+  '(makefile-mode)
+  "Don't indent major modes that derive from one of this modes.")
+
+(defvar abz--clean-mode-dont-untabify-parent-modes
+  '(makefile-mode)
+  "Don't untabify major modes that derive from one of this modes.")
+
 (defun abz--clean-buffer ()
   "Indent, untabify and remove trailing whispaces in current buffer."
   (deactivate-mark)
-  (abz-indent-dwim)
-  (abz-untabify-dwim)
+  (unless (apply #'derived-mode-p abz--clean-mode-dont-indent-parent-modes)
+    (abz-indent-dwim))
+  (unless (apply #'derived-mode-p abz--clean-mode-dont-untabify-parent-modes)
+    (abz-untabify-dwim))
   (abz-delete-trailing-whitespace))
 
 (define-minor-mode abz-clean-mode
