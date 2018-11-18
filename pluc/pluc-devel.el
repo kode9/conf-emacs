@@ -374,6 +374,13 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;; Highlight and follow bug references in comments and strings
 (add-hook 'prog-mode-hook 'bug-reference-prog-mode)
 
+(use-package eldoc-mode
+  :straight nil
+  :defer t
+  :init
+  (customize-set-variable 'eldoc-idle-delay 0)           ; Delay before printing
+  (customize-set-variable 'eldoc-minor-mode-string nil)) ; Don't show in modeline
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
