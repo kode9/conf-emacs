@@ -311,6 +311,14 @@
   (customize-set-variable 'ibuffer-projectile-prefix "∞ ")
   :hook (ibuffer . abz--ibuffer-group-by-projectile))
 
+;; immortal-scratch: respawn scratch buffer
+;; https://bitbucket.org/jpkotta/immortal-scratch/
+(use-package immortal-scratch
+  :straight (:type git
+                   :repo "https://notabug.org/pluc/immortal-scratch.el.git"
+                   :branch "master")
+  :hook (after-init . immortal-scratch-mode))
+
 (provide 'pluc-custom)
 
 ;;; pluc-custom.el ends here
