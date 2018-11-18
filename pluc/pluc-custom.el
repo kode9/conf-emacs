@@ -110,10 +110,6 @@
   (customize-set-variable 'windmove-wrap-around t) ; Cycle
   (when (fboundp 'windmove-default-keybindings) (windmove-default-keybindings 'super)) ; Use super + arrows
 
-  ;; Set default browser
-  (customize-set-variable 'browse-url-generic-program "xdg-open") ; The browser used by browse-url-generic
-  (customize-set-variable 'browse-url-browser-function 'browse-url-generic)
-
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
 
@@ -212,6 +208,16 @@
     (unless (server-running-p)
       (server-start)))
   :hook (after-init . abz--server-start))
+
+;; browse-url: pass a URL to a WWW browser (built-in)
+(use-package browe-url
+  :straight nil
+  :init
+  (customize-set-variable 'browse-url-browser-function #'browse-url-default-browser) ; Default function for URLs
+  (customize-set-variable 'browse-url-mailto-function nil)                           ; Default function for mailto
+  (customize-set-variable 'browse-url-firefox-new-window-is-tab t)                   ; Open in new tab instead of new window
+  (customize-set-variable 'browse-url-epiphany-new-window-is-tab t)                  ; Open in new tab instead of new window
+  :bind ("<C-M-return>" . browse-url))
 
 ;; Paradox: better package menu
 ;; http://github.com/Malabarba/paradox
