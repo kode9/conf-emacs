@@ -302,16 +302,12 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Show errors under point in pos-tip popups
 (use-package flycheck-pos-tip
+  :demand t
+  :after flycheck
   :init
   (customize-set-variable 'flycheck-pos-tip-timeout 10)
   :config
-  (flycheck-pos-tip-mode)
-  :after flycheck)
-
-(use-package flycheck-cask
-  :defer t
-  :hook (flycheck-mode . flycheck-cask-setup)
-  :after flycheck)
+  (flycheck-pos-tip-mode +1))
 
 (use-package web-mode
   :init
