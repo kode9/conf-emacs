@@ -128,25 +128,26 @@ With argument N go to the nth entry."
    ("M-Y" . yank-pop-forwards)
    ("C-S-y" . browse-kill-ring)))
 
-;; Treat undo history as a tree
+;; undo-tree: undo-redo as a tree, with visualizer.
+;; https://elpa.gnu.org/packages/undo-tree.html
+;;
+;; no-littering: `undo-tree-history-directory-alist`
 (use-package undo-tree
-  :demand t
   :diminish undo-tree-mode
   :init
-  (setq
-   undo-tree-auto-save-history t ; Save undo tree to a file
-   undo-tree-history-directory-alist `(("." . ,(expand-file-name ".cache/undo" user-emacs-directory)))
-   undo-tree-enable-undo-in-region t)
-  (defadvice undo-tree-make-history-save-file-name
-      (after undo-tree activate)
-    (setq ad-return-value (concat ad-return-value ".gz"))) ; Compress undo tree files
-  :config
-  (global-undo-tree-mode)
-  :bind*
-  (("C-n" . undo-tree-undo)
-   ("C-," . undo-tree-redo)
-   ;; ("M-n" . undo-tree-switch-branch)
-   ("C-n" . undo-tree-visualize)))
+  (customize-set-variable 'undo-tree-auto-save-history t)       ; Save undo tree to a file
+  (customize-set-variable 'undo-tree-enable-undo-in-region nil) ; Don't enable in regions
+  (customize-set-variable 'undo-tree-visualizer-diff t)         ; Display diff by default in visualizer
+  (customize-set-variable 'undo-tree-visualizer-timestamps t)   ; Show timestamps
+  ;; Advice to compress undo-tree history files
+  (defun abz--undo-tree-make-history-file-name-append-compression (filename)
+    "Add `gz` extension so `undo-tree-save-history` uses compression."
+    (concat filename ".gz"))
+  (advice-add 'undo-tree-make-history-save-file-name :filter-return #'abz--undo-tree-make-history-file-name-append-compression)
+  :bind (:map undo-tree-visualizer-mode-map
+              ("RET" . undo-tree-visualizer-quit)
+              ("q" . undo-tree-visualizer-abort))
+  :hook (after-init . global-undo-tree-mode))
 
 (use-package auto-highlight-symbol
   :commands global-auto-highlight-symbol-mode
