@@ -85,9 +85,10 @@
 ;; https://github.com/magnars/expand-region.el ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package expand-region
+  :demand t
   :bind
-  ("C-a" . er/expand-region)
-  ("M-a" . er/contract-region))
+  ("C-=" . er/expand-region)
+  ("M-=" . er/contract-region))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Drag stuff (lines, words, region, etc...) around ;;
