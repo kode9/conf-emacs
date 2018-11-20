@@ -73,12 +73,15 @@
  ("RET" . reindent-then-newline-and-indent) ; Indent on new line
  ("C-c s" . sort-lines))
 
-;; Highlight current line
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hl-line(built-in)      ;;
+;; Highlight current line ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package hl-line
-  :init
-  (setq global-hl-line-sticky-flag t) ; Keep highlight in all windows
-  :config
-  (global-hl-line-mode nil))
+  :custom
+  (global-hl-line-sticky-flag t "Keep highlighting lines in all windows")
+  :hook
+  (after-init . global-hl-line-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Increase selected region by semantic units  ;;
