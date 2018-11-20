@@ -98,10 +98,11 @@
 ;; https://github.com/rejeep/drag-stuff.el          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package drag-stuff
-  :disabled t
-  :diminish drag-stuff-mode
   :config
-  (drag-stuff-global-mode t))
+  (drag-stuff-define-keys)
+  :hook
+  (after-init . drag-stuff-global-mode)
+  :diminish drag-stuff-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual feedback on yanks, undo, etc               ;;
