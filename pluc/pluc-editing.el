@@ -109,9 +109,9 @@
 ;; http://www.emacswiki.org/emacs/VolatileHighlights ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package volatile-highlights
-  :diminish volatile-highlights-mode
-  :config
-  (volatile-highlights-mode t))
+  :custom-face (vhl/default-face ((t (:background nil :underline t))))
+  :hook (after-init . volatile-highlights-mode)
+  :diminish volatile-highlights-mode)
 
 ;; Kill ring visualizer / browser
 (use-package browse-kill-ring
