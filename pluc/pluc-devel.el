@@ -377,6 +377,11 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   (customize-set-variable 'eldoc-idle-delay 0)           ; Delay before printing
   (customize-set-variable 'eldoc-minor-mode-string nil)) ; Don't show in modeline
 
+(use-package elpy
+  :defer t
+  :commands elpy-enable
+  :init (with-eval-after-load 'python (elpy-enable)))
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
