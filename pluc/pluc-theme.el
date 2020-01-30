@@ -32,7 +32,8 @@
   (customize-set-variable 'dynamic-fonts-set-alternatives t) ; Fill up alternative fonts
   (customize-set-variable 'dynamic-fonts-preferred-monospace-point-size 8)
   (customize-set-variable 'dynamic-fonts-preferred-monospace-fonts
-                          '("Monoisome"
+                          '("Iosevka"
+                            "Monoisome"
                             "Monoid"
                             "Hack"
                             "Dejavu Sans Mono"
