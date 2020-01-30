@@ -55,6 +55,7 @@
 
 ;; Remote access
 (use-package tramp
+  :straight nil
   :defer t
   :init
   (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
