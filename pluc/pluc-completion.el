@@ -1,6 +1,6 @@
 ;;; pluc-completion.el --- Completion framework -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018 Pierre-Luc Perrier
+;; Copyright (C) 2018-2020 Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -37,5 +37,11 @@
   :demand t
   :straight nil)
 
+(use-package abz-ivy
+  :if (eql pluc-completion-framework 'ivy)
+  :demand t
+  :straight nil)
+
 (provide 'pluc-completion)
+
 ;;; pluc-completion.el ends here
