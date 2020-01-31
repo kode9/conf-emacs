@@ -1,6 +1,6 @@
 ;;; pluc-tools.el --- External tools integration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2018 Pierre-Luc Perrier
+;; Copyright (C) 2015-2020 Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 

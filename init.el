@@ -1,6 +1,6 @@
 ;;; init.el --- Pluc's GNU Emacs Initialization File -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2012-2018  Pierre-Luc Perrier
+;; Copyright (C) 2012-2020 Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 

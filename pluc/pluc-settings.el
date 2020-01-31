@@ -1,6 +1,6 @@
 ;;; pluc-settings.el --- Config customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2018 Pierre-Luc Perrier
+;; Copyright (C) 2017-2020 Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
