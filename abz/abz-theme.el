@@ -1,4 +1,4 @@
-;;; pluc-theme.el --- Fonts & Faces -*- lexical-binding: t; -*-
+;;; abz-theme.el --- Fonts & Faces -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015-2020 Pierre-Luc Perrier
 
@@ -53,6 +53,6 @@
   :functions spaceline-emacs-theme
   :hook (after-init . spaceline-emacs-theme))
 
-(provide 'pluc-theme)
+(provide 'abz-theme)
 
-;;; pluc-theme.el ends here
+;;; abz-theme.el ends here

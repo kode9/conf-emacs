@@ -1,6 +1,6 @@
-;;; pluc-editing.el --- Editing configuration -*- lexical-binding: t; -*-
+;;; abz-editing.el --- Editing configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2018 Pierre-Luc Perrier
+;; Copyright (C) 2015-2020 Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -196,6 +196,6 @@ With argument N go to the nth entry."
 (use-package rainbow-mode
   :defer t)
 
-(provide 'pluc-editing)
+(provide 'abz-editing)
 
-;;; pluc-editing.el ends here
+;;; abz-editing.el ends here

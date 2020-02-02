@@ -1,4 +1,4 @@
-;;; pluc-settings.el --- Config customization -*- lexical-binding: t; -*-
+;;; abz-settings.el --- Config customization -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017-2020 Pierre-Luc Perrier
 
@@ -25,12 +25,11 @@
 (defgroup abz nil
   "Custom group."
   :prefix "abz-"
-  :prefix "pluc-"
   :group 'emacs
   :link '(url-link :tag "Homepage" "https://git.the-pluc.net/conf-emacs.git/"))
 
 ;;;###autoload
-(defcustom pluc-local-dir (expand-file-name "local" user-emacs-directory)
+(defcustom abz-local-dir (expand-file-name "local" user-emacs-directory)
   "Directory used to store local configuration files."
   :type 'directory
   :tag "Local configuration directory"
@@ -38,7 +37,7 @@
   :group 'environment)
 
 ;;;###autoload
-(defcustom pluc-cache-dir (expand-file-name ".cache" user-emacs-directory)
+(defcustom abz-cache-dir (expand-file-name ".cache" user-emacs-directory)
   "Directory used to store runtime cache files."
   :type 'directory
   :tag "Local cache directory"
@@ -46,9 +45,9 @@
   :group 'environment)
 
 ;;;###autoload
-(defcustom pluc-custom-file (expand-file-name "custom.el" pluc-local-dir)
+(defcustom abz-custom-file (expand-file-name "custom.el" abz-local-dir)
   "File used to store settings from Customization UI."
-  :set-after '(pluc-local-dir)
+  :set-after '(abz-local-dir)
   :tag "Custom file location"
   :type 'file
   :group 'abz
@@ -57,16 +56,16 @@
 (use-package no-littering
   :demand t
   :init
-  (setq no-littering-etc-directory pluc-local-dir)
-  (setq no-littering-var-directory pluc-cache-dir))
+  (setq no-littering-etc-directory abz-local-dir)
+  (setq no-littering-var-directory abz-cache-dir))
 
 ;;;###autoload
 (defun abz--init-settings ()
   "Initialise settings."
-  (ignore-errors (make-directory pluc-cache-dir))
-  (setq custom-file pluc-custom-file)
+  (ignore-errors (make-directory abz-cache-dir))
+  (setq custom-file abz-custom-file)
   (load custom-file 'no-error 'no-message))
 
-(provide 'pluc-settings)
+(provide 'abz-settings)
 
-;;; pluc-settings.el ends here
+;;; abz-settings.el ends here

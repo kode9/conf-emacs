@@ -1,4 +1,4 @@
-;;; pluc-devel.el --- Development packages -*- lexical-binding: t; -*-
+;;; abz-devel.el --- Development packages -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015-2020 Pierre-Luc Perrier
 
@@ -192,11 +192,11 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   ;; hooks, the workaroung is to add cmake-font-lock-activate at the
   ;; start of the prog-mode hooks.
   (remove-hook 'cmake-mode-hook 'cmake-font-lock-activate) ; package autoloads
-  (defun pluc-cmake-font-lock-activate()
+  (defun abz-cmake-font-lock-activate()
     "Call cmake-font-lock-activate only for cmake-mode."
     (when (derived-mode-p #'cmake-mode)
       (cmake-font-lock-activate)))
-  (add-hook 'prog-mode-hook #'pluc-cmake-font-lock-activate))
+  (add-hook 'prog-mode-hook #'abz-cmake-font-lock-activate))
 
 ;; Scilab
 (use-package scilab-mode
@@ -388,6 +388,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   :straight nil
   :hook (after-init . abz-clean-global-mode))
 
-(provide 'pluc-devel)
+(provide 'abz-devel)
 
-;;; pluc-devel.el ends here
+;;; abz-devel.el ends here

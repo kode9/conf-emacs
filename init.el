@@ -68,7 +68,7 @@
 (customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
 (customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
 (customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
-(customize-set-variable 'use-package-verbose nil)           ; Report about loading and configuration details
+(customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish)
@@ -84,41 +84,41 @@
 (add-to-list 'load-path abz-site-dir)
 
 ;; This emacs configuration variables
-(use-package pluc-settings
+(use-package abz-settings
   :demand t
   :straight nil
   :config
   (abz--init-settings))
 
 ;; Basic setup
-(use-package pluc-custom
+(use-package abz-custom
   :demand t
   :straight nil
   :config
   (abz--init-custom))
 
 ;; Color theme (only zenburn ATM)
-(use-package pluc-theme
+(use-package abz-theme
   :demand t
   :straight nil)
 
 ;; Completion framework
-(use-package pluc-completion
+(use-package abz-completion
   :demand t
   :straight nil)
 
 ;; Common edition settings
-(use-package pluc-editing
+(use-package abz-editing
   :demand t
   :straight nil)
 
 ;; Development settings
-(use-package pluc-devel
+(use-package abz-devel
   :demand t
   :straight nil)
 
 ;; External tools integration
-(use-package pluc-tools
+(use-package abz-tools
   :demand t
   :straight nil)
 
@@ -155,21 +155,21 @@
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
   :disabled t
-  :commands (ansi-color-apply-on-region pluc/colorize-region)
+  :commands (ansi-color-apply-on-region abz/colorize-region)
   :init
-  (defun pluc/colorize-region (start end)
+  (defun abz/colorize-region (start end)
     "Colorize from `start` to `end`"
     (let ((inhibit-read-only t))
       (ansi-color-apply-on-region start end)))
-  (defun pluc-colorize-buffer ()
+  (defun abz-colorize-buffer ()
     "Colorize the current buffer"
     (interactive)
-    (pluc/colorize-region (point-min) (point-max)))
-  (defun pluc/colorize-compilation ()
+    (abz/colorize-region (point-min) (point-max)))
+  (defun abz/colorize-compilation ()
     "Colorize from `compilation-filter-start' to `point'."
-    (pluc/colorize-region compilation-filter-start (point)))
+    (abz/colorize-region compilation-filter-start (point)))
   (customize-set-variable 'compilation-environment #'("TERM=xterm"))
-  :hook (compilation-filter . pluc/colorize-compilation))
+  :hook (compilation-filter . abz/colorize-compilation))
 
 (use-package keyfreq
   :hook ((after-init . keyfreq-mode)

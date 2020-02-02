@@ -1,4 +1,4 @@
-;;; pluc-tools.el --- External tools integration -*- lexical-binding: t; -*-
+;;; abz-tools.el --- External tools integration -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015-2020 Pierre-Luc Perrier
 
@@ -22,7 +22,7 @@
 
 ;;; Code:
 
-(require 'pluc-settings)
+(require 'abz-settings)
 (require 'files)
 
 ;; https://github.com/BurntSushi/ripgrep
@@ -149,5 +149,6 @@
   (use-package pass
     :defer t))
 
-(provide 'pluc-tools)
-;;; pluc-tools.el ends here
+(provide 'abz-tools)
+
+;;; abz-tools.el ends here

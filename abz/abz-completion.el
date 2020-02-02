@@ -1,4 +1,4 @@
-;;; pluc-completion.el --- Completion framework -*- lexical-binding: t; -*-
+;;; abz-completion.el --- Completion framework -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018-2020 Pierre-Luc Perrier
 
@@ -23,7 +23,7 @@
 ;;; Code:
 
 ;;;###autoload
-(defcustom pluc-completion-framework 'ido
+(defcustom abz-completion-framework 'ido
   "Completion framework to use."
   :type '(radio (const :tag "Ido" ido)
                 (const :tag "Ivy" ivy)
@@ -32,16 +32,16 @@
   :group 'abz
   :group 'convenience)
 
-(use-package pluc-ido
-  :if (eql pluc-completion-framework 'ido)
+(use-package abz-ido
+  :if (eql abz-completion-framework 'ido)
   :demand t
   :straight nil)
 
 (use-package abz-ivy
-  :if (eql pluc-completion-framework 'ivy)
+  :if (eql abz-completion-framework 'ivy)
   :demand t
   :straight nil)
 
-(provide 'pluc-completion)
+(provide 'abz-completion)
 
-;;; pluc-completion.el ends here
+;;; abz-completion.el ends here

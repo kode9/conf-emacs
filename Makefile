@@ -8,7 +8,7 @@ IMAGE		:= ${NAME}:latest
 
 all:
 
-test: Dockerfile .dockerignore test.el init.el $(wildcard pluc/*.el)
+test: Dockerfile .dockerignore test.el init.el $(wildcard abz/*.el)
 	docker build \
 		${BUILD_ARGS} \
 		-t "${IMAGE}" .

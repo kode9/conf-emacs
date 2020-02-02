@@ -5,7 +5,7 @@
 ;; Powerline (custom mode-line)
 ;;; https://github.com/milkypostman/powerline
 
-;; (defun powerline-pluc-theme ()
+;; (defun powerline-abz-theme ()
 ;;   "Setup the default mode-line."
 ;;   (interactive)
 ;;   (setq-default mode-line-format
@@ -48,7 +48,7 @@
 ;;                              (powerline-fill face2 (powerline-width rhs))
 ;;                              (powerline-render rhs)))))))
 
-;; (powerline-pluc-theme)
+;; (powerline-abz-theme)
 ;; (powerline-default-theme)
 
 

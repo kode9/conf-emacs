@@ -1,6 +1,6 @@
-;;; pluc-custom.el --- Basic configuration           -*- lexical-binding: t; -*-
+;;; abz-custom.el --- Basic configuration           -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2018 Pierre-Luc Perrier
+;; Copyright (C) 2015-2020, 2020 Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -22,7 +22,7 @@
 
 ;;; Code:
 
-(require 'pluc-settings)
+(require 'abz-settings)
 (require 'cl-lib)
 
 ;;;###autoload
@@ -76,7 +76,7 @@
 
   ;; History file
   (customize-set-variable 'savehist-file
-                          (expand-file-name "history" pluc-cache-dir)) ; Minibuffer history location
+                          (expand-file-name "history" abz-cache-dir)) ; Minibuffer history location
 
   ;; Minibuffer
   (customize-set-variable 'enable-recursive-minibuffers t)   ; Allow minibuffer commands while in the minibuffer
@@ -150,9 +150,9 @@
   (if (version< "26.1" emacs-version)
       (customize-set-variable 'auto-save-visited-file-name nil)
     (customize-set-variable 'auto-save-visited-mode nil))
-  ;; Save all files in `pluc-cache-dir` instead of in the same directory as the visited file
+  ;; Save all files in `abz-cache-dir` instead of in the same directory as the visited file
   (customize-set-variable 'auto-save-file-name-transforms
-                          `((".*" ,(expand-file-name (convert-standard-filename "auto-save/") pluc-cache-dir) t)))
+                          `((".*" ,(expand-file-name (convert-standard-filename "auto-save/") abz-cache-dir) t)))
   (customize-set-variable 'auto-save-interval 1000)   ; Number of inputs between auto-saves
   (customize-set-variable 'auto-save-timeout 101)     ; Idle time before auto-save
   (customize-set-variable 'delete-auto-save-files t)) ; Keep auto-save files
@@ -164,8 +164,8 @@
   :init
   (customize-set-variable 'recentf-max-saved-items 40)
   :config
-  (add-to-list 'recentf-exclude pluc-local-dir)
-  (add-to-list 'recentf-exclude pluc-cache-dir))
+  (add-to-list 'recentf-exclude abz-local-dir)
+  (add-to-list 'recentf-exclude abz-cache-dir))
 
 ;; Auto-Revert: revert files when they change on disk (built-in)
 (use-package autorevert
@@ -319,6 +319,6 @@
                    :branch "master")
   :hook (after-init . immortal-scratch-mode))
 
-(provide 'pluc-custom)
+(provide 'abz-custom)
 
-;;; pluc-custom.el ends here
+;;; abz-custom.el ends here
