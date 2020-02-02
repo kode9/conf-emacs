@@ -57,7 +57,7 @@ Type `kbd:[M-x] customize-group kbd:[RET] abz kbd:[RET]` to see available custom
 * chmod
 * easymenu
 * keymaps
-* use functions in pluc/abz.el
+* use functions in abz/abz.el
 * Check custom variables behavior on change (see `:set`)
 
 == License

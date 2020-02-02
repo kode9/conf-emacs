@@ -79,9 +79,9 @@
 (add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
 
 ;; Directory where to find submodules
-(eval-and-compile (defconst pluc-site-dir (expand-file-name "pluc" user-emacs-directory)
+(eval-and-compile (defconst abz-site-dir (expand-file-name "abz" user-emacs-directory)
                     "Local packages directory"))
-(add-to-list 'load-path pluc-site-dir)
+(add-to-list 'load-path abz-site-dir)
 
 ;; This emacs configuration variables
 (use-package pluc-settings
