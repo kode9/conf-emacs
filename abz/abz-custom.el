@@ -52,7 +52,6 @@
   (customize-set-variable 'truncate-lines nil)                     ; Don't truncate long lines (avoid horizontal scrolling)
   (customize-set-variable 'truncate-partial-width-windows 40)      ; Well still truncate if frame width is small
   (customize-set-variable 'word-wrap t)                            ; Wrap long lines
-  (customize-set-variable 'mouse-wheel-progressive-speed nil)      ; Constant mouse wheel speed
 
   ;; Uniquify buffer names
   (customize-set-variable 'uniquify-after-kill-buffer-p t)           ; Update buffer names when one is killed
@@ -73,6 +72,14 @@
   (when (fboundp 'column-number-mode) (column-number-mode nil))                 ; Display current column in modecolumn
   (when (fboundp 'prefer-coding-system) (prefer-coding-system 'utf-8))          ; Give priority to UTF-8
   (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
+
+  ;; Scrolling
+  (customize-set-variable 'mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control . nil))))
+  (customize-set-variable 'mouse-wheel-progressive-speed nil)
+  (customize-set-variable 'scroll-step 1)
+  (customize-set-variable 'scroll-margin 10)
+  (customize-set-variable 'scroll-conservatively 5)
+  (customize-set-variable 'scroll-preserve-screen-position t)
 
   ;; History file
   (customize-set-variable 'savehist-file
