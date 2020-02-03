@@ -116,7 +116,7 @@
 ;; Tooltips (built-in)
 (use-package tooltip
   :straight nil
-  :defer t
+  :demand t
   :init
   (customize-set-variable 'tooltip-delay 0.4)            ; Secondes before showing tooltips
   (customize-set-variable 'tooltip-hide-delay 59)        ; Secondes before showing tooltips (0 disables tooltips)
@@ -142,7 +142,7 @@
 ;;  * https://github.com/ChillarAnand/real-auto-save
 (use-package files
   :straight nil
-  :defer t
+  :demand t
   :init
   ;; Enable Auto-save in separated file
   (customize-set-variable 'auto-save-default t)
@@ -210,7 +210,7 @@
   :hook (after-init . abz--server-start))
 
 ;; browse-url: pass a URL to a WWW browser (built-in)
-(use-package browe-url
+(use-package browse-url
   :straight nil
   :init
   (customize-set-variable 'browse-url-browser-function #'browse-url-default-browser) ; Default function for URLs
@@ -224,7 +224,6 @@
 (use-package paradox
   :straight nil
   :disabled t
-  :defer t
   :init
   (setq paradox-github-token t)             ; Don't ask for GitHub token
   (setq paradox-execute-asynchronously nil) ; Don't try to do things asynchronously
@@ -244,7 +243,6 @@
 ;; Open dired at the directory of the current file (built-in)
 (use-package dired-x
   :straight nil
-  :defer t
   :init
   (customize-set-variable 'dired-bind-jump t))
 
@@ -264,7 +262,6 @@
 ;; TODO Define a sort function (`define-ibuffer-sorter`) that sort a) by recently used and b) by mode (e.g dired)
 (use-package ibuffer
   :straight nil
-  :defer t
   :init
   ;; TODO Add custom for major-mode list to hide.
   (defun abz--ibuffer-hidden-buffers-predicate (buffer)

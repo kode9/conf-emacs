@@ -38,7 +38,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;; Compilation
 (use-package compile
   :straight nil
-  :defer t
   :init
   ;; Kill a running compilation process without asking before starting a new one
   (customize-set-variable 'compilation-always-kill t)
@@ -73,7 +72,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
   :disabled t
-  :defer t
   :functions git-gutter+-mode
   :diminish git-gutter+-mode
   :init
@@ -91,7 +89,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;; etc. http://www.emacswiki.org/emacs/SmartOperator
 (use-package smart-operator
   :disabled t
-  :defer t
   :commands smart-insert-operator-hook
   :init
   (add-hook 'c-mode-common-hook 'smart-insert-operator-hook))
@@ -99,7 +96,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;; Color keywords such as TODO in comments and strings
 (use-package fic-mode
   :disabled t
-  :defer t
   :diminish fic-mode
   :init
   (add-hook #'prog-mode-hook #'fic-mode)
@@ -140,6 +136,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; C++
 (use-package cc-mode
+  :straight nil
   :mode ("\\.\\(?:inl\\|h\\)\\'" . c++-mode)
   :config
   (c-toggle-auto-newline 1))
@@ -165,6 +162,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Shell scripts
 (use-package sh-script
+  :straight nil
   :mode (("/PKGBUILD\\'" . sh-mode) ; Arch Linux PKGBUILD
          ("\\.zsh\\'" . sh-mode)))
 
@@ -174,17 +172,13 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; CMake
 (use-package cmake-mode
-  :defer t
-  ;; This seems to be already done by the package
-  ;; :mode "\\.cmake\\'" "/CMakeLists\\.txt\\'"
-  )
+  :straight nil)
 
 ;; Better syntax highlightning for CMake
 ;;; Disabled: It is VERY slow. I'm not sure if it's a clash with
 ;;; something else.
 (use-package cmake-font-lock
   :disabled t
-  :defer t
   :commands cmake-font-lock-activate
   :init
   ;; cmake-font-lock-activate must be called BEFORE fic-mode. Since
@@ -217,6 +211,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Xdefaults
 (use-package conf-mode
+  :straight nil
   :mode ("\\.xrdb\\'" . conf-xdefaults-mode))
 
 ;; Markdown
@@ -230,7 +225,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;;;   * configure layout if possible
 ;;; Check out http://www.emacswiki.org/emacs/Frame_Tiling_Commands
 (use-package gdb-mi
-  :defer t
+  :straight nil
   :init
   (setq
    gdb-many-windows t                ; Multiple window layout
@@ -320,51 +315,41 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; YAML
 (use-package yaml-mode
-  :defer t
   :init
   (use-package flycheck-yamllint
-    :defer t
     :init
     (add-hook 'flycheck-mode-hook #'flycheck-yamllint-setup)))
 
 ;; TOML
-(use-package toml-mode
-  :defer t)
+(use-package toml-mode)
 
 ;; rust
 (use-package rust-mode
-  :defer t
   :init
   (customize-set-variable 'rust-format-on-save t) ; run rustfmt on save
   ;; cargo commands
   (use-package cargo
-    :defer t
     :init
     (add-hook 'rust-mode-hook #'cargo-minor-mode))
   ;; Flycheck integration
   (use-package flycheck-rust
-    :defer t
     :init
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
   ;; Code completion
   (use-package racer
-    :defer t
     :init
     (add-hook 'rust-mode-hook #'racer-mode)
     (add-hook 'racer-mode-hook #'eldoc-mode)))
 
 (use-package dockerfile-mode
-  :defer t
   :init
   (customize-set-variable 'dockerfile-use-sudo t))
 
-(use-package ssh-config-mode
-  :defer t)
+(use-package ssh-config-mode)
 
 ;; Buttonize URL and e-mail addresses in comments and strings.
 (use-package goto-addr
   :straight nil
-  :defer t
   :hook (prog-mode . goto-address-prog-mode))
 
 ;; Highlight and follow bug references in comments and strings
@@ -372,7 +357,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 (use-package eldoc-mode
   :straight nil
-  :defer t
   :init
   (customize-set-variable 'eldoc-idle-delay 0)           ; Delay before printing
   (customize-set-variable 'eldoc-minor-mode-string nil)) ; Don't show in modeline
@@ -380,7 +364,6 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 (use-package csharp-mode)
 
 (use-package elpy
-  :defer t
   :commands elpy-enable
   :init (with-eval-after-load 'python (elpy-enable)))
 

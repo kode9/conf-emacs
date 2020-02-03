@@ -68,7 +68,7 @@
 (customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
 (customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
 (customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
-(customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
+(customize-set-variable 'use-package-verbose nil)           ; Report about loading and configuration details
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish)
@@ -123,12 +123,10 @@
   :straight nil)
 
 ;; Debug init file
-(use-package bug-hunter
-  :defer t)
+(use-package bug-hunter)
 
 ;; Profile emacs startup
-(use-package esup
-  :defer t)
+(use-package esup)
 
 (bind-key* "C-c S" 'align-comments)
 (bind-key* "C-x C-r" 'toggle-sudo)
@@ -155,6 +153,7 @@
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
   :disabled t
+  :straight nil
   :commands (ansi-color-apply-on-region abz/colorize-region)
   :init
   (defun abz/colorize-region (start end)

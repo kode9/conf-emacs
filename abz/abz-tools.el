@@ -56,7 +56,6 @@
 ;; Remote access
 (use-package tramp
   :straight nil
-  :defer t
   :init
   (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
   (customize-set-variable 'tramp-auto-save-directory
@@ -68,16 +67,14 @@
   ;; Disable version control for tramp files
   ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
   (use-package vc
-    :defer t
+    :straight nil
     :init
     (customize-set-variable 'vc-ignore-dir-regexp
                             (format "\\(%s\\)\\|\\(%s\\)"
                                     vc-ignore-dir-regexp
                                     tramp-file-name-regexp)))
   :config
-  (setenv "SHELL" "/bin/bash")
-  ;; Reuse the path settings of the remote on log in
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+  (setenv "SHELL" "/bin/bash"))
 
 ;; http://www.emacswiki.org/emacs/TrampMode
 ;;;###autoload
@@ -145,9 +142,8 @@
   ;; Status buffer name format
   (setq magit-status-buffer-name-format "*magit-status＠%b*"))
 
-(when (> emacs-major-version 24)
-  (use-package pass
-    :defer t))
+(use-package pass
+  :if (> emacs-major-version 24))
 
 (provide 'abz-tools)
 

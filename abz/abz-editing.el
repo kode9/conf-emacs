@@ -73,30 +73,24 @@
  ("RET" . reindent-then-newline-and-indent) ; Indent on new line
  ("C-c s" . sort-lines))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hl-line(built-in)      ;;
-;; Highlight current line ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (built-in) Highlight current line
 (use-package hl-line
+  :straight nil
   :custom
   (global-hl-line-sticky-flag t "Keep highlighting lines in all windows")
   :hook
   (after-init . global-hl-line-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Increase selected region by semantic units  ;;
-;; https://github.com/magnars/expand-region.el ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Increase selected region by semantic units
+;; https://github.com/magnars/expand-region.el
 (use-package expand-region
   :demand t
   :bind
   ("C-=" . er/expand-region)
   ("M-=" . er/contract-region))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Drag stuff (lines, words, region, etc...) around ;;
-;; https://github.com/rejeep/drag-stuff.el          ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Drag stuff (lines, words, region, etc...) around
+;; https://github.com/rejeep/drag-stuff.el
 (use-package drag-stuff
   :config
   (drag-stuff-define-keys)
@@ -104,10 +98,8 @@
   (after-init . drag-stuff-global-mode)
   :diminish drag-stuff-mode)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Visual feedback on yanks, undo, etc               ;;
-;; http://www.emacswiki.org/emacs/VolatileHighlights ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Visual feedback on yanks, undo, etc
+;; http://www.emacswiki.org/emacs/VolatileHighlights
 (use-package volatile-highlights
   :custom-face (vhl/default-face ((t (:background nil :underline t))))
   :hook (after-init . volatile-highlights-mode)
@@ -169,7 +161,7 @@ With argument N go to the nth entry."
 ;; Ispell/Flyspell
 ;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
 (use-package ispell
-  :defer t
+  :straight nil
   :init
   (customize-set-variable 'ispell-dictionary "english") ; default dictionnary
   (customize-set-variable 'ispell-program-name (cond ((executable-find "aspell"))
@@ -186,15 +178,14 @@ With argument N go to the nth entry."
   (add-hook 'text-mode-hook #'flyspell-mode))
 
 (use-package backup-each-save
-  :defer t
+  :demand t
   :init
   (setq
    backup-each-save-mirror-location (locate-user-emacs-file ".cache/backup/")
    backup-each-save-time-format "%Y%m%d-%H%M%S")
   (add-hook 'after-save-hook #'backup-each-save))
 
-(use-package rainbow-mode
-  :defer t)
+(use-package rainbow-mode)
 
 (provide 'abz-editing)
 
