@@ -96,6 +96,8 @@
   (customize-set-variable 'confirm-nonexistent-file-or-buffer
                           'after-completion) ; Ask confirmation for new file/buffer only after completion
 
+  (customize-set-variable 'delete-by-moving-to-trash t)
+
   ;; Automatic backup on first save
   (customize-set-variable 'backup-by-copying t) ; Always copy (no rename)
   (customize-set-variable 'backup-directory-alist `(("." . ,(locate-user-emacs-file ".cache/backup/"))))
