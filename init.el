@@ -61,6 +61,7 @@
 ;; Tweak garbage collector
 (use-package gcmh
   :demand t
+  :diminish
   :init
   (let ((gc-threshold (* 4 1000 1000))
         (gc-percentage 0.5))
