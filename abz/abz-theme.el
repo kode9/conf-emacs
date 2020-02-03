@@ -48,6 +48,17 @@
   (customize-set-variable 'dynamic-fonts-preferred-proportional-point-size 10)
   :hook (after-init . dynamic-fonts-setup))
 
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :init
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t))
+  (setq inhibit-compacting-font-caches t))
+
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 (use-package spaceline-config
   :straight spaceline
   :functions spaceline-emacs-theme
