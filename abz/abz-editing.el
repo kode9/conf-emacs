@@ -61,6 +61,15 @@
   (customize-set-variable 'undo-outer-limit 26214400)                      ; Maximum information in a single undo command. 25MiB
   (customize-set-variable 'warning-suppress-types '((undo discard-info)))) ; Be quiet
 
+;; Remember last cursor position in all files
+(use-package saveplace
+  :straight nil
+  :init
+  (customize-set-variable 'save-place-limit nil)
+  (customize-set-variable 'save-place-save-skipped nil)
+  (customize-set-variable 'save-place-version-control t)
+  :hook (after-init . save-place-mode))
+
 ;;;###autoload
 (defun align-comments (begin end)
   "Align comments within region between BEGIN and END."
