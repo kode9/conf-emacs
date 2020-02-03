@@ -60,9 +60,27 @@
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package spaceline-config
+  :disabled t
   :straight spaceline
   :functions spaceline-emacs-theme
   :hook (after-init . spaceline-emacs-theme))
+
+(use-package doom-modeline
+  :init
+  (customize-set-variable 'doom-modeline-height 30)
+  (customize-set-variable 'doom-modeline-bar-width 2)
+  (customize-set-variable 'doom-modeline-project-detection 'projectile)
+  (customize-set-variable 'doom-modeline-buffer-file-name-style 'relative-from-project)
+  (customize-set-variable 'doom-modeline-icon (display-graphic-p))
+  (customize-set-variable 'doom-modeline-buffer-state-icon t)
+  (customize-set-variable 'doom-modeline-buffer-modification-icon t)
+  (customize-set-variable 'doom-modeline-unicode-fallback t)
+  (customize-set-variable 'doom-modeline-minor-modes t)
+  (customize-set-variable 'doom-modeline-enable-word-count nil)
+  (customize-set-variable 'doom-modeline-buffer-encoding nil)
+  (customize-set-variable 'doom-modeline-indent-info nil)
+  (customize-set-variable 'doom-modeline-checker-simple-format nil)
+  :hook (after-init . doom-modeline-mode))
 
 (provide 'abz-theme)
 
