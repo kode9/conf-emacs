@@ -23,22 +23,10 @@
 ;;; Code:
 
 ;; Raise garbage collector thresholds for initialization to improve startup
-;; time. They will be restored after initialization.
+;; time. They will be restored after initialization (see below).
 ;; https://emacs.stackexchange.com/a/34367
 (customize-set-variable 'gc-cons-threshold (* 1000 1000 1000))
 (customize-set-variable 'gc-cons-percentage 90)
-
-(defun abz--restore-gc-parameters ()
-  "Restore garbage collector thresholds to sane values."
-  (customize-set-variable 'gc-cons-threshold (* 4 1000 1000))
-  (customize-set-variable 'gc-cons-percentage 0.5))
-
-(defun abz--restore-gc-parameters-when-idle ()
-  "Call `abz--restore-gc-parameters' when Emacs becomes idle."
-  (run-with-idle-timer 61 nil #'abz--restore-gc-parameters))
-
-;; Launch idle timer to restore GC after startup
-(add-hook 'emacs-startup-hook #'abz--restore-gc-parameters-when-idle)
 
 ;; Don't load expired byte-compiled files
 (customize-set-variable 'load-prefer-newer t)
@@ -68,7 +56,26 @@
 (customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
 (customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
 (customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
-(customize-set-variable 'use-package-verbose nil)           ; Report about loading and configuration details
+(customize-set-variable 'use-package-verbose t)           ; Report about loading and configuration details
+
+;; Tweak garbage collector
+(use-package gcmh
+  :demand t
+  :init
+  (let ((gc-threshold (* 4 1000 1000))
+        (gc-percentage 0.5))
+    (customize-set-variable 'gcmh-verbose nil)
+    (customize-set-variable 'gcmh-low-cons-threshold gc-threshold)
+    (defun abz--restore-gc-parameters ()
+      "Restore garbage collector thresholds to sane values."
+      (message "abz: Restore GC parameters")
+      (customize-set-variable 'gc-cons-threshold gc-threshold)
+      (customize-set-variable 'gc-cons-percentage gc-percentage)
+      (gcmh-mode 1))
+    (defun abz--restore-gc-parameters-when-idle ()
+      "Call `abz--restore-gc-parameters' when Emacs becomes idle."
+      (run-with-idle-timer 61 nil #'abz--restore-gc-parameters)))
+  :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish)
