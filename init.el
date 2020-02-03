@@ -84,43 +84,27 @@
 (add-to-list 'load-path abz-site-dir)
 
 ;; This emacs configuration variables
-(use-package abz-settings
-  :demand t
-  :straight nil
-  :config
-  (abz--init-settings))
+(require 'abz-settings)
+(abz--init-settings)
 
 ;; Basic setup
-(use-package abz-custom
-  :demand t
-  :straight nil
-  :config
-  (abz--init-custom))
+(require 'abz-custom)
+(abz--init-custom)
 
 ;; Color theme (only zenburn ATM)
-(use-package abz-theme
-  :demand t
-  :straight nil)
+(require 'abz-theme)
 
 ;; Completion framework
-(use-package abz-completion
-  :demand t
-  :straight nil)
+(require 'abz-completion)
 
 ;; Common edition settings
-(use-package abz-editing
-  :demand t
-  :straight nil)
+(require 'abz-editing)
 
 ;; Development settings
-(use-package abz-devel
-  :demand t
-  :straight nil)
+(require 'abz-devel)
 
 ;; External tools integration
-(use-package abz-tools
-  :demand t
-  :straight nil)
+(require 'abz-tools)
 
 ;; Debug init file
 (use-package bug-hunter)
