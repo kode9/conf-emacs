@@ -85,6 +85,10 @@
   (customize-set-variable 'doom-modeline-checker-simple-format nil)
   :hook (after-init . doom-modeline-mode))
 
+(use-package display-line-numbers
+  :straight nil
+  :hook (prog-mode . display-line-numbers-mode))
+
 (provide 'abz-theme)
 
 ;;; abz-theme.el ends here
