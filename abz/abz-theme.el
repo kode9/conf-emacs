@@ -90,6 +90,7 @@
   :hook (prog-mode . display-line-numbers-mode))
 
 (use-package guru-mode
+  :diminish
   :init
   (setq guru-warn-only t)
   :hook (prog-mode . guru-mode))
