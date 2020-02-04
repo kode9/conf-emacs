@@ -22,6 +22,9 @@
 
 ;;; Code:
 
+(require 'abz)
+(require 'use-package)
+
 ;;;###autoload
 (progn
   ;; Editing basics
@@ -97,11 +100,11 @@
 ;; Drag stuff (lines, words, region, etc...) around
 ;; https://github.com/rejeep/drag-stuff.el
 (use-package drag-stuff
+  :diminish drag-stuff-mode
+  :commands drag-stuff-define-keys
   :config
   (drag-stuff-define-keys)
-  :hook
-  (after-init . drag-stuff-global-mode)
-  :diminish drag-stuff-mode)
+  :hook (after-init . drag-stuff-global-mode))
 
 ;; Visual feedback on yanks, undo, etc
 ;; http://www.emacswiki.org/emacs/VolatileHighlights
@@ -136,6 +139,7 @@ With argument N go to the nth entry."
 ;; no-littering: `undo-tree-history-directory-alist`
 (use-package undo-tree
   :diminish undo-tree-mode
+  :commands abz--undo-tree-make-history-file-name-append-compression
   :init
   (customize-set-variable 'undo-tree-auto-save-history t)       ; Save undo tree to a file
   (customize-set-variable 'undo-tree-enable-undo-in-region nil) ; Don't enable in regions
@@ -188,7 +192,7 @@ With argument N go to the nth entry."
   (setq
    backup-each-save-mirror-location (locate-user-emacs-file ".cache/backup/")
    backup-each-save-time-format "%Y%m%d-%H%M%S")
-  (add-hook 'after-save-hook #'backup-each-save))
+  :hook (after-save . backup-each-save))
 
 (use-package rainbow-mode)
 
