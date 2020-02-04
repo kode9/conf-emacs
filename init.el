@@ -128,10 +128,7 @@
   :hook (compilation-mode . (lambda () (scf-mode t))))
 
 ;; keys
-(global-set-key [(control c) (c)] 'comment-or-uncomment-region)
-;; (global-set-key [(control c) (v)] 'uncomment-region)
 (global-set-key [(control c) (x)] 'compile)
-(global-set-key [(meta g)] 'goto-line)
 (global-set-key [(control x) (control k)] 'kill-some-buffers)
 
 (defun command-line-diff ()

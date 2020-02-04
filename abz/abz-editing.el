@@ -78,10 +78,6 @@
     (align-regexp begin end (concat "\\(\\s-*\\)"
                                     (regexp-quote comment-start)))))
 
-(bind-keys
- ("RET" . reindent-then-newline-and-indent) ; Indent on new line
- ("C-c s" . sort-lines))
-
 ;; (built-in) Highlight current line
 (use-package hl-line
   :straight nil
@@ -195,6 +191,20 @@ With argument N go to the nth entry."
   (add-hook 'after-save-hook #'backup-each-save))
 
 (use-package rainbow-mode)
+
+;;;;;;;;;;;;;;;;;;
+;; Key bindings ;;
+;;;;;;;;;;;;;;;;;;
+
+(bind-keys
+ ("RET" . reindent-then-newline-and-indent) ; Indent on new line
+ ("M-g" . goto-line)
+ ("C-c s" . sort-lines))
+
+(bind-keys*
+ ("C-c c" . abz-comment-dwim)
+ ("M-;" . abz-comment-dwim)
+ ("C-;" . abz-clone-and-comment-dwim))
 
 (provide 'abz-editing)
 
