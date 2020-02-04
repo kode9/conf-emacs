@@ -23,6 +23,15 @@
 ;;; Code:
 
 (require 'use-package)
+(require 'abz-settings)
+
+;;;###autoload
+(defcustom abz-font-default-size 10
+  "Default font size."
+  :tag "Default font size"
+  :type 'integer
+  :group 'abz
+  :group 'font-selection)
 
 (use-package zenburn-theme
   :demand t)
@@ -32,7 +41,7 @@
   :functions dynamic-fonts-setup
   :init
   (customize-set-variable 'dynamic-fonts-set-alternatives t) ; Fill up alternative fonts
-  (customize-set-variable 'dynamic-fonts-preferred-monospace-point-size 8)
+  (customize-set-variable 'dynamic-fonts-preferred-monospace-point-size abz-font-default-size)
   (customize-set-variable 'dynamic-fonts-preferred-monospace-fonts
                           '("Iosevka"
                             "Monoisome"
@@ -47,7 +56,7 @@
                             "Dejavu Sans"
                             "arial"
                             "fixed"))
-  (customize-set-variable 'dynamic-fonts-preferred-proportional-point-size 10)
+  (customize-set-variable 'dynamic-fonts-preferred-proportional-point-size abz-font-default-size)
   :hook (after-init . dynamic-fonts-setup))
 
 (use-package all-the-icons
