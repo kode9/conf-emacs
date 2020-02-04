@@ -196,6 +196,11 @@ With argument N go to the nth entry."
 
 (use-package rainbow-mode)
 
+;; Edit multiple regions simultaneously in a buffer or a region
+;; https://github.com/victorhge/iedit
+(use-package iedit
+  :bind (("C-c e" . iedit-mode)))
+
 ;;;;;;;;;;;;;;;;;;
 ;; key bindings ;;
 ;;;;;;;;;;;;;;;;;;
