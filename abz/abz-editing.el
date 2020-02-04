@@ -201,6 +201,8 @@ With argument N go to the nth entry."
 (use-package iedit
   :bind (("C-c e" . iedit-mode)))
 
+(use-package multiple-cursors)
+
 ;;;;;;;;;;;;;;;;;;
 ;; key bindings ;;
 ;;;;;;;;;;;;;;;;;;
