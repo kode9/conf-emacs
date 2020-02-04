@@ -96,6 +96,12 @@
 
 (use-package display-line-numbers
   :straight nil
+  :init
+  (customize-set-variable 'display-line-numbers-type t) ; Absolute number
+  (customize-set-variable 'display-line-numbers-widen t) ; Disregard any narrowing
+  (customize-set-variable 'display-line-numbers-width-start t) ; Compute necessary width
+  (set-face-attribute 'line-number nil :weight 'semi-light)
+  (set-face-attribute 'line-number-current-line nil :box nil :inverse-video t)
   :hook (prog-mode . display-line-numbers-mode))
 
 (use-package guru-mode
