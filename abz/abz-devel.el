@@ -172,7 +172,9 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; CMake
 (use-package cmake-mode
-  :straight nil)
+  :straight nil
+  :mode
+  ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 
 ;; Better syntax highlightning for CMake
 ;;; Disabled: It is VERY slow. I'm not sure if it's a clash with
