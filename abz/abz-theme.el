@@ -89,6 +89,11 @@
   :straight nil
   :hook (prog-mode . display-line-numbers-mode))
 
+(use-package guru-mode
+  :init
+  (setq guru-warn-only t)
+  :hook (prog-mode . guru-mode))
+
 (provide 'abz-theme)
 
 ;;; abz-theme.el ends here
