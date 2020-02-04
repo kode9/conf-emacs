@@ -203,6 +203,8 @@ With argument N go to the nth entry."
 
 (use-package multiple-cursors)
 
+(use-package goto-last-change)
+
 ;;;;;;;;;;;;;;;;;;
 ;; key bindings ;;
 ;;;;;;;;;;;;;;;;;;
