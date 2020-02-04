@@ -77,6 +77,20 @@ no such line exists."
       (cons beg (abz-non-empty-line-position-backward)))))
 
 ;;;###autoload
+(defun abz-mark-previous-paragraph ()
+  "Set the mark and call `backward-paragraph."
+  (interactive)
+  (set-mark-command nil)
+  (backward-paragraph 1))
+
+;;;###autoload
+(defun abz-mark-next-paragraph ()
+  "Set the mark and call `forward-paragraph."
+  (interactive)
+  (set-mark-command nil)
+  (forward-paragraph 1))
+
+;;;###autoload
 (defun abz-comment-dwim ()
   "Comment or uncomment the region as defined by `abz-region-positions-dwim'."
   (interactive)

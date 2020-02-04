@@ -197,13 +197,15 @@ With argument N go to the nth entry."
 (use-package rainbow-mode)
 
 ;;;;;;;;;;;;;;;;;;
-;; Key bindings ;;
+;; key bindings ;;
 ;;;;;;;;;;;;;;;;;;
 
 (bind-keys
  ("RET" . reindent-then-newline-and-indent) ; Indent on new line
  ("M-g" . goto-line)
- ("C-c s" . sort-lines))
+ ("C-c s" . sort-lines)
+ ("S-SPC" . abz-mark-next-paragraph)
+ ("S-M-SPC" . abz-mark-previous-paragraph))
 
 (bind-keys*
  ("C-c c" . abz-comment-dwim)
