@@ -183,6 +183,10 @@
   ("C-c m l" . magit-log-buffer-file)
   ("C-c m L" . magit-log-all))
 
+;; Step through historic versions of git controlled file
+;; https://gitlab.com/pidu/git-timemachine
+(use-package git-timemachine)
+
 (use-package pass
   :if (> emacs-major-version 24))
 
