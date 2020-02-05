@@ -168,6 +168,7 @@
                                                        magit-insert-modules))
   ;; Status margin (hidden by default)
   (customize-set-variable 'magit-status-margin '(nil "%Y-%m-%d" magit-log-margin-width t 8))
+  (customize-set-variable 'magit-blame-echo-style 'margin)
   :config
   (magit-wip-mode)                                     ; Commit in a wip/ branch on some actions
   (when (and (boundp 'global-auto-revert-mode) (not global-auto-revert-mode))
