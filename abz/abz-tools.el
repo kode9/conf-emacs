@@ -189,6 +189,14 @@
   :bind
   ("C-c m h" . git-timemachine))
 
+;; Display commit at line in a popup
+(use-package git-messenger
+  :init
+  (customize-set-variable 'git-messenger:show-detail t)
+  (customize-set-variable 'git-messenger:use-magit-popup t)
+  :bind
+  ("C-c m m" . git-messenger:popup-message))
+
 (use-package pass
   :if (> emacs-major-version 24))
 
