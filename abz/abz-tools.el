@@ -117,32 +117,70 @@
   :commands wgrep-ag-setup
   :hook (ag-mode . wgrep-ag-setup))
 
-;; magit: (awesome) git frontend
+;; Magit: A Git Porcelain inside Emacs
+;; https://magit.vc/
 (use-package magit
+  :init
+  (customize-set-variable 'magit-wip-merge-branch nil)              ; Reset wip branch on new commits
+  (customize-set-variable 'magit-no-confirm 'safe-with-wip)         ; Disable confirmation for wip-mode' safe operations
+  (customize-set-variable 'magit-diff-paint-whitespace 'uncommited) ; Highlight whipespaces on uncommited changes
+  (customize-set-variable ' magit-diff-refine-hunk t)               ; Show word-granularity diff for current hunk
+  (customize-set-variable 'magit-save-repository-buffers 'dontask)  ; Save file visiting buffers without asking
+  (customize-set-variable 'magit-refs-show-commit-count 'branch)    ; Show commit counts for branches
+  (customize-set-variable 'magit-module-sections-nested nil)
+  ;; Status sections
+  (customize-set-variable 'magit-status-sections-hook '(magit-insert-status-headers
+                                                        magit-insert-merge-log
+                                                        magit-insert-rebase-sequence
+                                                        magit-insert-am-sequence
+                                                        magit-insert-sequencer-sequence
+                                                        magit-insert-bisect-output
+                                                        magit-insert-bisect-rest
+                                                        magit-insert-bisect-log
+                                                        magit-insert-unpulled-from-upstream
+                                                        magit-insert-unpushed-to-upstream-or-recent
+                                                        magit-insert-unpulled-from-pushremote
+                                                        magit-insert-unpushed-to-pushremote
+                                                        magit-insert-unstaged-changes
+                                                        magit-insert-staged-changes
+                                                        magit-insert-untracked-files
+                                                        magit-insert-stashes))
+  ;; Default sections visibility
+  (customize-set-variable 'magit-section-initial-visibility-alist '((modules . hide)
+                                                                    (stashes . show)
+                                                                    (untracked . hide)))
+  ;; Initial pointer position
+  (customize-set-variable 'magit-status-initial-section '(((unstaged) (status))
+                                                          ((staged) (status))
+                                                          ((unpushed . "@{push}..") (status))
+                                                          ((unpushed . "@{upstream}..") (status))
+                                                          1))
+  ;; Status header format
+  (customize-set-variable 'magit-status-headers-hook '(magit-insert-user-header
+                                                       magit-insert-repo-header
+                                                       magit-insert-diff-filter-header
+                                                       magit-insert-remote-header
+                                                       magit-insert-upstream-branch-header
+                                                       magit-insert-push-branch-header
+                                                       magit-insert-head-branch-header
+                                                       magit-insert-tags-header
+                                                       magit-insert-error-header
+                                                       magit-insert-modules))
+  ;; Status margin (hidden by default)
+  (customize-set-variable 'magit-status-margin '(nil "%Y-%m-%d" magit-log-margin-width t 8))
+  :config
+  (magit-wip-mode)                                     ; Commit in a wip/ branch on some actions
+  (when (and (boundp 'global-auto-revert-mode) (not global-auto-revert-mode))
+    (magit-auto-revert-mode))                          ; Auto-revert tracked files buffers
+  (remove-hook 'server-switch-hook 'magit-commit-diff) ; Don't show diff when committing by default
+  (when (boundp 'vc-handled-backends)                   ; Tell VC to not handle git
+    (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)))
   :bind
   ("C-c m s" . magit-status)
   ("C-c m b" . magit-blame)
   ("C-c m d" . magit-diff-working-tree)
   ("C-c m l" . magit-log-buffer-file)
-  ("C-c m L" . magit-log-all)
-  :config
-  (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)) ; Tell VC to not handle git
-  ;; (setq magit-revert-buffers 'silent)      ; Revert buffers silently
-  (setq magit-save-repository-buffers t)   ; Ask confirmation when saving buffers
-  (setq magit-refs-show-commit-count 'all) ; Show counts for branches and tags
-  ;; Status header format
-  (setq magit-status-headers-hook '(magit-insert-error-header
-                                    magit-insert-repo-header
-                                    magit-insert-user-header
-                                    magit-insert-diff-filter-header
-                                    magit-insert-remote-header
-                                    magit-insert-upstream-branch-header
-                                    magit-insert-push-branch-header
-                                    magit-insert-head-branch-header
-                                    magit-insert-tags-header))
-  ;; Status buffer name format
-  ;; (setq magit-status-buffer-name-format "*magit-status＠%b*")
-  )
+  ("C-c m L" . magit-log-all))
 
 (use-package pass
   :if (> emacs-major-version 24))
