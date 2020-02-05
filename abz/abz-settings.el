@@ -22,6 +22,8 @@
 
 ;;; Code:
 
+(require 'use-package)
+
 (defgroup abz nil
   "Custom group."
   :prefix "abz-"

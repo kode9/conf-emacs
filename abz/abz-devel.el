@@ -22,6 +22,9 @@
 
 ;;; Code:
 
+(require 'abz-tools)
+(require 'use-package)
+
 ;;;###autoload
 (cl-defun abz-process-window (process &optional (all-frames (selected-frame)))
   "Get the window currently displaying the buffer of PROCESS, or nil if none.
@@ -47,19 +50,18 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   (customize-set-variable 'compilation-auto-jump-to-first-error nil)
   ;; Skip 'info' and 'warnings' when jumping between errors
   (customize-set-variable 'compilation-skip-threshold 2)
-  :bind (:map compilation-mode-map
-              ("n" . compilation-next-error)
-              ("p" . compilation-previous-error)
-              ("M-p" . compilation-previous-file)
-              ("M-n" . compilation-next-file))
-  :hook
-  ;; Switch to compilation buffer window
-  (compilation-start . abz-select-process-window))
+  (add-hook 'compilation-start-hook #'abz-select-process-window)
+  :bind  (:map compilation-mode-map
+               ("n" . compilation-next-error)
+               ("p" . compilation-previous-error)
+               ("M-p" . compilation-previous-file)
+               ("M-n" . compilation-next-file)))
 
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el
 (use-package wrap-region
   :diminish wrap-region-mode
+  :commands wrap-region-global-mode
   :config
   (wrap-region-global-mode t))
 
@@ -113,6 +115,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Projectile: project management
 (use-package projectile
+  :commands (projectile-mode projectile-cleanup-known-projects)
   :init
   (customize-set-variable 'projectile-known-projects-file
                           (expand-file-name
@@ -272,16 +275,26 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
    company-tooltip-align-annotations t                 ; Align annotations to the right tooltip border
    company-show-numbers  t                             ; Quick access to first 10 candidates
    company-transformers '(company-sort-by-occurrence)) ; Sort candidates by occurence
-  (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (setq company-backends (delete 'company-semantic company-backends)) ; Remove CEDET
-  (use-package company-c-headers
-    :config
-    (add-to-list 'company-c-headers-path-system "/usr/include/c++/v1/")
-    (add-to-list 'company-backends 'company-c-headers nil))
-  (use-package company-quickhelp
-    :init (setq company-quickhelp-delay 0.75)
-    :config (company-quickhelp-mode 1)))
+  (customize-set-variable 'company-backends (delete 'company-semantic company-backends)) ; Remove CEDET
+  :hook (after-init . global-company-mode))
+
+(use-package company-c-headers
+  :after company
+  :demand t
+  :config
+  (add-to-list 'company-c-headers-path-system "/usr/include/c++/v1/")
+  (add-to-list 'company-backends 'company-c-headers nil))
+
+(use-package company-quickhelp
+  :after company
+  :demand t
+  :commands company-quickhelp-mode
+  :init
+  (customize-set-variable 'company-quickhelp-use-propertized-text t)
+  (customize-set-variable 'company-quickhelp-delay 0.75)
+  :config
+  (company-quickhelp-mode 1))
 
 ;; On the fly error checking
 (use-package flycheck
@@ -299,8 +312,9 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; Show errors under point in pos-tip popups
 (use-package flycheck-pos-tip
-  :demand t
   :after flycheck
+  :demand t
+  :commands flycheck-pos-tip-mode
   :init
   (customize-set-variable 'flycheck-pos-tip-timeout 10)
   :config
@@ -317,31 +331,38 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; YAML
 (use-package yaml-mode
-  :init
-  (use-package flycheck-yamllint
-    :init
-    (add-hook 'flycheck-mode-hook #'flycheck-yamllint-setup)))
+  :init)
+
+(use-package flycheck-yamllint
+  :after yaml-mode
+  :hook (flycheck-mode . flycheck-yamllint-setup))
 
 ;; TOML
 (use-package toml-mode)
 
-;; rust
+;; Rust
 (use-package rust-mode
   :init
-  (customize-set-variable 'rust-format-on-save t) ; run rustfmt on save
-  ;; cargo commands
-  (use-package cargo
-    :init
-    (add-hook 'rust-mode-hook #'cargo-minor-mode))
-  ;; Flycheck integration
-  (use-package flycheck-rust
-    :init
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-  ;; Code completion
-  (use-package racer
-    :init
-    (add-hook 'rust-mode-hook #'racer-mode)
-    (add-hook 'racer-mode-hook #'eldoc-mode)))
+  (customize-set-variable 'rust-format-on-save t)) ; run rustfmt on save
+
+;; Cargo commands
+(use-package cargo
+  :after rust-mode
+  :init
+  :hook (rust-mode . cargo-minor-mode))
+
+;; Flycheck integration
+(use-package flycheck-rust
+  :after rust-mode
+  :init
+  :hook (flycheck-mode . flycheck-rust-setup))
+
+;; Code completion
+(use-package racer
+  :after rust-mode
+  :init
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode)))
 
 (use-package dockerfile-mode
   :init

@@ -24,6 +24,7 @@
 
 (require 'abz-settings)
 (require 'files)
+(require 'use-package)
 
 ;; https://github.com/BurntSushi/ripgrep
 ;; https://github.com/ggreer/the_silver_searcher
@@ -126,7 +127,7 @@
   ("C-c m L" . magit-log-all)
   :config
   (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)) ; Tell VC to not handle git
-  (setq magit-revert-buffers 'silent)      ; Revert buffers silently
+  ;; (setq magit-revert-buffers 'silent)      ; Revert buffers silently
   (setq magit-save-repository-buffers t)   ; Ask confirmation when saving buffers
   (setq magit-refs-show-commit-count 'all) ; Show counts for branches and tags
   ;; Status header format
@@ -140,7 +141,8 @@
                                     magit-insert-head-branch-header
                                     magit-insert-tags-header))
   ;; Status buffer name format
-  (setq magit-status-buffer-name-format "*magit-status＠%b*"))
+  ;; (setq magit-status-buffer-name-format "*magit-status＠%b*")
+  )
 
 (use-package pass
   :if (> emacs-major-version 24))
