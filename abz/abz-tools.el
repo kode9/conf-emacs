@@ -185,7 +185,9 @@
 
 ;; Step through historic versions of git controlled file
 ;; https://gitlab.com/pidu/git-timemachine
-(use-package git-timemachine)
+(use-package git-timemachine
+  :bind
+  ("C-c m h" . git-timemachine))
 
 (use-package pass
   :if (> emacs-major-version 24))
