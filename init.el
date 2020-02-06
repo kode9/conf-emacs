@@ -61,7 +61,6 @@
 ;; Tweak garbage collector
 (use-package gcmh
   :demand t
-  :diminish
   :init
   (let ((gc-threshold (* 4 1000 1000))
         (gc-percentage 0.5))
@@ -76,6 +75,7 @@
     (defun abz--restore-gc-parameters-when-idle ()
       "Call `abz--restore-gc-parameters' when Emacs becomes idle."
       (run-with-idle-timer 61 nil #'abz--restore-gc-parameters)))
+  :diminish gcmh-mode
   :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
