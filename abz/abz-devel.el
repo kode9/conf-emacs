@@ -259,10 +259,29 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; cmake-ide
 (use-package cmake-ide
-  :disabled t
+  :demand t
+  :init
+  ;; Persistent build directories under `XDG_CACHE_HOME/cmake-ide/`
+  (when-let ((cache-dir (getenv "XDG_CACHE_HOME")))
+    (customize-set-variable 'cmake-ide-build-pool-dir (concat (file-name-as-directory (expand-file-name cache-dir "~"))
+                                                              "cmake-ide"))
+    (customize-set-variable 'cmake-ide-build-pool-use-persistent-naming t))
+  ;; Use `cmake --build <DIR>` as the compile command
+  ;; We advise the function because the custom variable `cmake-ide-compile-command` is not given the build directory
+  (defun abz--cide-get-compile-command (dir)
+    (let ((r (combine-and-quote-strings `(,cmake-ide-cmake-command "--build" ,dir))))
+      (message "abz--cide-get-compile-command(%s) => %s" dir r)
+      r)
+    )
+  (advice-add 'cide--get-compile-command :before-until #'abz--cide-get-compile-command)
   :config
-  (customize-set-variable 'cmake-ide-src-extensions  ; A list of file extensions that qualify as source files.
-                          '(".c" ".cpp" ".C" ".cxx" ".cc" ".cu"))
+  ;; Add `-DCPM_SOURCE_CACHE=$XDG_CACHE_HOME/CPM` (for CPM.cmake) when necessary
+  (when-let ((cache-dir (and (not (getenv "CPM_SOURCE_CACHE")) (getenv "XDG_CACHE_HOME"))))
+    (add-to-list 'cmake-ide-cmake-args
+                 (combine-and-quote-strings `("-DCPM_SOURCE_CACHE"
+                                              ,(concat (file-name-as-directory (expand-file-name cache-dir "~")) "CPM"))
+                                            "=")))
+  (add-to-list 'cmake-ide-src-extensions ".cu")
   (cmake-ide-setup))
 
 ;; Auto completion
