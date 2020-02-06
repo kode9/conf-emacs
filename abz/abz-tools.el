@@ -176,6 +176,7 @@
   (remove-hook 'server-switch-hook 'magit-commit-diff) ; Don't show diff when committing by default
   (when (boundp 'vc-handled-backends)                   ; Tell VC to not handle git
     (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)))
+  :diminish magit-wip-mode
   :bind
   ("C-c m s" . magit-status)
   ("C-c m b" . magit-blame)
