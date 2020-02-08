@@ -68,7 +68,8 @@
 (customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
 (customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
 (customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
-(customize-set-variable 'use-package-verbose t)           ; Report about loading and configuration details
+(customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
+(customize-set-variable 'use-package-compute-statistics t)  ; Report about loading and configuration details
 
 ;; Tweak garbage collector
 (use-package gcmh
