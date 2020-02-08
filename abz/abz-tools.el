@@ -122,7 +122,7 @@
 (use-package magit
   :init
   (customize-set-variable 'magit-wip-merge-branch nil)              ; Reset wip branch on new commits
-  (customize-set-variable 'magit-no-confirm 'safe-with-wip)         ; Disable confirmation for wip-mode' safe operations
+  (customize-set-variable 'magit-no-confirm '('safe-with-wip))      ; Disable confirmation for wip-mode' safe operations
   (customize-set-variable 'magit-diff-paint-whitespace 'uncommited) ; Highlight whipespaces on uncommited changes
   (customize-set-variable ' magit-diff-refine-hunk t)               ; Show word-granularity diff for current hunk
   (customize-set-variable 'magit-save-repository-buffers 'dontask)  ; Save file visiting buffers without asking
