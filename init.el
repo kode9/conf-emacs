@@ -28,6 +28,18 @@
 (customize-set-variable 'gc-cons-threshold (* 1000 1000 1000))
 (customize-set-variable 'gc-cons-percentage 90)
 
+;; Don't check file handlers during startup
+;; https://github.com/MatthewZMD/.emacs.d#unset-file-name-handler-alist
+(defvar abz--file-name-handler-alist-original file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+(defun abz--restore-file-name-handler-alist ()
+  "Restore `file-name-handler-alist' to its original value."
+  (setq file-name-handler-alist abz--file-name-handler-alist-original)
+  (makunbound 'abz--file-name-handler-alist-original))
+
+(add-hook 'emacs-startup-hook #'abz--restore-file-name-handler-alist)
+
 ;; Don't load expired byte-compiled files
 (customize-set-variable 'load-prefer-newer t)
 
