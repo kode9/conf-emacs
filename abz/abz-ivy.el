@@ -22,62 +22,42 @@
 
 ;;; Code:
 
-;; TODO
-;;  * fuzzy (see also filtering / sorting in README)
-;;  * tab to complete directory, C-d / C-j to dired
-;;  * counsel-grep-or-swiper
-;;  * flx
-;;  * smex
-;;  * highlighting
-;;  * remove `^` from regex
-;;  * don't stop swiper when pressing return all the way
-;;  * actions
-;; completion (TAB)
-;;  * counsel-grep-or-swiper
-;; switch-to-buffer-other-window && 'ivy-switch-buffer-other-window
-;; fill-paragraph
-;; useful commands in README cheatsheet
-;; M-x => show last-used commands on top => amx => counsel-minibuffer-history
-;; jumping (see mark-ring/pop-to-mark-command/bookmark-jump/counsel-mark-ring)
-;; '(user-full-name "Pierre-Luc Perrier")
-;; '(user-mail-address "dev@the-pluc.net"))
-;; C-x " == C-x 3
-;; prescient
-
-(eval-when-compile (require 'use-package))
+(require 'abz-theme) ; all-the-icons
+(require 'use-package)
 
 ;; Ivy will use flx for filtering if it's loaded
-(use-package flx
-  :demand t)
+(use-package flx :demand t)
 
-;; Counsel will use amx (or smex) for M-x if it's loaded
-(use-package amx
-  :demand t)
-
-;; Minibuffer actions
-(use-package hydra
-  :demand t)
+;; Counsel will use amx (or smex) for M-x if it's installed
+(use-package amx)
 
 (use-package ivy
   :demand t
   :after flx
   :diminish
   :commands ivy-mode
-  :init
-  (customize-set-variable 'ivy-count-format "(%d/%d) ")            ; Candidate count (current/max)
-  (customize-set-variable 'ivy-use-virtual-buffers t)              ; add recent files and bookmarks to `ivy-switch-buffer`
-  (customize-set-variable 'ivy-wrap t)                             ; Wrap around candidates
-  (customize-set-variable 'ivy-height 15)                          ; Number of visible candidates
-  (customize-set-variable 'confirm-nonexistent-file-or-buffer nil) ; Don't ask confirmation for new files
-  (customize-set-variable 'ivy-on-del-error-function 'ignore)      ; Don't exit the completion when there is nothing left to delete
+  :custom
+  (confirm-nonexistent-file-or-buffer nil "Don't ask confirmation for new files")
+  (ivy-count-format "(%d/%d) " "Candidate count (current/max)")
+  (ivy-extra-directories nil "Add this to the front of the list when completing file names")
+  (ivy-height 15 "Number of visible candidates")
+  (ivy-initial-inputs-alist nil "Initial characters in the input string")
+  (ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create "Create directory on demand")
+  (ivy-on-del-error-function 'ignore "Don't exit the completion when there is nothing left to delete")
+  (ivy-use-virtual-buffers t "Add recent files and bookmarks to `ivy-switch-buffer'")
+  (ivy-wrap t "Wrap around candidates")
+  :custom-face
   ;; Faces
-  (custom-set-faces
-   '(ivy-minibuffer-match-face-2 ((t . (:background nil :box t))))
-   '(ivy-minibuffer-match-face-3 ((t . (:background nil :box t))))
-   '(ivy-minibuffer-match-face-4 ((t . (:background nil :box t))))
-   '(ivy-current-match           ((t . (:background nil :box nil :inverse-video t)))))
+  (ivy-minibuffer-match-face-2 ((t . (:background nil :box t))))
+  (ivy-minibuffer-match-face-3 ((t . (:background nil :box t))))
+  (ivy-minibuffer-match-face-4 ((t . (:background nil :box t))))
+  (ivy-current-match           ((t . (:background nil :box nil :inverse-video t))))
+  :init
   ;; Completion styles
-  (setq ivy-re-builders-alist '((swiper . ivy--regex-ignore-order)
+  (setq ivy-re-builders-alist '((swiper . ivy--regex)
+                                (swiper-isearch . ivy--regex)
+                                (Man-completion-table . ivy--regex-ignore-order)
+                                (woman . ivy--regex-ignore-order)
                                 (t . ivy--regex-fuzzy)))
   :config
   (ivy-mode +1)
@@ -87,23 +67,87 @@
 (use-package swiper
   :demand t
   :after ivy
-  :bind ("C-s" . swiper))
+  :bind ("C-s" . swiper-isearch))
 
 (use-package counsel
+  :commands counsel-mode
+  :after swiper
   :demand t
-  :functions counsel-mode
   :config
   ;; Remap built-in commands to their counsel counterpart
   (counsel-mode +1)
-  :bind ("C-x _ RET" . counsel-unicode-char)
-  :after (swiper amx))
+  :bind ("C-x _ RET" . counsel-unicode-char))
 
+;; Hydra actions in ivy minibuffer
 (use-package ivy-hydra
+  :after ivy
+  :demand t)
+
+;; Use posframe to show ivy candidates
+;; https://github.com/tumashu/ivy-posframe
+(use-package ivy-posframe
+  :after ivy
   :demand t
-  :after (ivy hydra))
+  :commands ivy-posframe-mode
+  :preface
+  (defun abz--ivy-posframe-get-size ()
+    "Size of a ivy-posframe.
+
+Compared to the default, `ivy-posframe-min-width' is set to
+- `ivy-posframe-min-width' if defined
+- maximum of (ratio * window-width) and (1/split * ratio * frame-width) otherwise.
+
+with ratio=0.75 and split=2.
+
+So it will take 75% of the window width if not split, but won't shrink too much
+if it is split more than `split' frames."
+    (list
+     :height ivy-posframe-height
+     :width ivy-posframe-width
+     :min-height (or ivy-posframe-min-height
+                     (let ((height (+ ivy-height 1)))
+                       (min height (or ivy-posframe-height height))))
+     :min-width (or ivy-posframe-min-width
+                    (let* ((ratio 0.75)
+                           (split 2)
+                           (split-ratio (/ 1.0 split))
+                           (width (round (* (window-width) ratio))))
+                      (max (min width (or ivy-posframe-width width)) (round (* (frame-width) split-ratio ratio)))))))
+  :custom
+  (ivy-posframe-size-function #'abz--ivy-posframe-get-size "Function to compute the size of the frame")
+  (ivy-posframe-style 'window-center "Default position")
+  (ivy-posframe-display-functions-alist '((complete-symbol . ivy-posframe-display-at-point)
+                                          (swiper . ivy-posframe-display-at-frame-top-center)
+                                          (swiper-isearch . ivy-posframe-display-at-frame-top-center)
+                                          (t . ivy-posframe-display))
+                                        "Per-command position")
+  (ivy-posframe-border-width 2 "Frame border width")
+  (ivy-posframe-hide-minibuffer nil "Keep showing minibuffer")
+  :custom-face
+  (ivy-posframe-border ((t :background ,(face-attribute 'warning :foreground))))
+  :config
+  (ivy-posframe-mode 1)
+  :diminish ivy-posframe-mode)
+
+(use-package ivy-rich
+  :after ivy
+  :demand t
+  :commands (ivy-format-function-line ivy-rich-mode)
+  :custom
+  (ivy-rich-parse-remote-buffer nil "Don't work too much through tramp")
+  :init
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  :config
+  (ivy-rich-mode 1))
+
+(use-package all-the-icons-ivy-rich
+  :straight (:type git :host github :repo "seagle0128/all-the-icons-ivy-rich")
+  :after (all-the-icons ivy)
+  :demand t
+  :commands all-the-icons-ivy-rich-mode
+  :config
+  (all-the-icons-ivy-rich-mode 1))
 
 (provide 'abz-ivy)
 
 ;;; abz-ivy.el ends here
-
-;; LocalWords:  abz
