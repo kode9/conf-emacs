@@ -137,6 +137,11 @@
   :hook
   (prog-mode . auto-highlight-symbol-mode))
 
+(use-package dimmer
+  :demand t
+  :config
+  (dimmer-mode t))
+
 (provide 'abz-theme)
 
 ;;; abz-theme.el ends here

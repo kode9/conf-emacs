@@ -22,7 +22,7 @@
 
 ;;; Code:
 
-(require 'abz-theme) ; all-the-icons
+(require 'abz-theme) ; all-the-icons, dimmer
 (require 'use-package)
 
 ;; Ivy will use flx for filtering if it's loaded
@@ -126,6 +126,9 @@ if it is split more than `split' frames."
   :custom-face
   (ivy-posframe-border ((t :background ,(face-attribute 'warning :foreground))))
   :config
+  ;; Don't dimmer posframe buffer
+  (when (boundp 'dimmer-buffer-exclusion-regexps)
+    (add-to-list 'dimmer-buffer-exclusion-regexps ivy-posframe-buffer))
   (ivy-posframe-mode 1)
   :diminish ivy-posframe-mode)
 
