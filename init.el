@@ -71,6 +71,11 @@
 (customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
 (customize-set-variable 'use-package-compute-statistics t)  ; Report about loading and configuration details
 
+;; Customize mode lighters. use-package integration with `:diminish`.
+(use-package diminish :demand t)
+;; Macros to define key bindings. use-package integration with `:bind`.
+(use-package bind-key :demand t)
+
 ;; Tweak garbage collector
 (use-package gcmh
   :demand t
@@ -90,11 +95,6 @@
       (run-with-idle-timer 61 nil #'abz--restore-gc-parameters)))
   :diminish gcmh-mode
   :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
-
-;; Customize mode lighters. use-package integration with `:diminish`.
-(use-package diminish)
-;; Macros to define key bindings. use-package integration with `:bind`.
-(use-package bind-key)
 
 ;; Some non-packaged stuff
 (add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
