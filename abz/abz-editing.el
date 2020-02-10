@@ -155,14 +155,6 @@ With argument N go to the nth entry."
               ("q" . undo-tree-visualizer-abort))
   :hook (after-init . global-undo-tree-mode))
 
-(use-package auto-highlight-symbol
-  :commands global-auto-highlight-symbol-mode
-  :diminish auto-highlight-symbol-mode
-  :init
-  ;; FIXME
-  ;; (add-hook 'after-init-hook #'global-auto-highlight-symbol-mode)
-  (customize-set-variable 'ahs-idle-interval 0.2))
-
 ;; AsciiDoc
 (use-package adoc-mode
   :mode "\\.a\\(?:scii\\)?doc\\'")

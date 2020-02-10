@@ -22,8 +22,9 @@
 
 ;;; Code:
 
-(require 'use-package)
 (require 'abz-settings)
+(require 'hl-line)
+(require 'use-package)
 
 ;;;###autoload
 (defcustom abz-font-default-size 10
@@ -109,6 +110,32 @@
   :init
   (setq guru-warn-only t)
   :hook (prog-mode . guru-mode))
+
+;; Automatic symbol highlighting, navigation & edition
+;; https://github.com/gennad/auto-highlight-symbol
+;; Alternative, but slower: https://github.com/fgeller/highlight-thing.el
+(use-package auto-highlight-symbol
+  :diminish
+  :init
+  (advice-add 'ahs-highlight-p :before-while (lambda ()
+                                               "Disable highlight-symbol-mode when region is active."
+                                               (not (region-active-p))))
+  :custom
+  (ahs-idle-interval 0.1 "Idle delay before highlighting")
+  (ahs-suppress-log t "Don't log")
+  (ahs-face-check-include-overlay nil)
+  :custom-face
+  (ahs-face ((t . (
+                   :foreground ,(face-attribute 'default :background)
+                   :background ,(face-attribute 'font-lock-preprocessor-face :foreground)))))
+  ;; TODO this is only good if hl-line is enabled, otherwise it should use the
+  ;; default face. The best would be to change the highlight function to only
+  ;; highlight the symbols not on the current point.
+  (ahs-plugin-defalt-face ((t . (
+                                 :inherit ,hl-line-face
+                                 :foreground ,(face-attribute 'default :foreground)))))
+  :hook
+  (prog-mode . auto-highlight-symbol-mode))
 
 (provide 'abz-theme)
 
