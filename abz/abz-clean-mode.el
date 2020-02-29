@@ -25,7 +25,7 @@
 (require 'abz)
 
 (defvar abz--clean-mode-dont-indent-parent-modes
-  '(makefile-mode)
+  '(fundamental-mode text-mode makefile-mode)
   "Don't indent major modes that derive from one of this modes.")
 
 (defvar abz--clean-mode-dont-untabify-parent-modes
