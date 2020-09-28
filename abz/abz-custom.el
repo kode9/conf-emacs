@@ -321,6 +321,7 @@
 ;; https://bitbucket.org/jpkotta/immortal-scratch/
 (use-package immortal-scratch
   :straight (:type git
+                   :host nil
                    :repo "https://notabug.org/pluc/immortal-scratch.el.git"
                    :branch "master")
   :hook (after-init . immortal-scratch-mode))
