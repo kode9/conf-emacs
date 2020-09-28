@@ -35,7 +35,8 @@
   :group 'font-selection)
 
 (use-package zenburn-theme
-  :demand t)
+  :demand t
+  :config (and (version<= "27" emacs-version) (enable-theme 'zenburn)))
 
 ;; Fonts
 (use-package dynamic-fonts
