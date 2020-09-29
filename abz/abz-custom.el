@@ -28,40 +28,13 @@
 ;;;###autoload
 (defun abz--init-custom ()
   "Initialise custom configuration variables."
-  (setq frame-title-format "⸗ %b (%&) ⸗")
-
   (defalias 'yes-or-no-p 'y-or-n-p) ; Just use 'y'/'n' even for yes-or-no-p
-
-  ;; Initialization
-  (customize-set-variable 'inhibit-startup-screen t)             ; Inhibits the startup screen
-  (customize-set-variable 'initial-buffer-choice nil)            ; Starts with the *scratch* buffer if no file passed
-  (customize-set-variable 'initial-major-mode 'fundamental-mode) ; Major mode for the *scratch* buffer
-  (customize-set-variable 'initial-scratch-message nil)          ; No message in the *scratch* buffer
-  ;; Start the initial frame maximized
-  (add-hook #'emacs-startup-hook (lambda () (cl-pushnew (cons 'fullscreen 'maximized) initial-frame-alist)))
-  ;; Start subsequent frames maximized
-  (add-hook #'emacs-startup-hook (lambda () (cl-pushnew (cons 'fullscreen 'maximized) default-frame-alist)))
-
-  ;; Display
-  (customize-set-variable 'ctl-arrow nil)                          ; Display control characters as '\xx'
-  (customize-set-variable 'cursor-type '(hbar . 4))                ; Cursor when window is selected
-  (customize-set-variable 'cursor-in-non-selected-windows 'hollow) ; Cursor when window is not selected
-  (customize-set-variable 'highlight-nonselected-windows t)        ; Keep Highlightning region
-  (customize-set-variable 'visible-bell nil)                       ; Don't try the flash
-  (customize-set-variable 'ring-bell-function nil)                 ; Don't ring the bell
-  (customize-set-variable 'truncate-lines nil)                     ; Don't truncate long lines (avoid horizontal scrolling)
-  (customize-set-variable 'truncate-partial-width-windows 40)      ; Well still truncate if frame width is small
-  (customize-set-variable 'word-wrap t)                            ; Wrap long lines
 
   ;; Uniquify buffer names
   (customize-set-variable 'uniquify-after-kill-buffer-p t)           ; Update buffer names when one is killed
   (customize-set-variable 'uniquify-buffer-name-style 'post-forward) ; 'name|foo/bar'
   (customize-set-variable 'uniquify-separator "/")                   ; pose-forward becomes 'name/foo/bar'
   (customize-set-variable 'uniquify-strip-common-suffix t)           ; Strip common directories
-
-  ;; Debug
-  (customize-set-variable 'message-log-max 500) ; Keep that many lines in the message buffer
-  (customize-set-variable 'ad-redefinition-action 'accept) ; Do not warn about advice redefinitions
 
   (when (fboundp 'prefer-coding-system) (prefer-coding-system 'utf-8))          ; Give priority to UTF-8
   (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
