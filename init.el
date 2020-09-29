@@ -22,26 +22,8 @@
 
 ;;; Code:
 
-;; Raise garbage collector thresholds for initialization to improve startup
-;; time. They will be restored after initialization (see below).
-;; https://emacs.stackexchange.com/a/34367
-(customize-set-variable 'gc-cons-threshold (* 1000 1000 1000))
-(customize-set-variable 'gc-cons-percentage 90)
-
-;; Don't check file handlers during startup
-;; https://github.com/MatthewZMD/.emacs.d#unset-file-name-handler-alist
-(defvar abz--file-name-handler-alist-original file-name-handler-alist)
-(setq file-name-handler-alist nil)
-
-(defun abz--restore-file-name-handler-alist ()
-  "Restore `file-name-handler-alist' to its original value."
-  (setq file-name-handler-alist abz--file-name-handler-alist-original)
-  (makunbound 'abz--file-name-handler-alist-original))
-
-(add-hook 'emacs-startup-hook #'abz--restore-file-name-handler-alist)
-
-;; Don't load expired byte-compiled files
-(customize-set-variable 'load-prefer-newer t)
+(unless (version<= "27" emacs-version)
+  (require 'early-init nil 'noerror))
 
 ;; Bootstrap straight.el (https://github.com/raxod502/straight.el)
 

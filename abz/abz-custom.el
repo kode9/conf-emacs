@@ -63,13 +63,6 @@
   (customize-set-variable 'message-log-max 500) ; Keep that many lines in the message buffer
   (customize-set-variable 'ad-redefinition-action 'accept) ; Do not warn about advice redefinitions
 
-  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))                            ; No menu
-  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))                            ; No toolbar
-  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))                        ; No scrollbar
-  (when (fboundp 'display-time-mode) (display-time-mode -1))                    ; No time / load / mail in modeline
-  (when (fboundp 'size-indication-mode) (size-indication-mode -1))              ; No buffer size in modeline
-  (when (fboundp 'line-number-mode) (line-number-mode nil))                     ; Display current line in modeline
-  (when (fboundp 'column-number-mode) (column-number-mode nil))                 ; Display current column in modecolumn
   (when (fboundp 'prefer-coding-system) (prefer-coding-system 'utf-8))          ; Give priority to UTF-8
   (when (fboundp 'set-language-environment) (set-language-environment "UTF-8")) ; Default input method
 
