@@ -6,6 +6,9 @@
 (customize-set-variable 'gc-cons-threshold (* 1000 1000 1000))
 (customize-set-variable 'gc-cons-percentage 90)
 
+;; Disable package.el
+(customize-set-variable 'package-enable-at-startup nil)
+
 ;; Lisp
 (customize-set-variable 'load-prefer-newer t)            ; Don't load expired byte-compiled files
 (customize-set-variable 'ad-redefinition-action 'accept) ; Do not warn about advice redefinitions
