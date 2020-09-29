@@ -73,6 +73,15 @@ I don't use them.")
 ;; Use radox502's mirror of GNU ELPA (https://github.com/emacs-straight)
 (customize-set-variable 'straight-recipes-gnu-elpa-use-mirror t)
 
+;; If watchexec and Python are installed, use file watchers to detect
+;; package modifications. This saves time at startup. Otherwise, use
+;; the ever-reliable find(1).
+;; https://github.com/raxod502/radian/blob/54f9680e81767dc5d036d2c4d6672021ca422784/emacs/radian.el#L492
+(if (and (executable-find "watchexec")
+         (executable-find "python3"))
+    (customize-set-variable 'straight-check-for-modifications '(watch-files find-when-checking))
+  (customize-set-variable 'straight-check-for-modifications '(find-at-startup find-when-checking)))
+
 ;; Bootstrap
 (defvar bootstrap-version)
 (let ((bootstrap-file
