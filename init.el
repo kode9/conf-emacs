@@ -113,7 +113,10 @@
 (use-package bug-hunter)
 
 ;; Profile emacs startup
-(use-package esup)
+(use-package esup
+  :custom
+  ;; https://github.com/jschaf/esup/issues/54
+  (esup-depth 0))
 
 (bind-key* "C-c S" 'align-comments)
 (bind-key* "C-x C-r" 'toggle-sudo)
