@@ -67,3 +67,22 @@ I don't use them.")
 
 (advice-add #'x-apply-session-resources :override
             #'abz--advice-disable-x-resource-application)
+
+;;; Package manager straight.el (https://github.com/raxod502/straight.el)
+
+;; Use radox502's mirror of GNU ELPA (https://github.com/emacs-straight)
+(customize-set-variable 'straight-recipes-gnu-elpa-use-mirror t)
+
+;; Bootstrap
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))

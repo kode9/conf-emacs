@@ -25,25 +25,6 @@
 (unless (version<= "27" emacs-version)
   (require 'early-init nil 'noerror))
 
-;; Bootstrap straight.el (https://github.com/raxod502/straight.el)
-
-;; Use radox502's mirror of GNU ELPA (https://github.com/emacs-straight)
-(customize-set-variable 'straight-recipes-gnu-elpa-use-mirror t)
-
-(defvar bootstrap-version)
-
-(eval-and-compile (let ((bootstrap-file
-                         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-                        (bootstrap-version 5))
-                    (unless (file-exists-p bootstrap-file)
-                      (with-current-buffer
-                          (url-retrieve-synchronously
-                           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-                           'silent 'inhibit-cookies)
-                        (goto-char (point-max))
-                        (eval-print-last-sexp)))
-                    (load bootstrap-file nil 'nomessage)))
-
 ;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
 (eval-when-compile (straight-use-package 'use-package))
 (customize-set-variable 'straight-use-package-by-default t) ; Install packages by default in `use-package` forms
