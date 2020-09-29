@@ -47,9 +47,20 @@
 ;; Don't check file handlers during startup
 ;; https://github.com/MatthewZMD/.emacs.d#unset-file-name-handler-alist
 (defvar abz--file-name-handler-alist-original file-name-handler-alist)
+
 (defun abz--restore-file-name-handler-alist ()
   "Restore `file-name-handler-alist' to its original value."
   (setq file-name-handler-alist abz--file-name-handler-alist-original)
   (makunbound 'abz--file-name-handler-alist-original))
+
 (setq file-name-handler-alist nil)
 (add-hook 'emacs-startup-hook #'abz--restore-file-name-handler-alist)
+
+;; Disable the use of X resources
+;; https://github.com/raxod502/radian/blob/54f9680e81767dc5d036d2c4d6672021ca422784/emacs/early-init.el#L38
+(defun abz--advice-disable-x-resource-application ()
+  "Disable `x-apply-session-resources'.
+I don't use them.")
+
+(advice-add #'x-apply-session-resources :override
+            #'abz--advice-disable-x-resource-application)
