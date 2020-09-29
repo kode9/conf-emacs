@@ -72,7 +72,8 @@ I don't use them.")
 
 ;; Use radox502's mirror of GNU ELPA (https://github.com/emacs-straight)
 (customize-set-variable 'straight-recipes-gnu-elpa-use-mirror t)
-
+;; Shallow clone
+(customize-set-variable 'straight-vc-git-default-clone-depth 1)
 ;; If watchexec and Python are installed, use file watchers to detect
 ;; package modifications. This saves time at startup. Otherwise, use
 ;; the ever-reliable find(1).
