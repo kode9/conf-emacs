@@ -127,16 +127,35 @@ Acts as `delete-trailing-whitespace' with `delete-trailing-lines' and
     (call-interactively #'delete-trailing-whitespace)))
 
 ;;;###autoload
+(defun abz-indent-region (START END)
+  (interactive "rP")
+  (cond ((and (bound-and-true-p lsp-mode)
+              (lsp-feature? "textDocument/formatting"))
+         (call-interactively #'lsp-format-region))
+        (call-interactively #'indent-region)))
+
+;;;###autoload
+(defun abz-indent-buffer ()
+  (interactive)
+  (cond ((and (bound-and-true-p lsp-mode)
+              (lsp-feature? "textDocument/formatting"))
+         (call-interactively #'lsp-format-buffer))
+        ((and (derived-mode-p #'c++-mode)
+              (fboundp #'projectile-project-root)
+              (file-readable-p (expand-file-name ".clang-format" (projectile-project-root))))
+         (call-interactively #'clang-format-buffer))
+        (t
+         (indent-region (point-min) (point-max) nil))))
+
+;;;###autoload
 (defun abz-indent-dwim ()
   "Indent a region or a buffer.
 
 Same as `indent-region' but indents the whole buffer no region is active."
   (interactive)
-  (let ((inhibit-message t))
-    (if (use-region-p)
-        (progn
-          (call-interactively #'indent-region))
-      (indent-region (point-min) (point-max) nil))))
+  (if (use-region-p)
+      (call-interactively #'abz-indent-region)
+    (call-interactively #'abz-indent-buffer)))
 
 ;;;###autoload
 (defun abz-untabify-dwim ()
