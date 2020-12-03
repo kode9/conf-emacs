@@ -81,10 +81,20 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; which-function: Show function at cursor
 (use-package which-func
-  :init (which-function-mode nil)
+  :defines which-func-keymap
+  ;; Displayed when current function is unknown
   :config
-  (setq which-func-unknown "∅") ; Displayed when current function is unknown
-  )
+  (setq which-func-unknown "∅")
+  (customize-set-variable 'which-func-format `("λ⌜"
+                                               (:propertize which-func-current
+                                                            local-map ,which-func-keymap
+                                                            face which-func
+                                                            mouse-face mode-line-highlight
+                                                            help-echo "mouse-1: go to beginning\n\
+mouse-2: toggle rest visibility\n\
+mouse-3: go to end")
+                                               "⌟"))
+  :hook (prog-mode . which-function-mode))
 
 ;; Beautify the operators in codes.Requires tuning/patching for a lot
 ;; of things: templates, includes,
