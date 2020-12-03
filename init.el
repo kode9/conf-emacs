@@ -23,7 +23,7 @@
 ;;; Code:
 
 (unless (version<= "27" emacs-version)
-  (require 'early-init nil 'noerror))
+  (load (expand-file-name "early-init" user-emacs-directory) nil 'nomessage))
 
 ;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
 (eval-when-compile (straight-use-package 'use-package))
