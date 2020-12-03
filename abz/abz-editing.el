@@ -139,17 +139,23 @@ With argument N go to the nth entry."
 ;; no-littering: `undo-tree-history-directory-alist`
 (use-package undo-tree
   :diminish undo-tree-mode
-  :commands abz--undo-tree-make-history-file-name-append-compression
+  :custom
+  (undo-tree-auto-save-history t)       ; Save undo tree to a file
+  (undo-tree-enable-undo-in-region nil) ; Don't enable in regions
+  (undo-tree-visualizer-diff t)         ; Display diff by default in visualizer
+  (undo-tree-visualizer-timestamps t)   ; Show timestamps
   :init
-  (customize-set-variable 'undo-tree-auto-save-history t)       ; Save undo tree to a file
-  (customize-set-variable 'undo-tree-enable-undo-in-region nil) ; Don't enable in regions
-  (customize-set-variable 'undo-tree-visualizer-diff t)         ; Display diff by default in visualizer
-  (customize-set-variable 'undo-tree-visualizer-timestamps t)   ; Show timestamps
-  ;; Advice to compress undo-tree history files
-  (defun abz--undo-tree-make-history-file-name-append-compression (filename)
-    "Add `gz` extension so `undo-tree-save-history` uses compression."
-    (concat filename ".gz"))
-  (advice-add 'undo-tree-make-history-save-file-name :filter-return #'abz--undo-tree-make-history-file-name-append-compression)
+  ;; Advice the function that compute the filename to compress history files
+  (let ((ext (cond
+              ;; `auto-compression-mode' does not seem to know a lot of formats (e.g lz4) but it knows zstd
+              ((executable-find "zstd") ".zst")
+              ((executable-find "gzip") ".gz")
+              (""))))
+    (defun abz--undo-tree-make-history-file-name-append-compression (filename)
+      "Append file extension to `undo-tree-save-history` uses compression."
+      (concat filename ext)))
+  (advice-add 'undo-tree-make-history-save-file-name
+              :filter-return #'abz--undo-tree-make-history-file-name-append-compression)
   :bind (:map undo-tree-visualizer-mode-map
               ("RET" . undo-tree-visualizer-quit)
               ("q" . undo-tree-visualizer-abort))
