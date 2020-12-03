@@ -169,20 +169,25 @@ With argument N go to the nth entry."
 ;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
 (use-package ispell
   :straight nil
+  :custom
+  (ispell-program-name (cond ((executable-find "aspell"))
+                             ((executable-find "hunspell"))
+                             ((executable-find "ispell"))))
   :init
-  (customize-set-variable 'ispell-dictionary "english") ; default dictionnary
-  (customize-set-variable 'ispell-program-name (cond ((executable-find "aspell"))
-                                                     ((executable-find "hunspell"))
-                                                     ((executable-find "ispell"))))
   (if (and ispell-program-name (string-match  "aspell$" ispell-program-name))
       ;; http://aspell.net/man-html/Notes-on-the-Different-Suggestion-Modes.html
-      (customize-set-variable 'ispell-extra-args
-                              '("--sug-mode=normal"
-                                "--dont-run-together"
-                                "--run-together-limit=4"
-                                "--run-together-min=2")))
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode)
-  (add-hook 'text-mode-hook #'flyspell-mode))
+      (customize-set-variable 'ispell-extra-args '("--sug-mode=normal"
+                                                   "--dont-run-together"
+                                                   "--run-together-limit=4"
+                                                   "--run-together-min=2"))))
+
+(use-package flyspell
+  :straight nil
+  :custom
+  (flyspell-default-dictionary "english")
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode))
 
 (use-package backup-each-save
   :demand t
