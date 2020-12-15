@@ -124,24 +124,27 @@ mouse-3: go to end")
                       :height 0.95))
 
 ;; Projectile: project management
+;;
+;; no-literring:
+;;  - projectile-cache-file
+;;  - projectile-known-projects-file
 (use-package projectile
-  :commands (projectile-mode projectile-cleanup-known-projects)
-  :init
-  (customize-set-variable 'projectile-known-projects-file
-                          (expand-file-name
-                           ".cache/projectile-bookmarks.eld" user-emacs-directory)) ; known projects file
-  (customize-set-variable 'projectile-switch-project-action #'magit-status) ; Function to call when switching project
-  (customize-set-variable 'projectile-find-dir-includes-top-level t) ; Add top-level dir to projectile-find-dir
-  (customize-set-variable 'projectile-mode-line '(:propertize
-                                                  (:eval
-                                                   (format "[%s]"
-                                                           (projectile-project-name)))
-                                                  face font-lock-constant-face)) ; modeline
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
+  :preface
+  (defun abz--projectile-modeline-function ()
+    "The function to use to generate project-specific mode-line."
+    (format " π⌜%s⌟" (or (projectile-project-name) "∅")))
+  :custom
+  (compilation-save-buffers-predicate #'projectile-current-project-buffer-p)
+  (projectile-find-dir-includes-top-level t)        ; Add top-level dir to projectile-find-dir
+  (projectile-mode-line-function #'abz--projectile-modeline-function)
+  (projectile-require-project-root nil)             ; Consider the current directory the root
+  (projectile-switch-project-action #'magit-status) ; Function to call when switching project
   :config
-  (projectile-mode t)
-  (run-with-idle-timer 59 t #'projectile-cleanup-known-projects))
+  (setq compilation-buffer-name-function #'projectile-compilation-buffer-name)
+  (run-with-idle-timer 59 t #'projectile-cleanup-known-projects)
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map))
+  :hook (after-init . projectile-mode))
 
 ;;;;;;;;;;;;;;;;;
 ;; Major Modes ;;
