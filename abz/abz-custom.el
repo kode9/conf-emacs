@@ -43,8 +43,8 @@
   (customize-set-variable 'mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control . nil))))
   (customize-set-variable 'mouse-wheel-progressive-speed nil)
   (customize-set-variable 'scroll-step 1)
-  (customize-set-variable 'scroll-margin 10)
-  (customize-set-variable 'scroll-conservatively 5)
+  (customize-set-variable 'scroll-margin 2)
+  (customize-set-variable 'scroll-conservatively 4)
   (customize-set-variable 'scroll-preserve-screen-position t)
 
   ;; History file
