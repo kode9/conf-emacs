@@ -23,7 +23,7 @@
 ;;; Code:
 
 ;;;###autoload
-(defcustom abz-completion-framework 'ido
+(defcustom abz-completion-framework 'ivy
   "Completion framework to use."
   :type '(radio (const :tag "Ido" ido)
                 (const :tag "Ivy" ivy)
