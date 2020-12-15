@@ -297,37 +297,6 @@ mouse-3: go to end")
   (add-to-list 'cmake-ide-src-extensions ".cu")
   (cmake-ide-setup))
 
-;; Auto completion
-(use-package company
-  :diminish company-mode
-  :init
-  (setq
-   company-idle-delay 0.1                              ; Seconds before starting completion
-   company-minimum-prefix-length 2                     ; Minimum numbers of characters to start completion
-   company-tooltip-align-annotations t                 ; Align annotations to the right tooltip border
-   company-show-numbers  t                             ; Quick access to first 10 candidates
-   company-transformers '(company-sort-by-occurrence)) ; Sort candidates by occurence
-  :config
-  (customize-set-variable 'company-backends (delete 'company-semantic company-backends)) ; Remove CEDET
-  :hook (after-init . global-company-mode))
-
-(use-package company-c-headers
-  :after company
-  :demand t
-  :config
-  (add-to-list 'company-c-headers-path-system "/usr/include/c++/v1/")
-  (add-to-list 'company-backends 'company-c-headers nil))
-
-(use-package company-quickhelp
-  :after company
-  :demand t
-  :commands company-quickhelp-mode
-  :init
-  (customize-set-variable 'company-quickhelp-use-propertized-text t)
-  (customize-set-variable 'company-quickhelp-delay 0.75)
-  :config
-  (company-quickhelp-mode 1))
-
 ;; On the fly error checking
 (use-package flycheck
   :diminish flycheck-mode
@@ -425,6 +394,8 @@ mouse-3: go to end")
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
+
+(require 'abz-company)
 
 (provide 'abz-devel)
 
