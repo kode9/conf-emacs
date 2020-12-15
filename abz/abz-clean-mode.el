@@ -37,9 +37,15 @@
   (deactivate-mark)
   (unless (apply #'derived-mode-p abz--clean-mode-dont-indent-parent-modes)
     (abz-indent-dwim))
-  (unless (apply #'derived-mode-p abz--clean-mode-dont-untabify-parent-modes)
-    (abz-untabify-dwim))
-  (abz-delete-trailing-whitespace))
+  (unless (or (and (derived-mode-p #'c++-mode)
+                   (fboundp #'projectile-project-root)
+                   (file-readable-p (expand-file-name ".clang-format" (projectile-project-root))))
+              (and (bound-and-true-p lsp-mode)
+                   (lsp-feature? "textDocument/formatting")))
+    (unless (or (bound-and-true-p indent-tabs-mode)
+                (apply #'derived-mode-p abz--clean-mode-dont-untabify-parent-modes))
+      (abz-untabify-dwim))
+    (abz-delete-trailing-whitespace)))
 
 (define-minor-mode abz-clean-mode
   "Cleans buffer before saving.
