@@ -148,7 +148,7 @@ With argument N go to the nth entry."
   (undo-tree-enable-undo-in-region nil) ; Don't enable in regions
   (undo-tree-visualizer-diff t)         ; Display diff by default in visualizer
   (undo-tree-visualizer-timestamps t)   ; Show timestamps
-  :init
+  :preface
   ;; Advice the function that compute the filename to compress history files
   (let ((ext (cond
               ;; `auto-compression-mode' does not seem to know a lot of formats (e.g lz4) but it knows zstd
@@ -158,6 +158,7 @@ With argument N go to the nth entry."
     (defun abz--undo-tree-make-history-file-name-append-compression (filename)
       "Append file extension to `undo-tree-save-history` uses compression."
       (concat filename ext)))
+  :init
   (advice-add 'undo-tree-make-history-save-file-name
               :filter-return #'abz--undo-tree-make-history-file-name-append-compression)
   :bind (:map undo-tree-visualizer-mode-map
