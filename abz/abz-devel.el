@@ -297,30 +297,6 @@ mouse-3: go to end")
   (add-to-list 'cmake-ide-src-extensions ".cu")
   (cmake-ide-setup))
 
-;; On the fly error checking
-(use-package flycheck
-  :diminish flycheck-mode
-  :init
-  (customize-set-variable 'flycheck-highlighting-mode 'sexps)           ; Highlight whole expression around the error column
-  (customize-set-variable 'flycheck-emacs-lisp-load-path 'inherit)      ; Use the current session `load-path`
-  (customize-set-variable 'flycheck-emacs-lisp-initialize-packages nil) ; Don't call `package-initialize`
-  :bind
-  (("C-c f f" . flycheck-next-error)
-   ("C-c f p" . flycheck-previous-error)
-   ("C-c f l" . flycheck-list-errors)
-   ("C-c f c" . flycheck-clear))
-  :hook (after-init . global-flycheck-mode))
-
-;; Show errors under point in pos-tip popups
-(use-package flycheck-pos-tip
-  :after flycheck
-  :demand t
-  :commands flycheck-pos-tip-mode
-  :init
-  (customize-set-variable 'flycheck-pos-tip-timeout 10)
-  :config
-  (flycheck-pos-tip-mode +1))
-
 (use-package web-mode
   :init
   (customize-set-variable 'web-mode-code-indent-offset 2)
@@ -333,10 +309,6 @@ mouse-3: go to end")
 ;; YAML
 (use-package yaml-mode
   :init)
-
-(use-package flycheck-yamllint
-  :after yaml-mode
-  :hook (flycheck-mode . flycheck-yamllint-setup))
 
 ;; TOML
 (use-package toml-mode)
@@ -351,12 +323,6 @@ mouse-3: go to end")
   :after rust-mode
   :init
   :hook (rust-mode . cargo-minor-mode))
-
-;; Flycheck integration
-(use-package flycheck-rust
-  :after rust-mode
-  :init
-  :hook (flycheck-mode . flycheck-rust-setup))
 
 ;; Code completion
 (use-package racer
@@ -395,6 +361,7 @@ mouse-3: go to end")
   :straight nil
   :hook (after-init . abz-clean-global-mode))
 
+(require 'abz-diagnostics)
 (require 'abz-company)
 
 (provide 'abz-devel)
