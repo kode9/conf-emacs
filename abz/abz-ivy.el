@@ -1,6 +1,6 @@
 ;;; abz-ivy.el --- Ivy/Counsel/Sweeper configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018-2020 Pierre-Luc Perrier
+;; Copyright (C) 2018-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -22,7 +22,7 @@
 
 ;;; Code:
 
-(require 'abz-theme) ; all-the-icons, dimmer
+(require 'abz-theme)
 (require 'use-package)
 
 ;; Ivy will use flx for filtering if it's loaded
@@ -70,6 +70,7 @@
   :bind ("C-s" . swiper-isearch))
 
 (use-package counsel
+  :diminish
   :commands counsel-mode
   :after swiper
   :demand t

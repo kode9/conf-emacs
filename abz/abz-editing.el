@@ -1,6 +1,6 @@
 ;;; abz-editing.el --- Editing configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 Pierre-Luc Perrier
+;; Copyright (C) 2015-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -72,6 +72,10 @@
   (customize-set-variable 'save-place-save-skipped nil)
   (customize-set-variable 'save-place-version-control t)
   :hook (after-init . save-place-mode))
+
+(use-package abbrev
+  :straight nil
+  :diminish)
 
 ;;;###autoload
 (defun align-comments (begin end)
