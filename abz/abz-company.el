@@ -44,9 +44,14 @@
                         company-preview-if-just-one-frontend
                         company-echo-metadata-frontend)
                      "Active frontends")
-  ;; TODO backends: company-keywords company-cmake company-clang
-  ;; company-dabbrev-code company-gtags company-etags
-  (company-backends #'((company-files company-capf company-yasnippet :with company-dabbrev :with company-abbrev))
+  ;; TODO backends: company-clang
+  (company-backends #'((company-files
+                        company-capf
+                        :with company-yasnippet
+                        :with company-keywords
+                        :with company-dabbrev-code
+                        :with company-dabbrev
+                        :with company-abbrev))
                     "Globally enabled backends")
   (company-transformers #'(company-sort-by-backend-importance
                            company-sort-by-occurrence
@@ -54,7 +59,41 @@
                         "Candidate sorting")
   (company-global-modes #'(not gud-mode help-mode)
                         "Manage modes where global-company-mode is enabled")
-  :hook (after-init  . global-company-mode))
+  :hook
+  (after-init  . global-company-mode)
+  ;; TODO I guess this should be refactored
+  (cmake-mode . (lambda () (set (make-local-variable 'company-backends) #'((company-files
+                                                                            company-cmake
+                                                                            company-capf
+                                                                            :with company-yasnippet
+                                                                            :with company-keywords
+                                                                            :with company-dabbrev-code
+                                                                            :with company-dabbrev
+                                                                            :with company-abbrev)))))
+  (text-mode . (lambda () (set (make-local-variable 'company-backends) #'((company-files
+                                                                           company-ispell
+                                                                           company-capf
+                                                                           :with company-yasnippet
+                                                                           :with company-keywords
+                                                                           :with company-dabbrev-code
+                                                                           :with company-dabbrev
+                                                                           :with company-abbrev)))))
+  (adoc-mode . (lambda () (set (make-local-variable 'company-backends) #'((company-files
+                                                                           company-ispell
+                                                                           company-capf
+                                                                           :with company-yasnippet
+                                                                           :with company-keywords
+                                                                           :with company-dabbrev-code
+                                                                           :with company-dabbrev
+                                                                           :with company-abbrev))))))
+
+;; Cycle candidates using TAB. Part of company. Insert itself in `company-frontends'.
+(use-package company-tgn
+  :disabled
+  :straight nil
+  :after company
+  :init
+  (company-tng-mode))
 
 ;; Company frontend with icons using a child frame
 ;; Can differentiate backends with colors
@@ -115,3 +154,7 @@
 (provide 'abz-company)
 
 ;;; abz-company.el ends here
+
+;; Local Variables:
+;; eval: (when (require 'rainbow-mode nil t) (rainbow-mode))
+;; End:
