@@ -213,6 +213,16 @@ With argument N go to the nth entry."
 
 (use-package goto-last-change)
 
+(use-package lice
+  :custom
+  (lice:comment-style 'extra-line)
+  (lice:mode-comments '((c-mode :comment-start "/*" :comment-end "*/")
+                        (c++-mode :comment-start "//" :comment-continue "//" :comment-end "//")
+                        (cmake-mode :comment-start "#" :comment-continue "#" :comment-end "#" :comment-empty-lines t)
+                        (java-mode :comment-start "/*" :comment-end "*/")
+                        (groovy-mode :comment-start "/*" :comment-end "*/")
+                        (nxml-mode :comment-continue "   "))))
+
 ;;;;;;;;;;;;;;;;;;
 ;; key bindings ;;
 ;;;;;;;;;;;;;;;;;;
