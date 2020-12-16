@@ -1,6 +1,6 @@
 ;;; abz-theme.el --- Fonts & Faces -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 Pierre-Luc Perrier
+;; Copyright (C) 2015-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -74,7 +74,7 @@
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package spaceline-config
-  :disabled t
+  :disabled
   :straight spaceline
   :functions spaceline-emacs-theme
   :hook (after-init . spaceline-emacs-theme))

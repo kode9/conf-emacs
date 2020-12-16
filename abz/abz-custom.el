@@ -1,6 +1,6 @@
 ;;; abz-custom.el --- Basic configuration           -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020, 2020 Pierre-Luc Perrier
+;; Copyright (C) PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -24,6 +24,7 @@
 
 (require 'abz-settings)
 (require 'cl-lib)
+(require 'use-package)
 
 ;;;###autoload
 (defun abz--init-custom ()
@@ -198,7 +199,7 @@
 ;; http://github.com/Malabarba/paradox
 (use-package paradox
   :straight nil
-  :disabled t
+  :disabled
   :init
   (setq paradox-github-token t)             ; Don't ask for GitHub token
   (setq paradox-execute-asynchronously nil) ; Don't try to do things asynchronously
@@ -225,7 +226,7 @@
 ;;
 ;; TODO Configure & enable.
 (use-package dired-hacks
-  :disabled t
+  :disabled
   :straight nil
   :bind (:map dired-mode-map
               ([remap dired-previous-line] . dired-hacks-previous-file)

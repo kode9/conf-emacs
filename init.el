@@ -1,6 +1,6 @@
 ;;; init.el --- Pluc's GNU Emacs Initialization File -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2012-2020 Pierre-Luc Perrier
+;; Copyright (C) 2012-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -120,7 +120,7 @@
 
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
-  :disabled t
+  :disabled
   :straight nil
   :commands (ansi-color-apply-on-region abz/colorize-region)
   :init

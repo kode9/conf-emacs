@@ -1,6 +1,6 @@
 ;;; abz-devel.el --- Development packages -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 Pierre-Luc Perrier
+;; Copyright (C) 2015-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -73,7 +73,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 ;; buffer.
 ;;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
-  :disabled t
+  :disabled
   :functions git-gutter+-mode
   :diminish git-gutter+-mode
   :init
@@ -100,14 +100,14 @@ mouse-3: go to end")
 ;; of things: templates, includes,
 ;; etc. http://www.emacswiki.org/emacs/SmartOperator
 (use-package smart-operator
-  :disabled t
+  :disabled
   :commands smart-insert-operator-hook
   :init
   (add-hook 'c-mode-common-hook 'smart-insert-operator-hook))
 
 ;; Color keywords such as TODO in comments and strings
 (use-package fic-mode
-  :disabled t
+  :disabled
   :diminish fic-mode
   :init
   (add-hook #'prog-mode-hook #'fic-mode)
@@ -196,7 +196,7 @@ mouse-3: go to end")
 ;;; Disabled: It is VERY slow. I'm not sure if it's a clash with
 ;;; something else.
 (use-package cmake-font-lock
-  :disabled t
+  :disabled
   :commands cmake-font-lock-activate
   :init
   ;; cmake-font-lock-activate must be called BEFORE fic-mode. Since
