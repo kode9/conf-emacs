@@ -140,9 +140,7 @@
   (prog-mode . auto-highlight-symbol-mode))
 
 (use-package dimmer
-  :demand t
-  :config
-  (dimmer-mode t))
+  :hook (after-init . dimmer-mode))
 
 (provide 'abz-theme)
 
