@@ -107,6 +107,7 @@
   :hook (prog-mode . display-line-numbers-mode))
 
 (use-package guru-mode
+  :disabled
   :diminish
   :init
   (setq guru-warn-only t)
