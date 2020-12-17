@@ -84,6 +84,10 @@
   :after ivy
   :demand t)
 
+(use-package posframe
+  :custom
+  (posframe-mouse-banish t))
+
 ;; Use posframe to show ivy candidates
 ;; https://github.com/tumashu/ivy-posframe
 (use-package ivy-posframe
