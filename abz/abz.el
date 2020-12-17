@@ -1,6 +1,6 @@
 ;;; abz.el --- Some useful elisp functions -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018 Pierre-Luc Perrier
+;; Copyright (C) 2018 PERRIER Pierre-Luc <dev@the-pluc.net>
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -25,6 +25,7 @@
 (require 'files)
 (require 'simple)
 (require 'tabify)
+(require 'use-package)
 
 (defalias 'abz-beginning-of-line? 'bolp)
 
@@ -166,6 +167,60 @@ Same as `untabify' but indents the whole buffer no region is active."
   (if (use-region-p)
       (call-interactively #'untabify)
     (untabify (point-min) (point-max) nil)))
+
+(defun abz--straight-upgrade-all ()
+  "Upgrade all packages with `straight'."
+  (let ((debug-on-error t)
+        (buffer "*Messages*"))
+    (message "Upgrade all packages..")
+    (pop-to-buffer-same-window buffer)
+    (redisplay)
+    (message "Normalize packages..")
+    (redisplay)
+    (straight-normalize-all)
+    (message "Normalize packages... Done.")
+    (message "Pull packages..")
+    (redisplay)
+    (straight-pull-all)
+    (message "Pull packages... Done.")
+    (message "Normalize packages..")
+    (redisplay)
+    (straight-normalize-all)
+    (message "Normalize packages... Done.")
+    (message "Build packages..")
+    (redisplay)
+    (straight-rebuild-all)
+    (message "Build packages... Done")
+    (message "Upgrade all packages... Done.")
+    (redisplay)
+    (princ (buffer-string) #'external-debugging-output)
+    (kill-emacs)))
+
+(defun abz--straight-upgrade-all-async-sentinel (PROCESS EVENT)
+  "Sentinel function for `abz--straight-upgrade-all'."
+  (when (y-or-n-p (format "Process %s %s.  Restart Emacs?" PROCESS EVENT))
+    (use-package restart-emacs
+      :custom
+      (restart-emacs-restore-frames t))
+    (restart-emacs)))
+
+(defun abz--straight-upgrade-all-async ()
+  "Upgrade all packages in another process."
+  (let ((proc (make-process
+               :name "abz-upgrade"
+               :buffer "*abz-upgrade*"
+               :command `(,(expand-file-name invocation-name invocation-directory)
+                          "-u"
+                          ,(or (and (not (string-empty-p init-file-user)) init-file-user) (user-login-name))
+                          "-f"
+                          "abz--straight-upgrade-all")
+               :sentinel #'abz--straight-upgrade-all-async-sentinel)))))
+
+;;;###autoload
+(defun abz-straight-upgrade-all ()
+  "Upgrade all packages."
+  (interactive)
+  (abz--straight-upgrade-all-async))
 
 (provide 'abz)
 
