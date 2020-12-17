@@ -363,6 +363,7 @@ mouse-3: go to end")
 
 (require 'abz-diagnostics)
 (require 'abz-company)
+(require 'abz-lsp)
 
 (provide 'abz-devel)
 
