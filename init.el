@@ -101,6 +101,7 @@
 
 (bind-key* "C-c S" 'align-comments)
 (bind-key* "C-x C-r" 'toggle-sudo)
+(bind-key* "C-c b r" 'revert-buffer)
 
 ;; Shorten long file-name targets. https://github.com/lewang/scf-mode
 (use-package scf-mode
