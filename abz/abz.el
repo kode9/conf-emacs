@@ -164,7 +164,9 @@ Acts as `delete-trailing-whitespace' with `delete-trailing-lines' and
 
 Indent the region between `START' and `END'."
   (interactive "rP")
-  (cond ((abz--lsp-format?)
+  (cond ((abz--lsp-clang-format?)
+         (clang-format-region START END))
+        ((abz--lsp-format?)
          (lsp-format-region START END))
         ((indent-region START END))))
 
@@ -172,10 +174,10 @@ Indent the region between `START' and `END'."
 (defun abz-indent-buffer ()
   "Indent the current buffer using the best tool available."
   (interactive)
-  (cond ((abz--lsp-format?)
-         (call-interactively #'lsp-format-buffer))
-        ((abz--lsp-clang-format?)
+  (cond ((abz--lsp-clang-format?)
          (call-interactively #'clang-format-buffer))
+        ((abz--lsp-format?)
+         (call-interactively #'lsp-format-buffer))
         ((fboundp 'indent-region)
          (indent-region (point-min) (point-max) nil))))
 
