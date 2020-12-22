@@ -24,8 +24,22 @@
 
 (require 'files)
 (require 'simple)
+(require 'subr-x)
 (require 'tabify)
 (require 'use-package)
+
+(declare-function straight-normalize-all "straight")
+(declare-function straight-pull-all "straight")
+(declare-function straight-rebuild-all "straight")
+
+(declare-function projectile-project-root "projectile")
+
+(declare-function clang-format-region "clang-format")
+(declare-function clang-format-buffer "clang-format")
+
+(declare-function lsp-feature? "lsp-mode")
+(declare-function lsp-format-buffer "lsp-mode")
+(declare-function lsp-format-region "lsp-mode")
 
 (defalias 'abz-beginning-of-line? 'bolp)
 
@@ -76,6 +90,23 @@ no such line exists."
                ((abz-end-of-line?) (line-beginning-position))
                ((point)))))
       (cons beg (abz-non-empty-line-position-backward)))))
+
+(defun abz--lsp-mode? ()
+  "Return t if `lsp-mode' is active."
+  (bound-and-true-p lsp-mode))
+
+(defun abz--lsp-format? ()
+  "Return t if `lsp-mode' is active and can handle formatting."
+  (and (abz--lsp-mode?)
+       (fboundp 'lsp-feature?)
+       (lsp-feature? "textDocument/formatting")))
+
+(defun abz--lsp-clang-format? ()
+  "Return t if `clang-format' is available and can be used."
+  (and (derived-mode-p #'c++-mode)
+       (fboundp #'clang-format-buffer)
+       (fboundp #'projectile-project-root)
+       (file-readable-p (expand-file-name ".clang-format" (projectile-project-root)))))
 
 ;;;###autoload
 (defun abz-mark-previous-paragraph ()
@@ -129,23 +160,23 @@ Acts as `delete-trailing-whitespace' with `delete-trailing-lines' and
 
 ;;;###autoload
 (defun abz-indent-region (START END)
+  "Indent the current region using the best tool available.
+
+Indent the region between `START' and `END'."
   (interactive "rP")
-  (cond ((and (bound-and-true-p lsp-mode)
-              (lsp-feature? "textDocument/formatting"))
-         (call-interactively #'lsp-format-region))
-        (call-interactively #'indent-region)))
+  (cond ((abz--lsp-format?)
+         (lsp-format-region START END))
+        ((indent-region START END))))
 
 ;;;###autoload
 (defun abz-indent-buffer ()
+  "Indent the current buffer using the best tool available."
   (interactive)
-  (cond ((and (bound-and-true-p lsp-mode)
-              (lsp-feature? "textDocument/formatting"))
+  (cond ((abz--lsp-format?)
          (call-interactively #'lsp-format-buffer))
-        ((and (derived-mode-p #'c++-mode)
-              (fboundp #'projectile-project-root)
-              (file-readable-p (expand-file-name ".clang-format" (projectile-project-root))))
+        ((abz--lsp-clang-format?)
          (call-interactively #'clang-format-buffer))
-        (t
+        ((fboundp 'indent-region)
          (indent-region (point-min) (point-max) nil))))
 
 ;;;###autoload
@@ -197,24 +228,27 @@ Same as `untabify' but indents the whole buffer no region is active."
     (kill-emacs)))
 
 (defun abz--straight-upgrade-all-async-sentinel (PROCESS EVENT)
-  "Sentinel function for `abz--straight-upgrade-all'."
+  "Sentinel function for `abz--straight-upgrade-all'.
+
+Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
   (when (y-or-n-p (format "Process %s %s.  Restart Emacs?" PROCESS EVENT))
     (use-package restart-emacs
+      :functions restart-emacs
       :custom
       (restart-emacs-restore-frames t))
     (restart-emacs)))
 
 (defun abz--straight-upgrade-all-async ()
   "Upgrade all packages in another process."
-  (let ((proc (make-process
-               :name "abz-upgrade"
-               :buffer "*abz-upgrade*"
-               :command `(,(expand-file-name invocation-name invocation-directory)
-                          "-u"
-                          ,(or (and (not (string-empty-p init-file-user)) init-file-user) (user-login-name))
-                          "-f"
-                          "abz--straight-upgrade-all")
-               :sentinel #'abz--straight-upgrade-all-async-sentinel)))))
+  (make-process
+   :name "abz-upgrade"
+   :buffer "*abz-upgrade*"
+   :command `(,(expand-file-name invocation-name invocation-directory)
+              "-u"
+              ,(or (and (not (string-empty-p init-file-user)) init-file-user) (user-login-name))
+              "-f"
+              "abz--straight-upgrade-all")
+   :sentinel #'abz--straight-upgrade-all-async-sentinel))
 
 ;;;###autoload
 (defun abz-straight-upgrade-all ()
