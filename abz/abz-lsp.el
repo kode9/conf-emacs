@@ -83,6 +83,7 @@
   (lsp-server-trace t)
   (lsp-signature-auto-activate #'(:after-completion :on-trigger-char)) ; nil
   (lsp-signature-render-documentation nil "Display signature documentation in `eldoc'")
+  (lsp-rust-server 'rust-analyzer "Which LSP server to use (`rust-analyzer' or `rls')")
   :hook
   ((c++-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration)))

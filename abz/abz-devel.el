@@ -316,21 +316,41 @@ mouse-3: go to end")
 
 ;; Rust
 (use-package rust-mode
+  :disabled
   :init
-  (customize-set-variable 'rust-format-on-save t)) ; run rustfmt on save
+  (customize-set-variable 'rust-format-on-save nil)) ; run rustfmt on save
+
+;; Code completion
+(use-package racer
+  :disabled
+  :custom
+  (racer-rust-src-path (f-join (s-trim-right
+                                (shell-command-to-string
+                                 (format "%s --print sysroot" (executable-find "rustc")))) "lib/rustlib/src/rust/library"))
+  :hook ((rustic-mode . racer-mode)
+         (rust-mode . racer-mode)
+         (racer-mode . eldoc-mode)))
 
 ;; Cargo commands
 (use-package cargo
+  :disabled
   :after rust-mode
   :init
   :hook (rust-mode . cargo-minor-mode))
 
-;; Code completion
-(use-package racer
-  :after rust-mode
-  :init
-  :hook ((rust-mode . racer-mode)
-         (racer-mode . eldoc-mode)))
+(use-package rustic
+  :custom
+  (rustic-lsp-client 'lsp-mode "LSP frontend (`lsp-mode' or `eglot')")
+  (rustic-lsp-server 'rust-analyzer "Which LSP server to use (`rust-analyzer' or `rls')")
+  (rustic-lsp-setup-p t "Setup LSP related stuff automatically")
+  ;; Path to rust std sources changed from `src` subdirectory to `library`.
+  (rustic-racer-rust-src-path (f-join (s-trim-right
+                                       (shell-command-to-string (format "%s --print sysroot" (executable-find "rustc"))))
+                                      "lib/rustlib/src/rust/library"))
+  :config
+  ;; Debug
+  (advice-add #'rustic-compile :before (lambda () (message "=~= abz: Call to rustic-compile")))
+  (advice-add #'rustic-format-buffer :before (lambda () (message "=~= abz: Call to rustic-format-buffer"))))
 
 (use-package dockerfile-mode
   :init
