@@ -44,6 +44,10 @@
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
 
+;; Addon to `use-package' that checks for system packages
+(use-package use-package-ensure-system-package
+  :demand)
+
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish :demand t)
 ;; Macros to define key bindings. use-package integration with `:bind`.
