@@ -34,33 +34,6 @@
   :group 'abz
   :group 'font-selection)
 
-(use-package zenburn-theme
-  :demand t
-  :config (and (version<= "27" emacs-version) (enable-theme 'zenburn)))
-
-;; Fonts
-(use-package dynamic-fonts
-  :functions dynamic-fonts-setup
-  :init
-  (customize-set-variable 'dynamic-fonts-set-alternatives t) ; Fill up alternative fonts
-  (customize-set-variable 'dynamic-fonts-preferred-monospace-point-size abz-font-default-size)
-  (customize-set-variable 'dynamic-fonts-preferred-monospace-fonts
-                          '("Iosevka"
-                            "Monoisome"
-                            "Monoid"
-                            "Hack"
-                            "Dejavu Sans Mono"
-                            "courier"
-                            "fixed"))
-  (customize-set-variable 'dynamic-fonts-preferred-proportional-fonts
-                          '("Open Sans"
-                            "Roboto"
-                            "Dejavu Sans"
-                            "arial"
-                            "fixed"))
-  (customize-set-variable 'dynamic-fonts-preferred-proportional-point-size abz-font-default-size)
-  :hook (after-init . dynamic-fonts-setup))
-
 (use-package all-the-icons
   :if (display-graphic-p)
   :commands all-the-icons-install-fonts
@@ -80,6 +53,7 @@
   :hook (after-init . spaceline-emacs-theme))
 
 (use-package doom-modeline
+  :disabled
   :init
   (customize-set-variable 'doom-modeline-height 30)
   (customize-set-variable 'doom-modeline-bar-width 2)
@@ -95,6 +69,57 @@
   (customize-set-variable 'doom-modeline-indent-info nil)
   (customize-set-variable 'doom-modeline-checker-simple-format nil)
   :hook (after-init . doom-modeline-mode))
+
+(use-package mood-line
+  :hook (after-init . mood-line-mode))
+
+(use-package zenburn-theme
+  :disabled
+  :demand t
+  :config
+  (load-theme 'zenburn 'no-confirm))
+
+(use-package doom-themes
+  :demand t
+  :config
+  (load-theme 'doom-molokai 'no-confirm))
+
+(use-package ample-theme
+  :disabled
+  :demand t
+  :config
+  (load-theme 'ample 'no-confirm))
+
+(use-package moe-theme
+  :disabled
+  :demand t
+  :config
+  (load-theme 'moe-dark 'no-confirm))
+
+;; Fonts
+(use-package dynamic-fonts
+  :functions dynamic-fonts-setup
+  :init
+  (customize-set-variable 'dynamic-fonts-set-alternatives t) ; Fill up alternative fonts
+  (customize-set-variable 'dynamic-fonts-preferred-monospace-point-size abz-font-default-size)
+  (customize-set-variable 'dynamic-fonts-preferred-monospace-fonts
+                          '(
+                            "Iosevka"
+                            "Fira Code"
+                            "Monoisome"
+                            "Monoid"
+                            "Hack"
+                            "Dejavu Sans Mono"
+                            "courier"
+                            "fixed"))
+  (customize-set-variable 'dynamic-fonts-preferred-proportional-fonts
+                          '("Open Sans"
+                            "Roboto"
+                            "Dejavu Sans"
+                            "arial"
+                            "fixed"))
+  (customize-set-variable 'dynamic-fonts-preferred-proportional-point-size abz-font-default-size)
+  :hook (after-init . dynamic-fonts-setup))
 
 (use-package display-line-numbers
   :straight nil
