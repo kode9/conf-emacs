@@ -67,7 +67,7 @@
   (lsp-enable-on-type-formatting t)
   (lsp-enable-semantic-highlighting nil)
   (lsp-enable-snippet nil "Propose snippets on completion")
-  (lsp-enable-symbol-highlighting nil)
+  (lsp-enable-symbol-highlighting nil "Highlight references of the symbol at point")
   (lsp-enable-text-document-color nil)
   (lsp-enable-text-document-color t)
   (lsp-enable-xref t)
@@ -85,7 +85,9 @@
   (lsp-signature-render-documentation nil "Display signature documentation in `eldoc'")
   (lsp-rust-server 'rust-analyzer "Which LSP server to use (`rust-analyzer' or `rls')")
   :hook
-  ((c++-mode . lsp)
+  ((c-mode-common . lsp)
+   (cmake-mode . lsp)
+   (python-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration)))
 
 ;; Part of lsp-mode

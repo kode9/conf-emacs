@@ -376,6 +376,7 @@ mouse-3: go to end")
 (use-package csharp-mode)
 
 (use-package elpy
+  :disabled
   :commands elpy-enable
   :init (with-eval-after-load 'python (elpy-enable)))
 
