@@ -272,6 +272,7 @@ mouse-3: go to end")
 
 ;; cmake-ide
 (use-package cmake-ide
+  :disabled
   :demand t
   :init
   ;; Persistent build directories under `XDG_CACHE_HOME/cmake-ide/`
