@@ -117,14 +117,40 @@
   :commands wgrep-ag-setup
   :hook (ag-mode . wgrep-ag-setup))
 
+;; (debug-on-variable-change 'magit-auto-revert-mode)
+
+;; Commit in a wip/ branch on some actions
+;; Part of magit
+(use-package magit-wip
+  :straight nil
+  :after magit
+  :demand
+  :diminish magit-wip-mode
+  :custom
+  (magit-wip-merge-branch nil "Reset wip branch on new commits")
+  :config
+  (magit-wip-mode))
+
+;; Auto-revert tracked files buffers
+;; Part of magit
+(use-package magit-autorevert
+  :unless (bound-and-true-p global-auto-revert-mode)
+  :straight nil
+  :after magit
+  :demand
+  :config
+  (message "abz: magit autorevert %s" (bound-and-true-p global-auto-revert-mode))
+  (unless (bound-and-true-p global-auto-revert-mode)
+    (message "abz: magit autorevert activage")
+    (magit-auto-revert-mode)))
+
 ;; Magit: A Git Porcelain inside Emacs
 ;; https://magit.vc/
 (use-package magit
   :init
-  (customize-set-variable 'magit-wip-merge-branch nil)              ; Reset wip branch on new commits
   (customize-set-variable 'magit-no-confirm '('safe-with-wip))      ; Disable confirmation for wip-mode' safe operations
   (customize-set-variable 'magit-diff-paint-whitespace 'uncommited) ; Highlight whipespaces on uncommited changes
-  (customize-set-variable ' magit-diff-refine-hunk t)               ; Show word-granularity diff for current hunk
+  (customize-set-variable 'magit-diff-refine-hunk t)                ; Show word-granularity diff for current hunk
   (customize-set-variable 'magit-save-repository-buffers 'dontask)  ; Save file visiting buffers without asking
   (customize-set-variable 'magit-refs-show-commit-count 'branch)    ; Show commit counts for branches
   (customize-set-variable 'magit-module-sections-nested nil)
@@ -170,13 +196,11 @@
   (customize-set-variable 'magit-status-margin '(nil "%Y-%m-%d" magit-log-margin-width t 8))
   (customize-set-variable 'magit-blame-echo-style 'margin)
   :config
-  (magit-wip-mode)                                     ; Commit in a wip/ branch on some actions
-  (when (and (boundp 'global-auto-revert-mode) (not global-auto-revert-mode))
-    (magit-auto-revert-mode))                          ; Auto-revert tracked files buffers
-  (remove-hook 'server-switch-hook 'magit-commit-diff) ; Don't show diff when committing by default
-  (when (boundp 'vc-handled-backends)                   ; Tell VC to not handle git
+  ;; Don't show diff when committing by default
+  (remove-hook 'server-switch-hook 'magit-commit-diff)
+  ;; Tell VC to not handle git
+  (when (boundp 'vc-handled-backends)
     (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)))
-  :diminish magit-wip-mode
   :bind
   ("C-c m s" . magit-status)
   ("C-c m b" . magit-blame)
