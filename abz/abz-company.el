@@ -53,9 +53,10 @@
                         :with company-dabbrev
                         :with company-abbrev))
                     "Globally enabled backends")
-  (company-transformers #'(company-sort-by-backend-importance
-                           company-sort-by-occurrence
-                           company-sort-prefer-same-case-prefix)
+  (company-transformers #'(;; company-sort-by-occurrence
+                           company-sort-by-backend-importance
+                           ;; company-sort-prefer-same-case-prefix
+                           )
                         "Candidate sorting")
   (company-global-modes #'(not gud-mode help-mode)
                         "Manage modes where global-company-mode is enabled")
