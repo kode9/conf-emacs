@@ -23,14 +23,15 @@
 ;;; Code:
 
 (require 'abz-tools)
+(require 'f)
+(require 's)
 (require 'use-package)
 
 ;;;###autoload
 (cl-defun abz-process-window (process &optional (all-frames (selected-frame)))
   "Get the window currently displaying the buffer of PROCESS, or nil if none.
 
-ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
-"
+ALL-FRAMES specify which frames to consider as described in `get-buffer-window'."
   (get-buffer-window (process-buffer process) all-frames))
 
 ;;;###autoload
