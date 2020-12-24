@@ -357,6 +357,9 @@ mouse-3: go to end")
   :commands elpy-enable
   :init (with-eval-after-load 'python (elpy-enable)))
 
+;; Python env manager
+(use-package poetry)
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
