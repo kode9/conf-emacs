@@ -57,6 +57,7 @@
 ;; Remote access
 (use-package tramp
   :straight nil
+  :ensure-system-package (ssh . openssh)
   :init
   (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
   (customize-set-variable 'tramp-auto-save-directory
@@ -87,6 +88,7 @@
 ;; ag the silver searcher: a better grep alternative
 (use-package ag
   :if (eql abz-grep-command 'ag)
+  :ensure-system-package (ag . the_silver_searcher)
   :init
   (customize-set-variable 'ag-arguments #'("--smart-case"))      ; Additional arguments
   (customize-set-variable 'ag-context-lines nil)                 ; Number of context lines
@@ -147,6 +149,7 @@
 ;; Magit: A Git Porcelain inside Emacs
 ;; https://magit.vc/
 (use-package magit
+  :ensure-system-package git
   :init
   (customize-set-variable 'magit-no-confirm '('safe-with-wip))      ; Disable confirmation for wip-mode' safe operations
   (customize-set-variable 'magit-diff-paint-whitespace 'uncommited) ; Highlight whipespaces on uncommited changes
@@ -211,11 +214,13 @@
 ;; Step through historic versions of git controlled file
 ;; https://gitlab.com/pidu/git-timemachine
 (use-package git-timemachine
+  :ensure-system-package git
   :bind
   ("C-c m h" . git-timemachine))
 
 ;; Display commit at line in a popup
 (use-package git-messenger
+  :ensure-system-package git
   :init
   (customize-set-variable 'git-messenger:show-detail t)
   (customize-set-variable 'git-messenger:use-magit-popup t)
@@ -223,6 +228,7 @@
   ("C-c m m" . git-messenger:popup-message))
 
 (use-package pass
+  :ensure-system-package pass
   :if (> emacs-major-version 24))
 
 (provide 'abz-tools)
