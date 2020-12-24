@@ -360,6 +360,9 @@ mouse-3: go to end")
 ;; Python env manager
 (use-package poetry)
 
+;; Arch Linux PKGBUILD
+(use-package pkgbuild-mode)
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
