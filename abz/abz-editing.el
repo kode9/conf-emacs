@@ -178,13 +178,10 @@ With argument N go to the nth entry."
   (ispell-program-name (cond ((executable-find "aspell"))
                              ((executable-find "hunspell"))
                              ((executable-find "ispell"))))
-  :init
-  (if (and ispell-program-name (string-match  "aspell$" ispell-program-name))
-      ;; http://aspell.net/man-html/Notes-on-the-Different-Suggestion-Modes.html
-      (customize-set-variable 'ispell-extra-args '("--sug-mode=normal"
-                                                   "--dont-run-together"
-                                                   "--run-together-limit=4"
-                                                   "--run-together-min=2"))))
+  (ispell-extra-args (cond ((string-match  "aspell$" ispell-program-name) #'("--sug-mode=normal"
+                                                                             "--dont-run-together"
+                                                                             "--run-together-limit=4"
+                                                                             "--run-together-min=2")))))
 
 (use-package flyspell
   :straight nil
