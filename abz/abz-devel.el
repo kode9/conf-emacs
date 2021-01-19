@@ -386,6 +386,9 @@ mouse-3: go to end")
 ;; Arch Linux PKGBUILD
 (use-package pkgbuild-mode)
 
+;; Fish shell
+(use-package fish-mode)
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
