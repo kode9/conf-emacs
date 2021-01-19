@@ -123,10 +123,11 @@
 
 (use-package display-line-numbers
   :straight nil
+  :custom
+  (display-line-numbers-type t "Absolute line numbers")
+  (display-line-numbers-grow-only t "Do not shrink line number width")
+  (display-line-numbers-width-start t "Count number of lines to use for line number width")
   :init
-  (customize-set-variable 'display-line-numbers-type t) ; Absolute number
-  (customize-set-variable 'display-line-numbers-widen t) ; Disregard any narrowing
-  (customize-set-variable 'display-line-numbers-width-start t) ; Compute necessary width
   (set-face-attribute 'line-number nil :weight 'semi-light)
   (set-face-attribute 'line-number-current-line nil :box nil :inverse-video t)
   :hook (prog-mode . display-line-numbers-mode))
