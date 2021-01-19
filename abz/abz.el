@@ -258,6 +258,18 @@ Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
   (interactive)
   (abz--straight-upgrade-all-async))
 
+;;;###autoload
+(defun abz-rename-buffer-file (newname)
+  "Renames the file visited by the current buffer to `NEWNAME'."
+  (interactive (list (let ((oldname (buffer-file-name)))
+                       (if oldname
+                           (read-file-name (format "Rename %s to: " (buffer-file-name)) nil)
+                         (user-error "Current buffer is not visiting a file")))))
+  (let ((oldname (buffer-file-name)))
+    (rename-file oldname newname 1)
+    (set-visited-file-name newname nil t)
+    (message "Renamed %s to %s" oldname newname)))
+
 (provide 'abz)
 
 ;;; abz.el ends here
