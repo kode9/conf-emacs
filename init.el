@@ -25,15 +25,6 @@
 (unless (version<= "27" emacs-version)
   (load (expand-file-name "early-init" user-emacs-directory) nil 'nomessage))
 
-;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
-(eval-when-compile (straight-use-package 'use-package))
-(customize-set-variable 'straight-use-package-by-default t) ; Install packages by default in `use-package` forms
-(customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
-(customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
-(customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
-(customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
-(customize-set-variable 'use-package-compute-statistics t)  ; Report about loading and configuration details
-
 ;; Ensure environment variables inside Emacs look the same as in the user's shell
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell

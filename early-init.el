@@ -96,3 +96,12 @@ I don't use them.")
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
+;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
+(eval-when-compile (straight-use-package 'use-package))
+(customize-set-variable 'straight-use-package-by-default t) ; Install packages by default in `use-package` forms
+(customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
+(customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
+(customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
+(customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
+(customize-set-variable 'use-package-compute-statistics t)  ; Report about loading and configuration details
