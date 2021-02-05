@@ -42,6 +42,36 @@
     (all-the-icons-install-fonts t))
   (setq inhibit-compacting-font-caches t))
 
+(use-package dashboard
+  :after all-the-icons
+  :demand t
+  :custom
+  (dashboard-startup-banner 'logo)
+  (dashboard-center-content t)
+  (dashboard-items #'(
+                      (projects . 5)
+                      (recents  . 5)
+                      ;; (bookmarks . 5)
+                      ;; (agenda . 5)
+                      ;; (registers . 5)
+                      ))
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  (dashboard-set-navigator t)
+  (dashboard-navigator-buttons
+   `(;; line1
+     ((,(all-the-icons-faicon "unlock-alt" :height 1.1 :v-adjust 0.0)
+       "Pass"
+       "Password Store"
+       (lambda (&rest _) (pass))))))
+  :config
+  (dashboard-setup-startup-hook)
+  :hook
+  (dashboard-after-initialize . (lambda
+                                  (&rest _)
+                                  (with-current-buffer dashboard-buffer-name
+                                    (setq-local show-trailing-whitespace nil)))))
+
 (use-package all-the-icons-dired
   :if (display-graphic-p)
   :hook (dired-mode . all-the-icons-dired-mode))

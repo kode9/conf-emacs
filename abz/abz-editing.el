@@ -25,7 +25,6 @@
 (require 'abz)
 (require 'use-package)
 
-;;;###autoload
 (progn
   ;; Editing basics
   (customize-set-variable 'delete-trailing-lines t)                   ; Ask `delete-trailing-whitespace' to remove trailing lines
