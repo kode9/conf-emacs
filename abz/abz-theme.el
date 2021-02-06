@@ -43,6 +43,7 @@
   (setq inhibit-compacting-font-caches t))
 
 (use-package dashboard
+  :if (display-graphic-p)
   :after all-the-icons
   :demand t
   :custom
