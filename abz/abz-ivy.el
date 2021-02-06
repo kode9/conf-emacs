@@ -74,6 +74,9 @@
   :commands counsel-mode
   :after swiper
   :demand t
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
   :config
   ;; Remap built-in commands to their counsel counterpart
   (counsel-mode +1)

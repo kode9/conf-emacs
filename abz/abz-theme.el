@@ -199,6 +199,16 @@
 (use-package dimmer
   :hook (after-init . dimmer-mode))
 
+;; Better Emacs help buffers
+;; https://github.com/Wilfred/helpful
+(use-package helpful
+  :demand t
+  :bind
+  ("C-h f" . #'helpful-callable)
+  ("C-h v" . #'helpful-variable)
+  ("C-h k" . #'helpful-key)
+  ("C-h p" . #'helpful-at-point))
+
 (provide 'abz-theme)
 
 ;;; abz-theme.el ends here
