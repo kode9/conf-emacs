@@ -25,12 +25,17 @@
 (unless (version<= "27" emacs-version)
   (load (expand-file-name "early-init" user-emacs-directory) nil 'nomessage))
 
+(require 'use-package)
+
 ;; Ensure environment variables inside Emacs look the same as in the user's shell
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
   :demand
   :when (or (memq window-system '(mac ns x))
             (daemonp))
+  :commands
+  exec-path-from-shell-copy-env
+  exec-path-from-shell-initialize
   :config
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
@@ -45,22 +50,24 @@
 (use-package bind-key :demand t)
 
 ;; Tweak garbage collector
+(defconst gc-threshold (* 4 1000 1000))
+(defconst gc-percentage 0.5)
 (use-package gcmh
   :demand t
-  :init
-  (let ((gc-threshold (* 4 1000 1000))
-        (gc-percentage 0.5))
-    (customize-set-variable 'gcmh-verbose nil)
-    (customize-set-variable 'gcmh-low-cons-threshold gc-threshold)
-    (defun abz--restore-gc-parameters ()
-      "Restore garbage collector thresholds to sane values."
-      (message "abz: Restore GC parameters")
-      (customize-set-variable 'gc-cons-threshold gc-threshold)
-      (customize-set-variable 'gc-cons-percentage gc-percentage)
-      (gcmh-mode 1))
-    (defun abz--restore-gc-parameters-when-idle ()
-      "Call `abz--restore-gc-parameters' when Emacs becomes idle."
-      (run-with-idle-timer 61 nil #'abz--restore-gc-parameters)))
+  :commands gcmh-mode
+  :preface
+  (defun abz--restore-gc-parameters ()
+    "Restore garbage collector thresholds to sane values."
+    (message "abz: Restore GC parameters")
+    (customize-set-variable 'gc-cons-threshold gc-threshold)
+    (customize-set-variable 'gc-cons-percentage gc-percentage)
+    (gcmh-mode 1))
+  (defun abz--restore-gc-parameters-when-idle ()
+    "Call `abz--restore-gc-parameters' when Emacs becomes idle."
+    (run-with-idle-timer 61 nil #'abz--restore-gc-parameters))
+  :custom
+  (gcmh-verbose nil)
+  (gcmh-low-cons-threshold gc-threshold)
   :diminish gcmh-mode
   :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
 
@@ -110,6 +117,7 @@
 
 ;; Shorten long file-name targets. https://github.com/lewang/scf-mode
 (use-package scf-mode
+  :commands scf-mode
   :hook (compilation-mode . (lambda () (scf-mode t))))
 
 ;; keys
