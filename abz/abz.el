@@ -109,6 +109,20 @@ no such line exists."
        (file-readable-p (expand-file-name ".clang-format" (projectile-project-root)))))
 
 ;;;###autoload
+(defun abz-just-one-blank-line-buffer ()
+  "Replace consecutive blank lines to just one blank line in the current buffer.
+
+`http://ergoemacs.org/emacs/elisp_compact_empty_lines.html'"
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (narrow-to-region (point-min) (point-max))
+      (progn
+        (goto-char (point-min))
+        (while (re-search-forward "\n\n\n+" nil "move")
+          (replace-match "\n\n"))))))
+
+;;;###autoload
 (defun abz-mark-previous-paragraph ()
   "Set the mark and call `backward-paragraph."
   (interactive)
