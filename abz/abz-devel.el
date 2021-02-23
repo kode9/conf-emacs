@@ -1,6 +1,6 @@
 ;;; abz-devel.el --- Development packages -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -392,6 +392,12 @@ mouse-3: go to end")
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
+
+;; Load submodules
+(add-to-list 'load-path (expand-file-name "languages"
+                                          (file-name-directory load-file-name)))
+(mapc 'require (list
+                'abz-golang))
 
 (require 'abz-diagnostics)
 (require 'abz-company)
