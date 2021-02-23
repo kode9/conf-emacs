@@ -1,6 +1,6 @@
 ;;; abz.el --- Some useful elisp functions -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018 PERRIER Pierre-Luc <dev@the-pluc.net>
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -233,7 +233,7 @@ Same as `untabify' but indents the whole buffer no region is active."
   "Sentinel function for `abz--straight-upgrade-all'.
 
 Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
-  (when (y-or-n-p (format "Process %s %s.  Restart Emacs?" PROCESS EVENT))
+  (when (y-or-n-p (format "Process %s %s.  Restart Emacs? " PROCESS EVENT))
     (use-package restart-emacs
       :functions restart-emacs
       :custom
