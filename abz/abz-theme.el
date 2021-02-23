@@ -1,6 +1,6 @@
 ;;; abz-theme.el --- Fonts & Faces -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -36,16 +36,21 @@
 
 (use-package all-the-icons
   :if (display-graphic-p)
+  :demand t
   :commands all-the-icons-install-fonts
-  :init
+  :config
+  ;; If non-nil, don't compact font caches during GC
+  ;; https://github.com/domtronn/all-the-icons.el#slow-rendering
+  (setq inhibit-compacting-font-caches t)
+  :config
   (unless (find-font (font-spec :name "all-the-icons"))
-    (all-the-icons-install-fonts t))
-  (setq inhibit-compacting-font-caches t))
+    (all-the-icons-install-fonts t)))
 
 (use-package dashboard
   :if (display-graphic-p)
-  :after all-the-icons
+  :requires all-the-icons
   :demand t
+  :commands dashboard-setup-startup-hook
   :custom
   (dashboard-startup-banner 'logo)
   (dashboard-center-content t)
@@ -68,10 +73,16 @@
   :config
   (dashboard-setup-startup-hook)
   :hook
-  (dashboard-after-initialize . (lambda
-                                  (&rest _)
-                                  (with-current-buffer dashboard-buffer-name
-                                    (setq-local show-trailing-whitespace nil)))))
+  (dashboard-after-initialize-hook . (lambda
+                                       (&rest _)
+                                       (switch-to-buffer dashboard-buffer-name)
+                                       (with-current-buffer dashboard-buffer-name
+                                         (with-selected-window (get-buffer-window)
+                                           ;; TODO Does not work
+                                           (setq-local show-trailing-whitespace nil)
+                                           (dashboard-jump-to-recent-files)
+                                           (redisplay)
+                                           )))))
 
 (use-package all-the-icons-dired
   :if (display-graphic-p)
