@@ -1,6 +1,6 @@
 ;;; abz-custom.el --- Basic configuration           -*- lexical-binding: t; -*-
 
-;; Copyright (C) PERRIER Pierre-Luc <dev@the-pluc.net>
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -82,12 +82,17 @@
   ;; VCS
   (customize-set-variable 'vc-follow-symlinks t) ; Always follow symlinks to files under VC
 
-  ;; windmove: Navigate between windows using directions
-  (customize-set-variable 'windmove-wrap-around t) ; Cycle
-  (when (fboundp 'windmove-default-keybindings) (windmove-default-keybindings 'super)) ; Use super + arrows
-
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
+
+;; Window nagivation (built-in)
+(use-package windmove
+  :straight nil
+  :demand t
+  :custom
+  (windmove-wrap-around t "Whether movement off the edge of the frame wraps around")
+  :config
+  (windmove-default-keybindings (list 'super 'hyper)))
 
 ;; Tooltips (built-in)
 (use-package tooltip
