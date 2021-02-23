@@ -1,6 +1,6 @@
 ;;; abz-editing.el --- Editing configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 PERRIER Pierre-Luc <dev@the-pluc.net>
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -218,6 +218,19 @@ With argument N go to the nth entry."
                         (java-mode :comment-start "/*" :comment-end "*/")
                         (groovy-mode :comment-start "/*" :comment-end "*/")
                         (nxml-mode :comment-continue "   "))))
+
+;; Collaborative live editing
+(use-package crdt
+  :straight (:type git
+                   :host nil
+                   :repo "https://code.librehq.com/qhong/crdt.el"
+                   :branch "master")
+  :custom
+  (crdt-ask-for-name nil)
+  (crdt-ask-for-password nil)
+  :commands
+  crdt-share-buffer
+  crdt-connect)
 
 ;;;;;;;;;;;;;;;;;;
 ;; key bindings ;;
