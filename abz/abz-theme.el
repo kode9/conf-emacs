@@ -215,10 +215,10 @@
 (use-package helpful
   :demand t
   :bind
-  ("C-h f" . #'helpful-callable)
-  ("C-h v" . #'helpful-variable)
-  ("C-h k" . #'helpful-key)
-  ("C-h p" . #'helpful-at-point))
+  ("C-h f" . helpful-callable)
+  ("C-h v" . helpful-variable)
+  ("C-h k" . helpful-key)
+  ("C-h p" . helpful-at-point))
 
 (provide 'abz-theme)
 
