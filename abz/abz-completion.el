@@ -44,6 +44,12 @@
   :demand t
   :straight nil)
 
+(use-package which-key
+  :demand t
+  :hook
+  (after-init . which-key-mode)
+  (after-init . which-key-setup-minibuffer))
+
 (provide 'abz-completion)
 
 ;;; abz-completion.el ends here
