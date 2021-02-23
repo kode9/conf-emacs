@@ -1,6 +1,6 @@
 ;;; abz-completion.el --- Completion framework -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018-2020 Pierre-Luc Perrier
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -21,6 +21,8 @@
 ;;
 
 ;;; Code:
+
+(require 'use-package)
 
 ;;;###autoload
 (defcustom abz-completion-framework 'ivy
