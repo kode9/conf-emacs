@@ -1,4 +1,24 @@
-;;; early-init.el -*- lexical-binding: t; -*-
+;;; early-init.el --- -*- lexical-binding: t; -*-
+
+;; Copyright (C) Pierre-Luc Perrier
+
+;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
+
+;; Licensed under the Apache License, Version 2.0 (the "License");
+;; you may not use this file except in compliance with the License.
+;; You may obtain a copy of the License at
+
+;;     http://www.apache.org/licenses/LICENSE-2.0
+
+;; Unless required by applicable law or agreed to in writing, software
+;; distributed under the License is distributed on an "AS IS" BASIS,
+;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+;; See the License for the specific language governing permissions and
+;; limitations under the License.
+
+;;; Commentary:
+
+;;; Code:
 
 ;; Raise garbage collector thresholds for initialization to improve startup
 ;; time. They will be restored after initialization (see below).
@@ -98,10 +118,14 @@ I don't use them.")
   (load bootstrap-file nil 'nomessage))
 
 ;; use-package: simplify package loading, settings, bindings, and more. https://github.com/jwiegley/use-package
-(eval-when-compile (straight-use-package 'use-package))
+(eval-when-compile (when (fboundp 'straight-use-package) (straight-use-package 'use-package)))
 (customize-set-variable 'straight-use-package-by-default t) ; Install packages by default in `use-package` forms
 (customize-set-variable 'use-package-always-defer t)        ; Use deferred loading by default
 (customize-set-variable 'use-package-always-demand nil)     ; Inhibit deferred loading by default
 (customize-set-variable 'use-package-expand-minimally nil)  ; Make the expanded code as minimal as possible
 (customize-set-variable 'use-package-verbose t)             ; Report about loading and configuration details
 (customize-set-variable 'use-package-compute-statistics t)  ; Report about loading and configuration details
+
+(provide 'earl-init)
+
+;;; early-init.el ends here
