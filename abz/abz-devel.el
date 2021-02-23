@@ -299,15 +299,6 @@ mouse-3: go to end")
   (add-to-list 'cmake-ide-src-extensions ".cu")
   (cmake-ide-setup))
 
-(use-package web-mode
-  :init
-  (customize-set-variable 'web-mode-code-indent-offset 2)
-  (setq web-mode-engines-alist
-        '(("php"    . "\\.phtml\\'")
-          ("blade"  . "\\.blade\\.")))
-  :mode
-  "\\.php\\'")
-
 ;; YAML
 (use-package yaml-mode
   :init)
@@ -397,7 +388,9 @@ mouse-3: go to end")
 (add-to-list 'load-path (expand-file-name "languages"
                                           (file-name-directory load-file-name)))
 (mapc 'require (list
-                'abz-golang))
+                'abz-golang
+                'abz-web
+                ))
 
 (require 'abz-diagnostics)
 (require 'abz-company)
