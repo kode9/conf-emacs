@@ -68,6 +68,22 @@
   (setq custom-file abz-custom-file)
   (load custom-file 'no-error 'no-message))
 
+(defconst abz--os-is-arch?
+  (and (executable-find "pacman") t))
+
+;;;###autoload
+(defun abz-os-is-arch? ()
+  "Return t if the current OS is Arch Linux."
+  abz--os-is-arch?)
+
+(defconst abz--os-is-debian-derivative?
+  (and (executable-find "apt") t))
+
+;;;###autoload
+(defun abz-os-is-debian-derivative? ()
+  "Return t if the current OS is Debian or a derivative."
+  abz--os-is-debian-derivative?)
+
 (provide 'abz-settings)
 
 ;;; abz-settings.el ends here
