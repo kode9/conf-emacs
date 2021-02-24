@@ -82,7 +82,6 @@
   :preface
   (defun abz--restore-gc-parameters ()
     "Restore garbage collector thresholds to sane values."
-    (message "abz: Restore GC parameters")
     (customize-set-variable 'gc-cons-threshold gc-threshold)
     (customize-set-variable 'gc-cons-percentage gc-percentage)
     (gcmh-mode 1))
