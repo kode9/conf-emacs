@@ -18,7 +18,7 @@
 
 ;;; Commentary:
 
-;;
+;; https://github.com/raxod502/selectrum/issues/274
 
 ;;; Code:
 
@@ -26,23 +26,22 @@
 
 ;;;###autoload
 (defcustom abz-completion-framework 'ivy
-  "Completion framework to use."
-  :type '(radio (const :tag "Ido" ido)
-                (const :tag "Ivy" ivy)
-                (const :tag "Helm" helm))
+  "The completion frontend to use."
+  :type '(radio
+          (const :tag "Helm" helm)
+          (const :tag "Ido" ido)
+          (const :tag "Ivy" ivy)
+          (const :tag "Selectrum" selectrum)
+          )
   :tag "Completion framework"
   :group 'abz
   :group 'convenience)
 
-(use-package abz-ido
-  :if (eql abz-completion-framework 'ido)
-  :demand t
-  :straight nil)
-
-(use-package abz-ivy
-  :if (eql abz-completion-framework 'ivy)
-  :demand t
-  :straight nil)
+(cl-case abz-completion-framework
+  (helm (user-error "Unsupported"))
+  (ido (require 'abz-ido))
+  (ivy (require 'abz-ivy))
+  (selectrum (require 'abz-selectrum)))
 
 (use-package which-key
   :demand t
