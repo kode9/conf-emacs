@@ -42,7 +42,31 @@
 
 ;; Addon to `use-package' that checks for system packages
 (use-package use-package-ensure-system-package
-  :demand)
+  :config
+  (when (executable-find "paru")
+    (add-to-list 'system-packages-supported-package-managers
+                 '(paru . ((default-sudo . nil)
+                           (install . "paru -S")
+                           (search . "paru -Ss")
+                           (uninstall . "paru -Rnsv")
+                           (update . "paru")
+                           (clean-cache . "paru -Sc")
+                           (change-log . "paru -Qc")
+                           (log . "cat /var/log/paru.log")
+                           (get-info . "paru -Qi")
+                           (get-info-remote . "paru -Si")
+                           (list-files-provided-by . "paru -qQl")
+                           (owning-file . "paru -Qo")
+                           (owning-file-remote . "paru -F")
+                           (verify-all-packages . "paru -Qkk")
+                           (verify-all-dependencies . "paru -Dk")
+                           (remove-orphaned . "paru -Rnsuv $(paru -Qtdq)")
+                           (list-installed-packages . "paru -Qe")
+                           (list-installed-packages-all . "paru -Q")
+                           (list-dependencies-of . "paru -Qi")
+                           (noconfirm . "--noconfirm"))))
+    (setq system-packages-package-manager 'paru)
+    (setq system-packages-use-sudo nil)))
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish :demand t)
