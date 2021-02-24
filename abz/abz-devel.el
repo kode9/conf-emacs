@@ -136,10 +136,11 @@ mouse-3: go to end")
     (format " π⌜%s⌟" (or (projectile-project-name) "∅")))
   :custom
   (compilation-save-buffers-predicate #'projectile-current-project-buffer-p)
-  (projectile-find-dir-includes-top-level t)        ; Add top-level dir to projectile-find-dir
+  (projectile-find-dir-includes-top-level t "Add top-level dir to projectile-find-dir")
   (projectile-mode-line-function #'abz--projectile-modeline-function)
-  (projectile-require-project-root nil)             ; Consider the current directory the root
-  (projectile-switch-project-action #'magit-status) ; Function to call when switching project
+  (projectile-require-project-root nil "Consider the current directory the root")
+  (projectile-switch-project-action #'magit-status "Function to call when switching project")
+  (projectile-auto-discover nil "Discover projects in `projectile-project-search-path'")
   :config
   (setq compilation-buffer-name-function #'projectile-compilation-buffer-name)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects)
