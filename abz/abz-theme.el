@@ -50,6 +50,7 @@
   :if (display-graphic-p)
   :requires all-the-icons
   :demand t
+  :functions dashboard-jump-to-recent-files
   :commands dashboard-setup-startup-hook
   :custom
   (dashboard-startup-banner 'logo)
