@@ -35,7 +35,7 @@
 (use-package selectrum-prescient
   :after selectrum
   :demand t
-  :function selectrum-prescient-mode
+  :functions selectrum-prescient-mode
   :custom
   (prescient-history-length 200 "Number of recently chosen candidates that will be remembered")
   (prescient-filter-method #'(initialism fuzzy regexp) "How to interpret prescient.el filtering queries")
@@ -45,7 +45,7 @@
 
 ;; Example configuration for Consult
 (use-package consult
-  :function consult-find-command
+  :functions consult-find-command
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
          ;; ("C-c m" . consult-mode-command)
