@@ -1,6 +1,6 @@
 ;;; abz-tools.el --- External tools integration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 Pierre-Luc Perrier
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -88,7 +88,6 @@
 ;; ag the silver searcher: a better grep alternative
 (use-package ag
   :if (eql abz-grep-command 'ag)
-  :ensure-system-package (ag . the_silver_searcher)
   :init
   (customize-set-variable 'ag-arguments #'("--smart-case"))      ; Additional arguments
   (customize-set-variable 'ag-context-lines nil)                 ; Number of context lines
@@ -228,7 +227,6 @@
   ("C-c m m" . git-messenger:popup-message))
 
 (use-package pass
-  :ensure-system-package pass
   :if (> emacs-major-version 24))
 
 (provide 'abz-tools)

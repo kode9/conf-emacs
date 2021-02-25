@@ -40,8 +40,8 @@
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
 
-;; Addon to `use-package' that checks for system packages
-(use-package use-package-ensure-system-package
+;; Wraps package managers
+(use-package system-packages
   :config
   (when (executable-find "paru")
     (add-to-list 'system-packages-supported-package-managers
@@ -67,6 +67,10 @@
                            (noconfirm . "--noconfirm"))))
     (setq system-packages-package-manager 'paru)
     (setq system-packages-use-sudo nil)))
+
+;; Adds the keyword `:ensure-system-package' to `use-package'
+(use-package use-package-ensure-system-package
+  :demand t)
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish :demand t)
@@ -105,6 +109,54 @@
 ;; This emacs configuration variables
 (require 'abz-settings)
 (abz--init-settings)
+
+;; Install some useful system packages
+;;
+;; There is no way (that I found) to evaluate an expression within the
+;; `ensure-system-package' keyword of `use-package' i.e to discriminate by OS so
+;; it's easier just to list them all here.
+;;
+;; TODO We could collect all missing packages and make a single call to system-packages-install
+(defun abz--ensure-system-package (target package)
+  "If `TARGET' does not exists, install `PACKAGE'.
+
+`TARGET' can be either a symbol or a string.
+
+The package is installed with `system-packages-install'.
+
+TODO: Accept a list of packages."
+  (cond
+   ((or (null target) (null package)) (message "nullp"))
+   ((and (stringp target) (file-exists-p target)) (message "file exist"))
+   ((and (symbolp target) (executable-find (symbol-name target))) (message "executable exist"))
+   ((system-packages-install (symbol-name package)))))
+
+(let ((packages `(;; Fonts
+                  ,(when (abz-os-is-arch?) '("/usr/share/licenses/ttf-iosevka/" . ttf-iosevka))
+                  ,(cond
+                    ((abz-os-is-arch?) '("/usr/share/fonts/TTF/FiraCode-Regular.ttf" . ttf-fira-code))
+                    ((abz-os-is-debian-derivative?) '("/usr/share/fonts-firacode/" . fonts-firacode)))
+                  ,(cond
+                    ((abz-os-is-arch?) '("/usr/share/fonts/TTF/Hack-Regular.ttf" . ttf-hack))
+                    ((abz-os-is-debian-derivative?) '("/usr/share/fonts/truetype/hack/" . fonts-hack)))
+                  ;; openssh: secure shell client
+                  ,(cond
+                    ((abz-os-is-arch?) '(ssh . openssh))
+                    ((abz-os-is-debian-derivative?) '(ssh . openssh-client)))
+                  ;; pass: password manager
+                  (pass . pass)
+                  ;; ripgrep: grep alternative
+                  (rg . ripgrep)
+                  ;; ag: grep alternative
+                  ,(cond
+                    ((abz-os-is-arch?) '(ag . the_silver_searcher))
+                    ((abz-os-is-debian-derivative?) '(ag . silversearcher-ag)))
+                  ;; fd: find alternative
+                  ,(cond
+                    ((abz-os-is-debian-derivative?) '(fdfind . fd-find))
+                    ('(fd . fd)))
+                  )))
+  (map-do #'abz--ensure-system-package packages))
 
 ;; Basic setup
 (require 'abz-custom)
