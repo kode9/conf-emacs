@@ -40,10 +40,34 @@
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
 
+;; tramp: Transparent Remote Access, Multiple Protocol (built-in)
+(use-package tramp
+  :straight nil
+  :init
+  (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
+  (customize-set-variable 'tramp-auto-save-directory
+                          (expand-file-name ".cache/tramp/auto-save" user-emacs-directory)) ; Keep auto-save files in local
+  (customize-set-variable 'tramp-backup-directory-alist
+                          `(("." . ,(expand-file-name ".cache/tramp/backup" user-emacs-directory)))) ; Backup files
+  (customize-set-variable 'tramp-persistency-file-name
+                          (expand-file-name ".cache/tramp/history" user-emacs-directory)) ; Connection history
+  ;; Disable version control for tramp files
+  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+  (use-package vc
+    :straight nil
+    :init
+    (customize-set-variable 'vc-ignore-dir-regexp
+                            (format "\\(%s\\)\\|\\(%s\\)"
+                                    vc-ignore-dir-regexp
+                                    tramp-file-name-regexp)))
+  :config
+  (setenv "SHELL" "/bin/bash"))
+
 ;; Wraps package managers
 (use-package system-packages
   :functions system-packages-install
   :config
+  (require 'tramp)
   (when (executable-find "paru")
     (add-to-list 'system-packages-supported-package-managers
                  '(paru . ((default-sudo . nil)

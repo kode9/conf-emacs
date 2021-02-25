@@ -54,30 +54,6 @@
   :group 'abz
   :group 'external)
 
-;; Remote access
-(use-package tramp
-  :straight nil
-  :ensure-system-package (ssh . openssh)
-  :init
-  (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
-  (customize-set-variable 'tramp-auto-save-directory
-                          (expand-file-name ".cache/tramp/auto-save" user-emacs-directory)) ; Keep auto-save files in local
-  (customize-set-variable 'tramp-backup-directory-alist
-                          `(("." . ,(expand-file-name ".cache/tramp/backup" user-emacs-directory)))) ; Backup files
-  (customize-set-variable 'tramp-persistency-file-name
-                          (expand-file-name ".cache/tramp/history" user-emacs-directory)) ; Connection history
-  ;; Disable version control for tramp files
-  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
-  (use-package vc
-    :straight nil
-    :init
-    (customize-set-variable 'vc-ignore-dir-regexp
-                            (format "\\(%s\\)\\|\\(%s\\)"
-                                    vc-ignore-dir-regexp
-                                    tramp-file-name-regexp)))
-  :config
-  (setenv "SHELL" "/bin/bash"))
-
 ;; http://www.emacswiki.org/emacs/TrampMode
 ;;;###autoload
 (defun toggle-sudo ()
