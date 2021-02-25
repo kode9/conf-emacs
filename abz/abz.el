@@ -26,6 +26,7 @@
 (require 'simple)
 (require 'subr-x)
 (require 'tabify)
+(require 'tramp)
 (require 'use-package)
 
 (declare-function straight-normalize-all "straight")
@@ -271,6 +272,13 @@ Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
   "Upgrade all packages."
   (interactive)
   (abz--straight-upgrade-all-async))
+
+;; http://www.emacswiki.org/emacs/TrampMode
+;;;###autoload
+(defun abz-sudo-buffer ()
+  "Reopen the current file as root."
+  (interactive)
+  (when buffer-file-name (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 ;;;###autoload
 (defun abz-rename-buffer-file (newname)

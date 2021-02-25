@@ -54,13 +54,6 @@
   :group 'abz
   :group 'external)
 
-;; http://www.emacswiki.org/emacs/TrampMode
-;;;###autoload
-(defun toggle-sudo ()
-  "Reopen the current file as root."
-  (interactive)
-  (when buffer-file-name (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
 ;; ag the silver searcher: a better grep alternative
 (use-package ag
   :if (eql abz-grep-command 'ag)
