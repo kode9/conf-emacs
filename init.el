@@ -42,6 +42,7 @@
 
 ;; Wraps package managers
 (use-package system-packages
+  :functions system-packages-install
   :config
   (when (executable-find "paru")
     (add-to-list 'system-packages-supported-package-managers
