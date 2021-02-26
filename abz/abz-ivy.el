@@ -80,7 +80,9 @@
   :config
   ;; Remap built-in commands to their counsel counterpart
   (counsel-mode +1)
-  :bind ("C-x _ RET" . counsel-unicode-char))
+  :bind
+  ("C-c x" . counsel-compile)
+  ("C-x _ RET" . counsel-unicode-char))
 
 ;; Hydra actions in ivy minibuffer
 (use-package ivy-hydra
@@ -101,17 +103,21 @@
   (defun abz--ivy-posframe-get-size ()
     "Size of a ivy-posframe.
 
-Compared to the default, `ivy-posframe-min-width' is set to
-- `ivy-posframe-min-width' if defined
-- maximum of (ratio * window-width) and (1/split * ratio * frame-width) otherwise.
+`width' has a upper threshold of 65% of (frame-width).
 
-with ratio=0.75 and split=2.
+`height' has a upper threshold of 65% of (frame-height).
+
+
+`min-width' is set to `ivy-posframe-min-width' if defined, or to the maximum of (ratio * window-width) and (1/split * ratio * frame-width) otherwise. With ratio=0.75 and split=2.
 
 So it will take 75% of the window width if not split, but won't shrink too much
-if it is split more than `split' frames."
+if it is split more than `split' frames.
+"
     (list
-     :height ivy-posframe-height
-     :width ivy-posframe-width
+     :height (let ((max-height (* (frame-height) 0.65)))
+               (min max-height (or ivy-posframe-height max-height)))
+     :width (let ((max-width (* (frame-width) 0.65)))
+              (min max-width (or ivy-posframe-width max-width)))
      :min-height (or ivy-posframe-min-height
                      (let ((height (+ ivy-height 1)))
                        (min height (or ivy-posframe-height height))))
@@ -120,7 +126,8 @@ if it is split more than `split' frames."
                            (split 2)
                            (split-ratio (/ 1.0 split))
                            (width (round (* (window-width) ratio))))
-                      (max (min width (or ivy-posframe-width width)) (round (* (frame-width) split-ratio ratio)))))))
+                      (max (min width (or ivy-posframe-width width))
+                           (round (* (frame-width) split-ratio ratio)))))))
   :custom
   (ivy-posframe-size-function #'abz--ivy-posframe-get-size "Function to compute the size of the frame")
   (ivy-posframe-style 'window-center "Default position")
