@@ -42,23 +42,81 @@ The configuration provides integration of external tools:
 
 Type `kbd:[M-x] customize-group kbd:[RET] abz kbd:[RET]` to see available custom variables.
 
+== Cheat sheet
+
+TL;DR kbd:[M-x] kbd:[describe-personal-keybindings] kbd:[RET]
+
+:help: C·h
+.Exploration
+[cols="1d,8m"]
+|===
+|Keybinding |Function
+
+|kbd:[{help} P] |describe-package
+|kbd:[{help} f] |helpful-callable
+|kbd:[{help} i] |info
+|kbd:[{help} k] |helpful-key
+|kbd:[{help} m] |describe-mode
+|kbd:[{help} p] |helpful-at-point
+|kbd:[{help} t] |help-with-tutorial
+|kbd:[{help} v] |helpful-variable
+|kbd:[{help} w] |where-is
+
+|===
+
+:projectile: C·c p
+.Project management kbd:[{projectile}]
+[cols="1d,9d,8m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[{projectile} p] |Switch to a known project |projectile-switch-project
+|kbd:[{projectile} q] |Switch to a project currently opened |projectile-switch-open-project
+|kbd:[{projectile} v] |Show VCS status (`magit`) of a project |projectile-vc
+
+|kbd:[{projectile} f] |Jump to a project's file |projectile-find-file
+|kbd:[{projectile} o f] |Jump to a project's file in other window |projectile-find-file-other-window
+|kbd:[{projectile} e] |Jump to a project's recent file |projectile-recentf
+|kbd:[{projectile} l] |Jump to a file in a directory |projectile-find-file-in-directory
+|kbd:[{projectile} d] |Jump to a project's directory |projectile-find-dir
+
+|kbd:[{projectile} b] |Switch to a project buffer |projectile-switch-to-buffer
+|kbd:[{projectile} o b] |Switch to a project buffer in other window |projectile-switch-to-buffer-other-window
+|kbd:[{projectile} o s] |Show a project buffer in other window |projectile-display-buffer
+|kbd:[{projectile} o k] |Kills all project buffers |projectile-kill-buffers
+
+|kbd:[{projectile} a] |Switch between files with same name |projectile-find-other-file
+|kbd:[{projectile} o a] |Switch between files with same name other window |projectile-find-other-file-other-window
+
+|kbd:[{projectile} &] |Runs async-shell-command in the root directory |projectile-run-async-shell-command-in-root
+|kbd:[{projectile} C] |Run project configure command |projectile-configure-project
+|kbd:[{projectile} c] |Run project compilation command |projectile-compile-project
+|kbd:[{projectile} u] |Run project run command |projectile-run-project
+
+|===
+
+.Text manipulation
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[{projectile} r] |Runs interactive query-replace on all files in the projects |projectile-replace
+
+|kbd:[C·=] |Increase selected region by semantic units |er/expand-region
+|kbd:[M·=] |Contract the selected region to its previous size |er/contract-region
+
+|===
+
 == TODO
 
-* Finish to cleanup
-* Set `use-package-always-defer` to t
-* Experiment the following packages
-** Helm
-** Ivy/Counsel
-** Hydra
-** diminish alternatives (blackout/delight/dim)
+* Hydra
 * Window management
-** Swap windows
+* Swap windows
 * Check existing searcher (ripgrep, ag, grep)
 * chmod
 * easymenu
 * keymaps
 * use functions in abz/abz.el
-* Check custom variables behavior on change (see `:set`)
 
 == License
 
