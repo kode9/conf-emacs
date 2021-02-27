@@ -23,9 +23,11 @@
 ;;; Code:
 
 (require 'abz-tools)
+(require 'cl-extra)
 (require 'f)
 (require 's)
 (require 'use-package)
+(require 'abz-completion)
 
 ;;;###autoload
 (cl-defun abz-process-window (process &optional (all-frames (selected-frame)))
@@ -141,12 +143,25 @@ mouse-3: go to end")
   (projectile-require-project-root nil "Consider the current directory the root")
   (projectile-switch-project-action #'magit-status "Function to call when switching project")
   (projectile-auto-discover nil "Discover projects in `projectile-project-search-path'")
+  (projectile-generic-command (let ((fd (cl-some #'executable-find '("fd" "fdfind"))))
+                                (if fd
+                                    (string-join `(,fd "-0" "-t f" "-c never" ".") " ")
+                                  (string-join `("find" "." "-type f" "-print0") " ")))
+                              "Command used by projectile to get the files in a generic project")
   :config
   (setq compilation-buffer-name-function #'projectile-compilation-buffer-name)
   (run-with-idle-timer 59 t #'projectile-cleanup-known-projects)
-  :bind (:map projectile-mode-map
-              ("C-c p" . projectile-command-map))
-  :hook (after-init . projectile-mode))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :bind
+  (:map projectile-command-map
+        ("o" . nil) ; Bound on projectile-multi-occur by default
+        ("o f" . projectile-find-file-other-window)
+        ("o b" . projectile-switch-to-buffer-other-window)
+        ("o s" . projectile-display-buffer)
+        ("o a" . projectile-find-other-file-other-window))
+  :hook
+  (after-init . projectile-mode))
 
 ;;;;;;;;;;;;;;;;;
 ;; Major Modes ;;
