@@ -41,6 +41,9 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   "Select the window currently displaying the buffer of PROCESS."
   (select-window (abz-process-window process) 'norecord))
 
+;; Highlight trailing whitespaces
+(add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
+
 ;; Compilation
 (use-package compile
   :straight nil

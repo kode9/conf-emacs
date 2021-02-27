@@ -35,7 +35,6 @@
   (customize-set-variable 'parse-sexp-ignore-comments t)              ; Threat comments as whitespaces
   (customize-set-variable 'require-final-newline t)                   ; Add a final new line before saving
   (customize-set-variable 'shift-select-mode t)                       ; Mark with shift
-  (customize-set-variable 'show-trailing-whitespace t)                ; Highlight trailing whitespaces
   (customize-set-variable 'tab-width 2)                               ; Tab stops width (display)
   (customize-set-variable 'track-eol t)                               ; Keep vertical motion at the end of the lines
   (customize-set-variable 'transient-mark-mode t)
