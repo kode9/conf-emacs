@@ -1,6 +1,6 @@
 ;;; abz-settings.el --- Config customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2020 Pierre-Luc Perrier
+;; Copyright (C) Pierre-Luc Perrier
 
 ;; Author: Pierre-Luc Perrier <dev@the-pluc.net>
 
@@ -30,7 +30,6 @@
   :group 'emacs
   :link '(url-link :tag "Homepage" "https://git.the-pluc.net/conf-emacs.git/"))
 
-;;;###autoload
 (defcustom abz-local-dir (expand-file-name "local" user-emacs-directory)
   "Directory used to store local configuration files."
   :type 'directory
@@ -38,7 +37,6 @@
   :group 'abz
   :group 'environment)
 
-;;;###autoload
 (defcustom abz-cache-dir (expand-file-name ".cache" user-emacs-directory)
   "Directory used to store runtime cache files."
   :type 'directory
@@ -46,7 +44,6 @@
   :group 'abz
   :group 'environment)
 
-;;;###autoload
 (defcustom abz-custom-file (expand-file-name "custom.el" abz-local-dir)
   "File used to store settings from Customization UI."
   :set-after '(abz-local-dir)
@@ -61,7 +58,6 @@
   (setq no-littering-etc-directory abz-local-dir)
   (setq no-littering-var-directory abz-cache-dir))
 
-;;;###autoload
 (defun abz--init-settings ()
   "Initialise settings."
   (ignore-errors (make-directory abz-cache-dir))
@@ -71,7 +67,6 @@
 (defconst abz--os-is-arch?
   (and (executable-find "pacman") t))
 
-;;;###autoload
 (defun abz-os-is-arch? ()
   "Return t if the current OS is Arch Linux."
   abz--os-is-arch?)
@@ -79,7 +74,6 @@
 (defconst abz--os-is-debian-derivative?
   (and (executable-find "apt") t))
 
-;;;###autoload
 (defun abz-os-is-debian-derivative? ()
   "Return t if the current OS is Debian or a derivative."
   abz--os-is-debian-derivative?)
