@@ -37,17 +37,25 @@
   :group 'abz
   :group 'convenience)
 
+(use-package which-key
+  :custom
+  (which-key-compute-remaps t "Show remapped command")
+  (which-key-sort-order 'which-key-prefix-then-key-order)
+  :hook
+  (after-init . which-key-mode))
+
+(use-package which-key-posframe
+  :after which-key
+  :custom
+  (which-key-posframe-poshandler #'posframe-poshandler-window-center)
+  :hook
+  (which-key-mode . which-key-posframe-mode))
+
 (cl-case abz-completion-framework
   (helm (user-error "Unsupported"))
   (ido (require 'abz-ido))
   (ivy (require 'abz-ivy))
   (selectrum (require 'abz-selectrum)))
-
-(use-package which-key
-  :demand t
-  :hook
-  (after-init . which-key-mode)
-  (after-init . which-key-setup-minibuffer))
 
 (provide 'abz-completion)
 
