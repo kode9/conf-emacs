@@ -200,11 +200,11 @@ mouse-3: go to end")
 (use-package lua-mode
   :mode "\\.lua\\'")
 
-;; Shell scripts
+;; Shell scripts (built-in)
 (use-package sh-script
   :straight nil
-  :mode (("/PKGBUILD\\'" . sh-mode) ; Arch Linux PKGBUILD
-         ("\\.zsh\\'" . sh-mode)))
+  :custom
+  (sh-basic-offset 2 "The default indentation increment"))
 
 ;; CSV
 (use-package csv-mode
