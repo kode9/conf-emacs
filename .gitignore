@@ -1,8 +1,8 @@
 .cask/
 README.html
+eln-cache/
 elpy/
 flycheck_init.el
-# x-win.el emacs-session-filename does not provide customization
 session.*
 straight/
 var/
