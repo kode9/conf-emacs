@@ -399,7 +399,8 @@ mouse-3: go to end")
 (use-package poetry)
 
 ;; Arch Linux PKGBUILD
-(use-package pkgbuild-mode)
+(use-package pkgbuild-mode
+  :mode "\\.PKGBUILD\\'")
 
 ;; Fish shell
 (use-package fish-mode)
