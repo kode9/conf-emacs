@@ -405,6 +405,10 @@ mouse-3: go to end")
 ;; Fish shell
 (use-package fish-mode)
 
+;; Major mode for viewing certificates, CRLs, keys, DH-parameters and ASN.1 using OpenSSL
+;; https://github.com/jobbflykt/x509-mode
+(use-package x509-mode)
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
