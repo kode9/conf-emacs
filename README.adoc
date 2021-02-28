@@ -114,9 +114,12 @@ TL;DR kbd:[M-x] kbd:[describe-personal-keybindings] kbd:[RET]
 * Swap windows
 * Check existing searcher (ripgrep, ag, grep)
 * chmod
-* easymenu
 * keymaps
 * use functions in abz/abz.el
+* compress backup-each-save => fork => gz/zst w/ auto-compression mode, see undo-tree source
+* elpy -> gitignore -> no littering
+* https://github.com/jwiegley/use-package#use-package-ensure-system-package
+* https://github.com/regen100/cmake-language-server
 
 == License
 
