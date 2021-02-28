@@ -135,6 +135,10 @@ mouse-3: go to end")
 ;;  - projectile-cache-file
 ;;  - projectile-known-projects-file
 (use-package projectile
+  :commands
+  projectile-cleanup-known-projects
+  projectile-compilation-buffer-name
+  projectile-project-name
   :preface
   (defun abz--projectile-modeline-function ()
     "The function to use to generate project-specific mode-line."
@@ -350,6 +354,7 @@ mouse-3: go to end")
   :hook (rust-mode . cargo-minor-mode))
 
 (use-package rustic
+  :commands rustic-compile rustic-format-buffer
   :custom
   (rustic-lsp-client 'lsp-mode "LSP frontend (`lsp-mode' or `eglot')")
   (rustic-lsp-server 'rust-analyzer "Which LSP server to use (`rust-analyzer' or `rls')")

@@ -23,6 +23,7 @@
 ;;; Code:
 
 (require 'abz)
+(require 'abz-settings)
 (require 'use-package)
 
 (progn
@@ -193,7 +194,7 @@ With argument N go to the nth entry."
   :demand t
   :init
   (setq
-   backup-each-save-mirror-location (locate-user-emacs-file ".cache/backup/")
+   backup-each-save-mirror-location (abz--locate-data-dir "each-save/")
    backup-each-save-time-format "%Y%m%d-%H%M%S")
   :hook (after-save . backup-each-save))
 

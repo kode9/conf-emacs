@@ -22,10 +22,55 @@
 
 ;;; Code:
 
+(require 'map)
+(require 'xdg)
+
+;; Backward compatibility
 (unless (version<= "27" emacs-version)
   (load (expand-file-name "early-init" user-emacs-directory) nil 'nomessage))
 
-(require 'use-package)
+;; straight.el: package manager
+;; https://github.com/raxod502/straight.el
+
+;; Shallow clone
+(customize-set-variable 'straight-vc-git-default-clone-depth 1)
+;; If watchexec and Python are installed, use file watchers to detect
+;; package modifications. This saves time at startup. Otherwise, use
+;; the ever-reliable find(1).
+;; https://github.com/raxod502/radian/blob/54f9680e81767dc5d036d2c4d6672021ca422784/emacs/radian.el#L492
+(customize-set-variable 'straight-check-for-modifications
+                        (if (and (executable-find "watchexec")
+                                 (executable-find "python3"))
+                            '(watch-files find-when-checking)
+                          '(find-at-startup find-when-checking)))
+
+;; Bootstrap
+(defconst bootstrap-version 5)
+(defconst straight-base-dir (expand-file-name (convert-standard-filename "emacs/")
+                                              (xdg-cache-home)))
+(let* ((bootstrap-file (expand-file-name
+                        (convert-standard-filename "straight/repos/straight.el/bootstrap.el")
+                        straight-base-dir)))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; use-package: package loading
+;; https://github.com/jwiegley/use-package
+(declare-function straight-use-package "straight") ; Silence byte-compiler
+(straight-use-package 'use-package)
+(customize-set-variable 'straight-use-package-by-default t "Install packages by default in `use-package` forms")
+(customize-set-variable 'use-package-always-defer t "Use deferred loading by default")
+(customize-set-variable 'use-package-always-demand nil "Inhibit deferred loading by default")
+(customize-set-variable 'use-package-expand-minimally nil "Make the expanded code as minimal as possible")
+(customize-set-variable 'use-package-verbose t "Report about loading and configuration details")
+(customize-set-variable 'use-package-compute-statistics t "Report about loading and configuration details")
+(require 'use-package) ; Silence byte-compiler
 
 ;; Ensure environment variables inside Emacs look the same as in the user's shell
 ;; https://github.com/purcell/exec-path-from-shell
@@ -40,17 +85,59 @@
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
 
+;; Adds the keyword `:ensure-system-package' to `use-package'
+(use-package use-package-ensure-system-package
+  :demand t)
+
+;; Customize mode lighters. use-package integration with `:diminish`.
+(use-package diminish :demand t)
+;; Macros to define key bindings. use-package integration with `:bind`.
+(use-package bind-key :demand t)
+
+;; Tweak garbage collector
+(defconst gc-threshold (* 4 1000 1000))
+(defconst gc-percentage 0.5)
+(use-package gcmh
+  :demand t
+  :commands gcmh-mode
+  :preface
+  (defun abz--restore-gc-parameters ()
+    "Restore garbage collector thresholds to sane values."
+    (customize-set-variable 'gc-cons-threshold gc-threshold)
+    (customize-set-variable 'gc-cons-percentage gc-percentage)
+    (gcmh-mode 1))
+  (defun abz--restore-gc-parameters-when-idle ()
+    "Call `abz--restore-gc-parameters' when Emacs becomes idle."
+    (run-with-idle-timer 61 nil #'abz--restore-gc-parameters))
+  :custom
+  (gcmh-verbose nil)
+  (gcmh-low-cons-threshold gc-threshold)
+  :diminish gcmh-mode
+  :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
+
+;; Some non-packaged stuff
+(add-to-list 'load-path (locate-user-emacs-file "vendor"))
+
+;; Directory where to find submodules
+(eval-and-compile (defconst abz-site-dir (locate-user-emacs-file "abz")
+                    "Local packages directory"))
+(add-to-list 'load-path abz-site-dir)
+
+;; This emacs configuration variables
+(require 'abz-settings)
+
 ;; tramp: Transparent Remote Access, Multiple Protocol (built-in)
+;; no-littering:
+;;   - tramp-auto-save-directory
+;;   - tramp-persistency-file-name
 (use-package tramp
   :straight nil
+  :custom
+  (tramp-default-method "ssh")
+  (tramp-backup-directory-alist
+   '(("." . (abz--locate-data-dir "backup/tramp")))
+   "Backup files location")
   :init
-  (customize-set-variable 'tramp-default-method "ssh") ; Better than SCP
-  (customize-set-variable 'tramp-auto-save-directory
-                          (expand-file-name ".cache/tramp/auto-save" user-emacs-directory)) ; Keep auto-save files in local
-  (customize-set-variable 'tramp-backup-directory-alist
-                          `(("." . ,(expand-file-name ".cache/tramp/backup" user-emacs-directory)))) ; Backup files
-  (customize-set-variable 'tramp-persistency-file-name
-                          (expand-file-name ".cache/tramp/history" user-emacs-directory)) ; Connection history
   ;; Disable version control for tramp files
   ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
   (use-package vc
@@ -92,48 +179,6 @@
                            (noconfirm . "--noconfirm"))))
     (setq system-packages-package-manager 'paru)
     (setq system-packages-use-sudo nil)))
-
-;; Adds the keyword `:ensure-system-package' to `use-package'
-(use-package use-package-ensure-system-package
-  :demand t)
-
-;; Customize mode lighters. use-package integration with `:diminish`.
-(use-package diminish :demand t)
-;; Macros to define key bindings. use-package integration with `:bind`.
-(use-package bind-key :demand t)
-
-;; Tweak garbage collector
-(defconst gc-threshold (* 4 1000 1000))
-(defconst gc-percentage 0.5)
-(use-package gcmh
-  :demand t
-  :commands gcmh-mode
-  :preface
-  (defun abz--restore-gc-parameters ()
-    "Restore garbage collector thresholds to sane values."
-    (customize-set-variable 'gc-cons-threshold gc-threshold)
-    (customize-set-variable 'gc-cons-percentage gc-percentage)
-    (gcmh-mode 1))
-  (defun abz--restore-gc-parameters-when-idle ()
-    "Call `abz--restore-gc-parameters' when Emacs becomes idle."
-    (run-with-idle-timer 61 nil #'abz--restore-gc-parameters))
-  :custom
-  (gcmh-verbose nil)
-  (gcmh-low-cons-threshold gc-threshold)
-  :diminish gcmh-mode
-  :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
-
-;; Some non-packaged stuff
-(add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
-
-;; Directory where to find submodules
-(eval-and-compile (defconst abz-site-dir (expand-file-name "abz" user-emacs-directory)
-                    "Local packages directory"))
-(add-to-list 'load-path abz-site-dir)
-
-;; This emacs configuration variables
-(require 'abz-settings)
-(abz--init-settings)
 
 ;; Install some useful system packages
 ;;

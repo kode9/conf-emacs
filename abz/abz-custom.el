@@ -67,7 +67,6 @@
 
   ;; Automatic backup on first save
   (customize-set-variable 'backup-by-copying t) ; Always copy (no rename)
-  (customize-set-variable 'backup-directory-alist `(("." . ,(locate-user-emacs-file ".cache/backup/"))))
   (customize-set-variable 'delete-old-versions t)
   (customize-set-variable 'kept-old-versions 0)    ; Number of oldest backups
   (customize-set-variable 'kept-new-versions 10)   ; Number of newest backups
@@ -133,7 +132,7 @@
     (customize-set-variable 'auto-save-visited-mode nil))
   ;; Save all files in `abz-cache-dir` instead of in the same directory as the visited file
   (customize-set-variable 'auto-save-file-name-transforms
-                          `((".*" ,(expand-file-name (convert-standard-filename "auto-save/") abz-cache-dir) t)))
+                          `((".*" ,(abz--locate-data-dir "auto-save/") t)))
   (customize-set-variable 'auto-save-interval 1000)   ; Number of inputs between auto-saves
   (customize-set-variable 'auto-save-timeout 101)     ; Idle time before auto-save
   (customize-set-variable 'delete-auto-save-files t)) ; Keep auto-save files
@@ -145,7 +144,7 @@
   :init
   (customize-set-variable 'recentf-max-saved-items 40)
   :config
-  (add-to-list 'recentf-exclude abz-local-dir)
+  (add-to-list 'recentf-exclude abz-data-dir)
   (add-to-list 'recentf-exclude abz-cache-dir))
 
 ;; Auto-Revert: revert files when they change on disk (built-in)
