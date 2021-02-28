@@ -1,7 +1,6 @@
 *
+!abz/
+!early-init.el
 !init.el
-!local/
-!pluc/
-!straight/repos/
 !test.el
 !vendor/

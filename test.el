@@ -16,6 +16,7 @@
   (let ((test "load"))
     (condition-case err
         (progn
+          (load (expand-file-name "early-init.el" user-emacs-directory) nil 'nomessage 'nosuffix 'must-suffix)
           (load (expand-file-name "init.el" user-emacs-directory) nil 'nomessage 'nosuffix 'must-suffix)
           (succeed test))
       (error (fail test err))))
