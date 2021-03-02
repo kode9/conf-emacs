@@ -44,6 +44,12 @@
                             '(watch-files find-when-checking)
                           '(find-at-startup find-when-checking)))
 
+;; Tell straight.el about the profiles we are going to be using.
+(setq straight-profiles
+      '((nil . "default.el")
+        ;; Packages which are pinned to a specific commit.
+        (pinned . "pinned.el")))
+
 ;; Bootstrap
 (defconst bootstrap-version 5)
 (defconst straight-base-dir (expand-file-name (convert-standard-filename "emacs/")
@@ -60,6 +66,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(require 'straight-x)
+(autoload #'straight-x-pull-all "straight-x")
+(autoload #'straight-x-freeze-versions "straight-x")
+(defalias 'straight-pull-all #'straight-x-pull-all)
+(defalias 'straight-freeze-versions #'straight-x-freeze-versions)
+
 ;; use-package: package loading
 ;; https://github.com/jwiegley/use-package
 (declare-function straight-use-package "straight") ; Silence byte-compiler
@@ -71,6 +83,12 @@
 (customize-set-variable 'use-package-verbose t "Report about loading and configuration details")
 (customize-set-variable 'use-package-compute-statistics t "Report about loading and configuration details")
 (require 'use-package) ; Silence byte-compiler
+
+(let ((straight-current-profile 'pinned))
+  (straight-use-package 'posframe)
+  ;; Pin org-mode version.
+  (add-to-list 'straight-x-pinned-packages
+               '("posframe" . "efd7ea490defc53a5b78e7469a3a35d225b766cc")))
 
 ;; Ensure environment variables inside Emacs look the same as in the user's shell
 ;; https://github.com/purcell/exec-path-from-shell
