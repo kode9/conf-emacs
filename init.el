@@ -135,7 +135,7 @@
   :custom
   (tramp-default-method "ssh")
   (tramp-backup-directory-alist
-   '(("." . (abz--locate-data-dir "backup/tramp")))
+   `(("." . ,(abz--locate-data-dir "backup/tramp")))
    "Backup files location")
   :init
   ;; Disable version control for tramp files
