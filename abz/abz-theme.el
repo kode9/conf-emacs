@@ -34,6 +34,13 @@
   :group 'abz
   :group 'font-selection)
 
+(use-package jit-lock
+  :straight nil
+  :custom
+  (jit-lock-chunk-size 3500)
+  (jit-lock-defer-time 0)
+  (jit-lock-stealth-time 8))
+
 (use-package all-the-icons
   :if (display-graphic-p)
   :demand t
