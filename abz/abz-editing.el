@@ -84,6 +84,7 @@
 
 ;; (built-in) Highlight current line
 (use-package hl-line
+  :disabled
   :straight nil
   :custom
   (global-hl-line-sticky-flag t "Keep highlighting lines in all windows")
