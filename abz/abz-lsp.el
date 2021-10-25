@@ -27,7 +27,7 @@
   lsp-ui-mode
   :custom
   (lsp-ui-doc-delay 0.2)
-  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-enable nil)
   (lsp-ui-doc-position #'top)
   (lsp-ui-peek-enable t)
   (lsp-ui-peek-show-directory t)
