@@ -91,7 +91,7 @@
   :custom
   (windmove-wrap-around t "Whether movement off the edge of the frame wraps around")
   :config
-  (windmove-default-keybindings (list 'super 'hyper)))
+  (windmove-default-keybindings (list 'super)))
 
 ;; Tooltips (built-in)
 (use-package tooltip
