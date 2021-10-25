@@ -108,7 +108,7 @@
     (gcmh-mode 1))
   (defun abz--restore-gc-parameters-when-idle ()
     "Call `abz--restore-gc-parameters' when Emacs becomes idle."
-    (run-with-idle-timer 61 nil #'abz--restore-gc-parameters))
+    (run-with-idle-timer 9 nil #'abz--restore-gc-parameters))
   :custom
   (gcmh-verbose nil)
   (gcmh-low-cons-threshold gc-threshold)
