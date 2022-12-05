@@ -409,6 +409,18 @@ mouse-3: go to end")
 ;; https://github.com/jobbflykt/x509-mode
 (use-package x509-mode)
 
+(use-package tree-sitter
+  :commands
+  global-tree-sitter-mode
+  :custom
+  (tsc-dyn-get-from #'(:compilation :github))
+  :hook
+  (after-init . global-tree-sitter-mode)
+  (tree-sitter-after-on . tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :after tree-sitter)
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))

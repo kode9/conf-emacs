@@ -193,6 +193,7 @@
 ;; https://github.com/gennad/auto-highlight-symbol
 ;; Alternative, but slower: https://github.com/fgeller/highlight-thing.el
 (use-package auto-highlight-symbol
+  :disabled t
   :diminish
   :init
   (advice-add 'ahs-highlight-p :before-while (lambda ()
