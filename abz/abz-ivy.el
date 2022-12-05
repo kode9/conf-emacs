@@ -98,36 +98,37 @@
 (use-package ivy-posframe
   :after ivy
   :demand t
-  :commands ivy-posframe-mode
+  :commands
+  ivy-posframe-mode
   :preface
   (defun abz--ivy-posframe-get-size ()
     "Size of a ivy-posframe.
 
-`width' has a upper threshold of 65% of (frame-width).
+  `width' has a upper threshold of 65% of (frame-width).
 
-`height' has a upper threshold of 65% of (frame-height).
+  `height' has a upper threshold of 65% of (frame-height).
 
 
-`min-width' is set to `ivy-posframe-min-width' if defined, or to the maximum of (ratio * window-width) and (1/split * ratio * frame-width) otherwise. With ratio=0.75 and split=2.
+  `min-width' is set to `ivy-posframe-min-width' if defined, or to the maximum of (ratio * window-width) and (1/split * ratio * frame-width) otherwise. With ratio=0.75 and split=2.
 
-So it will take 75% of the window width if not split, but won't shrink too much
-if it is split more than `split' frames.
-"
+  So it will take 75% of the window width if not split, but won't shrink too much
+  if it is split more than `split' frames.
+  "
     (list
      :height (let ((max-height (* (frame-height) 0.65)))
-               (min max-height (or ivy-posframe-height max-height)))
+               (round (min max-height (or ivy-posframe-height max-height))))
      :width (let ((max-width (* (frame-width) 0.65)))
-              (min max-width (or ivy-posframe-width max-width)))
+              (round (min max-width (or ivy-posframe-width max-width))))
      :min-height (or ivy-posframe-min-height
                      (let ((height (+ ivy-height 1)))
-                       (min height (or ivy-posframe-height height))))
+                       (round (min height (or ivy-posframe-height height)))))
      :min-width (or ivy-posframe-min-width
                     (let* ((ratio 0.75)
                            (split 2)
                            (split-ratio (/ 1.0 split))
                            (width (round (* (window-width) ratio))))
-                      (max (min width (or ivy-posframe-width width))
-                           (round (* (frame-width) split-ratio ratio)))))))
+                      (round (max (min width (or ivy-posframe-width width))
+                                  (round (* (frame-width) split-ratio ratio))))))))
   :custom
   (ivy-posframe-size-function #'abz--ivy-posframe-get-size "Function to compute the size of the frame")
   (ivy-posframe-style 'window-center "Default position")
