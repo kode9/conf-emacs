@@ -30,14 +30,14 @@
   (load (expand-file-name "early-init" user-emacs-directory) nil 'nomessage))
 
 ;; straight.el: package manager
-;; https://github.com/raxod502/straight.el
+;; https://github.com/radian-software/straight.el
 
 ;; Shallow clone
 (customize-set-variable 'straight-vc-git-default-clone-depth 1)
 ;; If watchexec and Python are installed, use file watchers to detect
 ;; package modifications. This saves time at startup. Otherwise, use
 ;; the ever-reliable find(1).
-;; https://github.com/raxod502/radian/blob/54f9680e81767dc5d036d2c4d6672021ca422784/emacs/radian.el#L492
+;; https://github.com/radian-software/radian/blob/6a9f84ea50fe12f4655265b047c3ac72d467fa87/emacs/radian.el#L550
 (customize-set-variable 'straight-check-for-modifications
                         (if (and (executable-find "watchexec")
                                  (executable-find "python3"))
@@ -45,16 +45,17 @@
                           '(find-at-startup find-when-checking)))
 
 ;; Bootstrap
-(defconst bootstrap-version 5)
+(defvar bootstrap-version)
 (defconst straight-base-dir (expand-file-name (convert-standard-filename "emacs/")
                                               (xdg-cache-home)))
-(let* ((bootstrap-file (expand-file-name
-                        (convert-standard-filename "straight/repos/straight.el/bootstrap.el")
-                        straight-base-dir)))
+(let ((bootstrap-file (expand-file-name
+                       (convert-standard-filename "straight/repos/straight.el/bootstrap.el")
+                       straight-base-dir))
+      (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
