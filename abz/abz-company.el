@@ -44,14 +44,19 @@
                         company-preview-if-just-one-frontend
                         company-echo-metadata-frontend)
                      "Active frontends")
-  ;; TODO backends: company-clang
+  ;; disabled: company-dabbrev-code: shows up unexpectedly after '<', '>', ':' etc
+  ;; disabled: company-dabbrev: same as company-dabbrev-code
+  ;; enabled: company-capf: uses standard completion at point
+  ;; disabled: company-yasnippet: TODO: configure
+  ;; disabled: company-keywords: useless with LSP
   (company-backends #'((company-files
                         company-capf
-                        :with company-yasnippet
-                        :with company-keywords
-                        :with company-dabbrev-code
-                        :with company-dabbrev
-                        :with company-abbrev))
+                        ;; :with company-yasnippet
+                        ;; :with company-keywords
+                        ;; :with company-dabbrev-code
+                        ;; :with company-dabbrev
+                        ;; :with company-abbrev
+                        ))
                     "Globally enabled backends")
   (company-transformers #'(;; company-sort-by-occurrence
                            company-sort-by-backend-importance
