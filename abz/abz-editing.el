@@ -142,7 +142,7 @@ With argument N go to the nth entry."
 (use-package undo-tree
   :diminish undo-tree-mode
   :custom
-  (undo-tree-auto-save-history t)       ; Save undo tree to a file
+  (undo-tree-auto-save-history nil)     ; Don't save undo tree to a file
   (undo-tree-enable-undo-in-region nil) ; Don't enable in regions
   (undo-tree-visualizer-diff t)         ; Display diff by default in visualizer
   (undo-tree-visualizer-timestamps t)   ; Show timestamps
