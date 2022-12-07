@@ -86,6 +86,9 @@
 (customize-set-variable 'truncate-partial-width-windows 40 "Well still truncate if frame width is small")
 (customize-set-variable 'word-wrap t "Wrap long lines")
 
+;; https://github.com/kiwanami/emacs-epc/issues/35
+(setq byte-compile-warnings '(cl-functions))
+
 ;; Don't check file handlers during startup
 ;; https://github.com/MatthewZMD/.emacs.d#unset-file-name-handler-alist
 (defvar abz--file-name-handler-alist-original file-name-handler-alist)
