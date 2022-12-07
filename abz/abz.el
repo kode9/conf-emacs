@@ -29,9 +29,11 @@
 (require 'tramp)
 (require 'use-package)
 
+(declare-function straight-pull-recipe-repositories "straight")
 (declare-function straight-normalize-all "straight")
 (declare-function straight-pull-all "straight")
-(declare-function straight-rebuild-all "straight")
+(declare-function straight-check-all "straight")
+(defvar straight-process-buffer)
 
 (declare-function projectile-project-root "projectile")
 
@@ -41,6 +43,9 @@
 (declare-function lsp-feature? "lsp-mode")
 (declare-function lsp-format-buffer "lsp-mode")
 (declare-function lsp-format-region "lsp-mode")
+
+(defconst abz-upgrade-buffer-name "*abz-upgrade*"
+  "Name of the buffer for straight-upgrade.")
 
 (defalias 'abz-beginning-of-line? 'bolp)
 
@@ -218,37 +223,40 @@ Same as `untabify' but indents the whole buffer no region is active."
 
 (defun abz--straight-upgrade-all ()
   "Upgrade all packages with `straight'."
-  (let ((debug-on-error t)
-        (buffer "*Messages*"))
-    (message "Upgrade all packages..")
-    (pop-to-buffer-same-window buffer)
-    (redisplay)
-    (message "Normalize packages..")
-    (redisplay)
-    (straight-normalize-all)
-    (message "Normalize packages... Done.")
-    (message "Pull packages..")
-    (redisplay)
-    (straight-pull-all)
-    (message "Pull packages... Done.")
-    (message "Normalize packages..")
-    (redisplay)
-    (straight-normalize-all)
-    (message "Normalize packages... Done.")
-    (message "Build packages..")
-    (redisplay)
-    (straight-rebuild-all)
-    (message "Build packages... Done")
-    (message "Upgrade all packages... Done.")
-    (redisplay)
-    (princ (buffer-string) #'external-debugging-output)
-    (kill-emacs)))
+  (require 'straight)
+  (switch-to-buffer (get-buffer-create "*Messages*"))
+  (goto-char (point-max))
+  (pop-to-buffer (get-buffer-create straight-process-buffer))
+  (goto-char (point-max))
+  (message "Pull recipe repositories")
+  (redisplay)
+  (straight-pull-recipe-repositories)
+  (goto-char (point-max))
+  (message "Normalize")
+  (redisplay)
+  (straight-normalize-all)
+  (goto-char (point-max))
+  (message "Pull")
+  (redisplay)
+  (straight-pull-all)
+  (goto-char (point-max))
+  (message "Rebuild")
+  (redisplay)
+  (straight-check-all)
+  (goto-char (point-max))
+  (message "Done")
+  (redisplay)
+  (with-current-buffer straight-process-buffer
+    (princ (buffer-string) #'external-debugging-output))
+  (with-current-buffer "*Messages*"
+    (princ (buffer-string) #'external-debugging-output))
+  (kill-emacs))
 
-(defun abz--straight-upgrade-all-async-sentinel (PROCESS EVENT)
+(defun abz--straight-upgrade-all-async-sentinel (_PROCESS _EVENT)
   "Sentinel function for `abz--straight-upgrade-all'.
 
 Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
-  (when (y-or-n-p (format "Process %s %s.  Restart Emacs? " PROCESS EVENT))
+  (when (y-or-n-p (format "All packages upgraded.  Restart Emacs? "))
     (use-package restart-emacs
       :functions restart-emacs
       :custom
@@ -259,19 +267,22 @@ Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
   "Upgrade all packages in another process."
   (make-process
    :name "abz-upgrade"
-   :buffer "*abz-upgrade*"
-   :command `(,(expand-file-name invocation-name invocation-directory)
-              "-u"
-              ,(or (and (not (string-empty-p init-file-user)) init-file-user) (user-login-name))
-              "-f"
-              "abz--straight-upgrade-all")
+   :buffer (with-current-buffer (get-buffer-create abz-upgrade-buffer-name)
+             (setq buffer-read-only t)
+             (current-buffer))
+   :command `( ,(expand-file-name invocation-name invocation-directory)
+               "-u"
+               ,(or (and (not (string-empty-p init-file-user)) init-file-user) (user-login-name))
+               "-f"
+               "abz--straight-upgrade-all")
    :sentinel #'abz--straight-upgrade-all-async-sentinel))
 
 ;;;###autoload
 (defun abz-straight-upgrade-all ()
   "Upgrade all packages."
   (interactive)
-  (abz--straight-upgrade-all-async))
+  (abz--straight-upgrade-all-async)
+  (message "Packages upgrade started in a new Emacs frame."))
 
 ;; http://www.emacswiki.org/emacs/TrampMode
 ;;;###autoload
