@@ -130,6 +130,7 @@
   (load-theme 'zenburn 'no-confirm))
 
 (use-package doom-themes
+  :disabled
   :demand t
   :config
   (load-theme 'doom-molokai 'no-confirm))
@@ -145,6 +146,30 @@
   :demand t
   :config
   (load-theme 'moe-dark 'no-confirm))
+
+;; TODO: Try out zerodark-setup-modeline-format
+(use-package zerodark-theme
+  :functions (true-color-p)
+  :demand t
+  :config
+  ;; https://github.com/radian-software/radian/blob/ae20e19222a64bc032e0bd857878c60b7f496a58/emacs/radian.el#L5378
+  ;; I don't know exactly the purpose of these faces, but it does look better.
+  (let ((background-purple (if (true-color-p) "#48384c" "#5f5f5f"))
+        (class '((class color) (min-colors 89)))
+        (green (if (true-color-p) "#98be65" "#87af5f"))
+        (orange (if (true-color-p) "#da8548" "#d7875f"))
+        (purple (if (true-color-p) "#c678dd" "#d787d7")))
+    (custom-theme-set-faces
+     'zerodark
+     `(vertico-current
+       ((,class (:background
+                 ,background-purple
+                 :weight bold
+                 :foreground ,purple))))
+     `(prescient-primary-highlight ((,class (:foreground ,orange))))
+     `(prescient-secondary-highlight ((,class (:foreground ,green))))
+     `(completions-common-part nil)))
+  (enable-theme 'zerodark))
 
 ;; Fonts
 (use-package dynamic-fonts
