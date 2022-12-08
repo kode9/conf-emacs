@@ -81,7 +81,7 @@
 (customize-set-variable 'cursor-type '(hbar . 4) "Cursor when window is selected")
 (customize-set-variable 'highlight-nonselected-windows t "Keep Highlightning region")
 (customize-set-variable 'visible-bell nil "Don't try the flash")
-(customize-set-variable 'ring-bell-function nil "Don't ring the bell")
+(customize-set-variable 'ring-bell-function 'ignore "Don't ring the bell")
 (customize-set-variable 'truncate-lines nil "Don't truncate long lines (avoid horizontal scrolling)")
 (customize-set-variable 'truncate-partial-width-windows 40 "Well still truncate if frame width is small")
 (customize-set-variable 'word-wrap t "Wrap long lines")
