@@ -421,6 +421,20 @@ mouse-3: go to end")
 (use-package tree-sitter-langs
   :after tree-sitter)
 
+;; TODO: activate `minimap-mode' on toggle.
+(defcustom abz-use-minimap nil
+  "Whether to show minimap in every `prog-mode' buffers."
+  :type 'boolean
+  :group 'abz
+  :group 'convenience)
+
+;; https://github.com/dengste/minimap
+(use-package minimap
+  :if abz-use-minimap
+  :demand
+  :hook
+  (after-init . minimap-mode))
+
 (use-package abz-clean-mode
   :straight nil
   :hook (after-init . abz-clean-global-mode))
