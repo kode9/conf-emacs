@@ -280,23 +280,22 @@ TODO: Accept a list of packages."
 
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
-  :disabled
   :straight nil
-  :commands (ansi-color-apply-on-region abz/colorize-region)
   :init
-  (defun abz/colorize-region (start end)
+  (defun abz--colorize-region (start end)
     "Colorize from `start` to `end`"
     (let ((inhibit-read-only t))
       (ansi-color-apply-on-region start end)))
-  (defun abz-colorize-buffer ()
+  (defun abz--colorize-buffer ()
     "Colorize the current buffer"
     (interactive)
-    (abz/colorize-region (point-min) (point-max)))
-  (defun abz/colorize-compilation ()
-    "Colorize from `compilation-filter-start' to `point'."
-    (abz/colorize-region compilation-filter-start (point)))
-  (customize-set-variable 'compilation-environment #'("TERM=xterm"))
-  :hook (compilation-filter . abz/colorize-compilation))
+    (abz--colorize-region (point-min) (point-max)))
+  (use-package compile
+    :straight nil
+    :custom
+    (compilation-environment '("TERM=xterm")))
+  :hook
+  (compilation-filter . ansi-color-compilation-filter))
 
 (use-package keyfreq
   :hook ((after-init . keyfreq-mode)
