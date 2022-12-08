@@ -220,10 +220,6 @@ With argument N go to the nth entry."
 
 ;; Collaborative live editing
 (use-package crdt
-  :straight (:type git
-                   :host nil
-                   :repo "https://code.librehq.com/qhong/crdt.el"
-                   :branch "master")
   :custom
   (crdt-ask-for-name nil)
   (crdt-ask-for-password nil)
