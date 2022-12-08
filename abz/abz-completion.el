@@ -28,10 +28,12 @@
 (defcustom abz-completion-framework 'ivy
   "The completion frontend to use."
   :type '(radio
-          (const :tag "Helm" helm)
-          (const :tag "Ido" ido)
+          (const :tag "Built-in" built-in)
+          (const :tag "Vertico" vertico)
           (const :tag "Ivy" ivy)
-          (const :tag "Selectrum" selectrum)
+          (const :tag "Ido" ido)
+          (const :tag "Helm" helm)
+          (const :tag "Selectrum (deprecated, use vertico)" vertico)
           )
   :tag "Completion framework"
   :group 'abz
@@ -55,7 +57,8 @@
   (helm (user-error "Unsupported"))
   (ido (require 'abz-ido))
   (ivy (require 'abz-ivy))
-  (selectrum (require 'abz-selectrum)))
+  (selectrum (require 'abz-selectrum))
+  (vertico (require 'abz-vertico)))
 
 (provide 'abz-completion)
 
