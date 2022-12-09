@@ -106,6 +106,11 @@ If optional `OLDVALUE' is non-nil it will first try to rename `OLDVALUE' to
   :group 'abz
   :group 'environment)
 
+(defun abz-find-custom-file()
+  "Open the custom file."
+  (interactive)
+  (find-file abz-custom-file))
+
 (use-package no-littering
   :demand t
   :init
