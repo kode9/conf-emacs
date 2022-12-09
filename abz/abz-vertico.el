@@ -145,6 +145,11 @@
   :init
   (vertico-posframe-mode +1))
 
+;; TODO: Move somewhere else
+(use-package ctrlf
+  :hook
+  (after-init . ctrlf-mode))
+
 (provide 'abz-vertico)
 
 ;;; abz-vertico.el ends here
