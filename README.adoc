@@ -107,6 +107,18 @@ TL;DR kbd:[M-x] kbd:[describe-personal-keybindings] kbd:[RET]
 
 |===
 
+== Custom functions
+
+[cols="1m,2"]
+|===
+|Function |Description
+
+|abz-clean-mode |Global mode that format & clean buffer before save
+|abz-find-custom-file |Open the custom file
+|abz-indent-dwim |Indent region or buffer
+|abz-sudo-buffer |Reopen the current file as root
+|===
+
 == TODO
 
 * Hydra
