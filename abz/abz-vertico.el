@@ -90,34 +90,23 @@
   (orderless-matching-styles '(orderless-flex orderless-literal))
   (completion-styles '(orderless basic)))
 
-;;
-;; https://github.com/radian-software/straight.el/issues/1006
-;;
-;; ;; TODO: This is not only for completion and should be configured somewhere else
-;; (use-package prescient
-;;   :config
-;;   (prescient-persist-mode +1))
+;; TODO: This is not only for completion and should be configured somewhere else
+(use-package prescient
+  :commands
+  prescient-persist-mode
+  :custom
+  (prescient-filter-method #'(literal initialism fuzzy))
+  (prescient-sort-full-matches-first t)
+  :config
+  (prescient-persist-mode +1))
 
-;; (use-package vertico-prescient
-;;   ;; :straight (prescient :type git :flavor melpa :files ("prescient.el" "prescient-pkg.el") :host github :repo "radian-software/prescient.el")
-
-;;   :demand t
-;;   :after vertico
-;;   ;; :commands
-;;   ;; vertico-prescient-mode
-;;   ;; prescient-persist-mode
-;;   :config
-;;   (vertico-prescient-mode +1)
-;;   ;; (prescient-persist-mode +1)
-;;   ;; (setq prescient-filter-method '(literal initialism prefix regexp)
-;;   ;;       prescient-use-char-folding t
-;;   ;;       prescient-use-case-folding 'smart
-;;   ;;       prescient-sort-full-matches-first t ; Works well with `initialism'.
-;;   ;;       prescient-sort-length-enable t)
-
-;;   ;; Save recency and frequency rankings to disk, which let them become better
-;;   ;; over time.
-;;   )
+(use-package vertico-prescient
+  ;; https://github.com/radian-software/prescient.el/issues/137
+  :straight (vertico-prescient :type git :flavor melpa :files ("vertico-prescient.el") :host github :repo "radian-software/prescient.el")
+  :demand t
+  :after vertico
+  :config
+  (vertico-prescient-mode +1))
 
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
