@@ -30,11 +30,7 @@
   :type '(radio
           (const :tag "Built-in" built-in)
           (const :tag "Vertico" vertico)
-          (const :tag "Ivy" ivy)
-          (const :tag "Ido" ido)
-          (const :tag "Helm" helm)
-          (const :tag "Selectrum (deprecated, use vertico)" vertico)
-          )
+          (const :tag "Ivy" ivy))
   :tag "Completion framework"
   :group 'abz
   :group 'convenience)
@@ -54,10 +50,7 @@
   (which-key-mode . which-key-posframe-mode))
 
 (cl-case abz-completion-framework
-  (helm (user-error "Unsupported"))
-  (ido (require 'abz-ido))
   (ivy (require 'abz-ivy))
-  (selectrum (require 'abz-selectrum))
   (vertico (require 'abz-vertico)))
 
 (provide 'abz-completion)
