@@ -145,6 +145,22 @@
   :init
   (vertico-posframe-mode +1))
 
+;; Mini-buffer actions
+(use-package embark
+  ;; :init
+  ;; ;; Optionally replace the key help with a completing-read interface
+  ;; (setq prefix-help-command #'embark-prefix-help-command)
+  ;; :config
+  ;; ;; Hide the mode line of the Embark live/completions buffers
+  ;; (add-to-list 'display-buffer-alist
+  ;;              '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+  ;;                nil
+  ;;                (window-parameters (mode-line-format . none))))
+  :bind
+  (("M-," . embark-act)
+   ("M-;" . embark-dwim)
+   ("C-h B" . embark-bindings)))
+
 ;; TODO: Move somewhere else
 (use-package ctrlf
   :hook
