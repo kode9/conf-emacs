@@ -196,6 +196,7 @@
 The package is installed with `system-packages-install'.
 
 TODO: Accept a list of packages."
+  (message "Check target '%s' for package '%s'" target package)
   (cond
    ((or (null target) (null package)) (message "nullp"))
    ((and (stringp target) (file-exists-p target)) (message "file exist"))
@@ -203,29 +204,31 @@ TODO: Accept a list of packages."
    ((system-packages-install (symbol-name package)))))
 
 (let ((packages `(;; Fonts
-                  ,(when (abz-os-is-arch?) '("/usr/share/licenses/ttf-iosevka/" . ttf-iosevka))
                   ,(cond
-                    ((abz-os-is-arch?) '("/usr/share/fonts/TTF/FiraCode-Regular.ttf" . ttf-fira-code))
-                    ((abz-os-is-debian-derivative?) '("/usr/share/fonts-firacode/" . fonts-firacode)))
+                    ((abz-os-is-arch?) #'("/usr/share/licenses/ttf-iosevka/" . ttf-iosevka))
+                    (t #'(nil . nil)))
                   ,(cond
-                    ((abz-os-is-arch?) '("/usr/share/fonts/TTF/Hack-Regular.ttf" . ttf-hack))
-                    ((abz-os-is-debian-derivative?) '("/usr/share/fonts/truetype/hack/" . fonts-hack)))
+                    ((abz-os-is-arch?) #'("/usr/share/fonts/TTF/FiraCode-Regular.ttf" . ttf-fira-code))
+                    ((abz-os-is-debian-derivative?) #'("/usr/share/fonts-firacode/" . fonts-firacode)))
+                  ,(cond
+                    ((abz-os-is-arch?) #'("/usr/share/fonts/TTF/Hack-Regular.ttf" . ttf-hack))
+                    ((abz-os-is-debian-derivative?) #'("/usr/share/fonts/truetype/hack/" . fonts-hack)))
                   ;; openssh: secure shell client
                   ,(cond
-                    ((abz-os-is-arch?) '(ssh . openssh))
-                    ((abz-os-is-debian-derivative?) '(ssh . openssh-client)))
+                    ((abz-os-is-arch?) #'(ssh . openssh))
+                    ((abz-os-is-debian-derivative?) #'(ssh . openssh-client)))
                   ;; pass: password manager
                   (pass . pass)
                   ;; ripgrep: grep alternative
                   (rg . ripgrep)
                   ;; ag: grep alternative
                   ,(cond
-                    ((abz-os-is-arch?) '(ag . the_silver_searcher))
-                    ((abz-os-is-debian-derivative?) '(ag . silversearcher-ag)))
+                    ((abz-os-is-arch?) #'(ag . the_silver_searcher))
+                    ((abz-os-is-debian-derivative?) #'(ag . silversearcher-ag)))
                   ;; fd: find alternative
                   ,(cond
-                    ((abz-os-is-debian-derivative?) '(fdfind . fd-find))
-                    ('(fd . fd)))
+                    ((abz-os-is-debian-derivative?) #'(fdfind . fd-find))
+                    (#'(fd . fd)))
                   )))
   (map-do #'abz--ensure-system-package packages))
 
