@@ -158,7 +158,11 @@
         (class '((class color) (min-colors 89)))
         (green (if (true-color-p) "#98be65" "#87af5f"))
         (orange (if (true-color-p) "#da8548" "#d7875f"))
-        (purple (if (true-color-p) "#c678dd" "#d787d7")))
+        (purple (if (true-color-p) "#c678dd" "#d787d7"))
+        ;; Added by me
+        ;; (refined-added (if (true-color-p) "#1e8967" "#1e8967"))
+        ;; (refined-removed (if (true-color-p) "#b33c49" "#b33c49"))
+        )
     (custom-theme-set-faces
      'zerodark
      `(vertico-current
@@ -168,7 +172,13 @@
                  :foreground ,purple))))
      `(prescient-primary-highlight ((,class (:foreground ,orange))))
      `(prescient-secondary-highlight ((,class (:foreground ,green))))
-     `(completions-common-part nil)))
+     `(completions-common-part nil)
+     ;; Added by me
+     ;; `(smerge-refined-added ((,class (:background ,refined-added))))
+     ;; `(smerge-refined-removed ((,class (:background ,refined-removed))))
+     `(smerge-refined-added ((,class (:inherit diff-refine-added))))
+     `(smerge-refined-removed ((,class (:inherit diff-refine-removed))))
+     `(show-paren-match ((,class (:underline t))))))
   (enable-theme 'zerodark))
 
 ;; Fonts
