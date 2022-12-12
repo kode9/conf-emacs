@@ -74,6 +74,22 @@
   :straight nil
   :diminish)
 
+;; Narrowing
+(use-package lisp
+  :straight nil
+  :config
+  :init
+  (put 'narrow-to-region 'disabled nil)
+  (put 'narrow-to-page 'disabled nil)
+  (setq narrow-to-defun-include-comments t))
+
+;; Better narrowing (let see the context and don't move cursor)
+(use-package fancy-narrow
+  :init
+  (setq narrow-to-defun-include-comments t)
+  :hook
+  (after-init . fancy-narrow-mode)) ; Rebind classic narrow keys to fancy-narrow functions
+
 ;;;###autoload
 (defun align-comments (begin end)
   "Align comments within region between BEGIN and END."
