@@ -45,6 +45,10 @@
     (unless (or (bound-and-true-p indent-tabs-mode)
                 (apply #'derived-mode-p abz--clean-mode-dont-untabify-parent-modes))
       (abz-untabify-dwim))
+    (abz-delete-trailing-whitespace))
+  ;; lsp-pyslp with default configuration doesn't seem to remove trailing whitespace
+  ;; FIXME: Better detect this and/or find a proper lsp configuration
+  (when (derived-mode-p #'python-mode)
     (abz-delete-trailing-whitespace)))
 
 (define-minor-mode abz-clean-mode
