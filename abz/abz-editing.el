@@ -85,6 +85,7 @@
 
 ;; Better narrowing (let see the context and don't move cursor)
 (use-package fancy-narrow
+  :disabled
   :init
   (setq narrow-to-defun-include-comments t)
   :hook
