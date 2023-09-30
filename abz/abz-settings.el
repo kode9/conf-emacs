@@ -113,9 +113,13 @@ If optional `OLDVALUE' is non-nil it will first try to rename `OLDVALUE' to
 
 (use-package no-littering
   :demand t
+  :commands
+  (no-littering-theme-backups)
   :init
   (setq no-littering-etc-directory abz-config-local-dir)
-  (setq no-littering-var-directory abz-data-dir))
+  (setq no-littering-var-directory abz-data-dir)
+  :config
+  (no-littering-theme-backups))
 
 (defconst abz--os-is-arch?
   (and (executable-find "pacman") t))
