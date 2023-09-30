@@ -128,7 +128,7 @@
 ;; Visual feedback on yanks, undo, etc
 ;; http://www.emacswiki.org/emacs/VolatileHighlights
 (use-package volatile-highlights
-  :custom-face (vhl/default-face ((t (:background nil :underline t))))
+  :custom-face (vhl/default-face ((t (:background ,(face-attribute 'default :background) :underline t))))
   :hook (after-init . volatile-highlights-mode)
   :diminish volatile-highlights-mode)
 
