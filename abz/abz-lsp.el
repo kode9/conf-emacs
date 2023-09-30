@@ -106,6 +106,24 @@
                              "--limit-results=500"
                              "--log=error"
                              "--pch-storage=memory"))
+  :config
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection '("clangd"
+                                                            "--all-scopes-completion"
+                                                            "--background-index"
+                                                            "--clang-tidy"
+                                                            "--completion-style=bundled"
+                                                            "--header-insertion-decorators=0"
+                                                            "--header-insertion=iwyu"
+                                                            "--limit-references=500"
+                                                            "--limit-results=500"
+                                                            "--log=error"
+                                                            "--pch-storage=memory"))
+                    :activation-fn (lsp-activate-on "c" "cpp" "objective-c" "cuda")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote
+                    :library-folders-fn (lambda (_workspace) lsp-clients-clangd-library-directories)))
   :hook
   ((c-mode-common . lsp)
    (cmake-mode . lsp)
