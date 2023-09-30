@@ -305,6 +305,11 @@ TODO: Accept a list of packages."
   :hook ((after-init . keyfreq-mode)
          (after-init . keyfreq-autosave-mode)))
 
+(setq project-switch-commands nil)
+(setq xref-auto-jump-to-first-definition 'move)
+(setq xref-auto-jump-to-first-xref 'move)
+(setq remove-duplicates nil)
+
 ;; Required by package.el
 ;; (package-initialize)
 
