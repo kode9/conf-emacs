@@ -142,8 +142,8 @@
         browse-kill-ring-show-preview t
         browse-kill-ring-separator-face 'font-lock-comment-face)
   (defun yank-pop-forwards (n)
-    "Cycle the 'kill-ring' forward (reverse of 'yank-pop').
-With argument N go to the nth entry."
+    "Cycle the `kill-ring` forward (reverse of `yank-pop`).
+With argument n go to the nth entry."
     (interactive "p")
     (yank-pop (- n)))
   :bind*
