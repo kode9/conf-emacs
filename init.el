@@ -284,6 +284,7 @@ TODO: Accept a list of packages."
 ;; http://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 (use-package ansi-color
   :straight nil
+  :disabled
   :init
   (defun abz--colorize-region (start end)
     "Colorize from `start` to `end`"
