@@ -174,6 +174,12 @@ mouse-3: go to end")
 ;; Major Modes ;;
 ;;;;;;;;;;;;;;;;;
 
+;; Lisp
+(use-package lisp-mode
+  :straight nil
+  :config
+  (abz--advice-inhibit-echo-area #'(lisp-indent-region)))
+
 ;; C++
 (use-package cc-mode
   :straight nil
