@@ -149,6 +149,7 @@
 
 ;; TODO: Try out zerodark-setup-modeline-format
 (use-package zerodark-theme
+  :disabled
   :functions (true-color-p)
   :demand t
   :config
@@ -180,6 +181,13 @@
      `(smerge-refined-removed ((,class (:inherit diff-refine-removed))))
      `(show-paren-match ((,class (:underline t))))))
   (enable-theme 'zerodark))
+
+(use-package modus-themes
+  :straight t
+  :demand t
+  :config
+  ;; (require-theme 'modus-themes)
+  (load-theme 'modus-vivendi-tinted))
 
 ;; Fonts
 (use-package dynamic-fonts
