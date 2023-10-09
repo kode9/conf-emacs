@@ -136,14 +136,14 @@ mouse-3: go to end")
 ;;  - projectile-known-projects-file
 (use-package projectile
   :commands
+  projectile-mode
   projectile-cleanup-known-projects
-  projectile-compilation-buffer-name
-  projectile-project-name
   :preface
   (defun abz--projectile-modeline-function ()
     "The function to use to generate project-specific mode-line."
     (format " π⌜%s⌟" (or (projectile-project-name) "∅")))
   :custom
+  (projectile-enable-caching (not noninteractive) "Don't cache files when not in interactive mode")
   (compilation-save-buffers-predicate #'projectile-current-project-buffer-p)
   (projectile-find-dir-includes-top-level t "Add top-level dir to projectile-find-dir")
   (projectile-mode-line-function #'abz--projectile-modeline-function)
@@ -155,9 +155,12 @@ mouse-3: go to end")
                                     (string-join `(,fd "-0" "-t f" "-c never" ".") " ")
                                   (string-join `("find" "." "-type f" "-print0") " ")))
                               "Command used by projectile to get the files in a generic project")
+  (projectile-per-project-compilation-buffer t)
+  :init
+  (cl-letf (((symbol-function 'projectile--cleanup-known-projects) #'ignore))
+    (add-hook 'after-init-hook #'projectile-mode))
   :config
-  (setq compilation-buffer-name-function #'projectile-compilation-buffer-name)
-  (run-with-idle-timer 59 t #'projectile-cleanup-known-projects)
+  (run-with-idle-timer 11 nil #'projectile-cleanup-known-projects)
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind
@@ -166,9 +169,7 @@ mouse-3: go to end")
         ("o f" . projectile-find-file-other-window)
         ("o b" . projectile-switch-to-buffer-other-window)
         ("o s" . projectile-display-buffer)
-        ("o a" . projectile-find-other-file-other-window))
-  :hook
-  (after-init . projectile-mode))
+        ("o a" . projectile-find-other-file-other-window)))
 
 ;;;;;;;;;;;;;;;;;
 ;; Major Modes ;;
