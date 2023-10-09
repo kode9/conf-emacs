@@ -50,6 +50,7 @@
   (customize-set-variable 'save-interprogram-paste-before-kill t) ; Save clipboard before killing within emacs
   (customize-set-variable 'select-active-regions 'only)           ; Only temporary region set the selection
   (customize-set-variable 'x-select-enable-clipboard t)           ; Use the clipboard
+  (customize-set-variable 'mouse-yank-at-point 'at-point)         ; Mouse yank commands yank at point instead of at click
 
   ;; Indentation
   (customize-set-variable 'indent-tabs-mode nil)                 ; Do not insert tabs when indenting
