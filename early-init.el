@@ -72,6 +72,11 @@
 (customize-set-variable 'line-number-mode nil "Display current line in modeline")
 (customize-set-variable 'column-number-mode nil "Display current column in modecolumn")
 (customize-set-variable 'initial-frame-alist '((fullscreen . maximized)) "Start the initial frame maximized")
+(customize-set-variable 'frame-resize-pixelwise t "frame sizes can increase/decrease by one pixel")
+(customize-set-variable 'window-divider-default-places 'right-only)
+(customize-set-variable 'window-divider-default-bottom-width 1)
+(customize-set-variable 'window-divider-default-right-width 1)
+(add-hook 'window-setup-hook #'window-divider-mode)
 
 ;; Cursor
 (customize-set-variable 'cursor-in-non-selected-windows 'hollow "Cursor when window is not selected")
