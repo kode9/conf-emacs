@@ -40,7 +40,6 @@
   :hook (after-init . global-flycheck-mode))
 
 (use-package flycheck-inline
-  :disabled ; TODO Enable when not using lsp-ui
   :after flycheck
   :hook (flycheck-mode . flycheck-inline-mode))
 

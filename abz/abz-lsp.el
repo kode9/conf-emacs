@@ -23,6 +23,8 @@
 (require 'use-package)
 
 (use-package lsp-ui
+  :functions
+  lsp-find-definition
   :commands
   lsp-ui-mode
   :custom
@@ -47,7 +49,11 @@
         ;; ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
         ;; ([remap xref-find-references] . #'lsp-ui-peek-find-references)
         ([remap xref-find-definitions] . #'lsp-find-definition)
-        ([remap xref-find-references] . #'lsp-find-references)))
+        ([remap xref-find-references] . #'lsp-find-references))
+  :hook
+  ;; sideline seems to work fine without lsp to display flycheck diagnostics
+  (lisp-mode . lsp-ui-sideline-mode)
+  (emacs-lisp-mode . lsp-ui-sideline-mode))
 
 (use-package lsp-ivy
   :commands
