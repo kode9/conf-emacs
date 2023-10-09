@@ -22,6 +22,7 @@
 
 ;;; Code:
 
+(require 'abz)
 (require 'abz-settings)
 (require 'cl-lib)
 (require 'use-package)
@@ -115,27 +116,20 @@
 ;;
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Save.html
 ;;
-;; auto-save-list-file-prefix handled by no-littering
-;;
-;; TODO Check
-;;  * https://github.com/bbatsov/super-save/
-;;  * https://github.com/ChillarAnand/real-auto-save
+;; no-littering:
+;;   - auto-save-list-file-prefix
 (use-package files
   :straight nil
-  :demand t
-  :init
-  ;; Enable Auto-save in separated file
-  (customize-set-variable 'auto-save-default t)
-  ;; Disable 'real' auto-save (auto-save to the visited file)
-  (if (version< "26.1" emacs-version)
-      (customize-set-variable 'auto-save-visited-file-name nil)
-    (customize-set-variable 'auto-save-visited-mode nil))
+  :custom
+  (auto-save-default t "Auto-save file-visiting buffer in a separate file")
   ;; Save all files in `abz-cache-dir` instead of in the same directory as the visited file
-  (customize-set-variable 'auto-save-file-name-transforms
-                          `((".*" ,(abz--locate-data-dir "auto-save/") t)))
-  (customize-set-variable 'auto-save-interval 1000)   ; Number of inputs between auto-saves
-  (customize-set-variable 'auto-save-timeout 101)     ; Idle time before auto-save
-  (customize-set-variable 'delete-auto-save-files t)) ; Keep auto-save files
+  (auto-save-file-name-transforms
+   `((".*" ,(abz--locate-data-dir "auto-save/") sha256)))
+  (auto-save-interval 600)   ; Number of inputs between auto-saves
+  (auto-save-timeout 101)    ; Idle time before auto-save
+  (delete-auto-save-files t) ; Keep auto-save files
+  :config
+  (abz--advice-inhibit-echo-area #'(save-buffer)))
 
 ;; List of recently visited files (built-in)
 (use-package recentf
