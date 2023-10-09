@@ -197,7 +197,9 @@ With argument n go to the nth entry."
   (ispell-extra-args (cond ((string-match  "aspell$" ispell-program-name) #'("--sug-mode=normal"
                                                                              "--dont-run-together"
                                                                              "--run-together-limit=4"
-                                                                             "--run-together-min=2")))))
+                                                                             "--run-together-min=2"))))
+  :config
+  (abz--advice-inhibit-echo-area #'(ispell-change-dictionary ispell-init-process)))
 
 (use-package flyspell
   :straight nil
