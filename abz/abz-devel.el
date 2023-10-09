@@ -181,6 +181,46 @@ mouse-3: go to end")
   :config
   (abz--advice-inhibit-echo-area #'(lisp-indent-region)))
 
+(use-package pp
+  :straight nil
+  ;; https://emacsnotes.wordpress.com/2023/07/02/migrating-to-use-package-tip-1-do-not-use-a-naive-macroexpand-to-grok-a-use-package-declaration-use-this-wrapper-instead/
+  :config
+  (advice-add 'pp-macroexpand-last-sexp :around
+              (defun abz--advice-pp-macroexpand-last-sexp
+                  (orig-fun &rest orig-args)
+                (pcase-let*
+                    ((`(,arg)
+                      orig-args)
+                     (sexp (pp-last-sexp))
+                     (env (append
+                           (cond
+                            ((eq 'use-package (car sexp))
+                             `((use-package-expand-minimally ,(y-or-n-p "Minimal?"))
+                               (byte-compile-current-file ,(when (y-or-n-p "Byte compilation?")
+                                                             (current-buffer)))
+                               (comment (format "&#12;
+;; use-package-expand-minimally:         %S
+;; byte-compile-current-file:            %S
+
+"
+                                                use-package-expand-minimally
+                                                (null (null byte-compile-current-file))))))
+                            (t
+                             `((comment "")))))))
+                  ;; (message "%S" env)
+                  (eval `(let* ,env
+                           (if ',arg
+                               (save-excursion
+                                 (insert "\n\n")
+                                 (insert comment)
+                                 (apply ',orig-fun ',orig-args))
+                             (apply ',orig-fun ',orig-args)))))))
+  :bind
+  (:map lisp-mode-map
+        ("C-c C-c" . #'pp-macroexpand-last-sexp)
+        :map emacs-lisp-mode-map
+        ("C-c C-c" . #'pp-macroexpand-last-sexp)))
+
 ;; C++
 (use-package cc-mode
   :straight nil
