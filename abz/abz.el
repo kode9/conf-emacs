@@ -114,6 +114,22 @@ no such line exists."
        (fboundp #'projectile-project-root)
        (file-readable-p (expand-file-name ".clang-format" (projectile-project-root)))))
 
+(defun abz--call-with-inhibited-echo-area (function &rest args)
+  "Call `FUNCTION' with echo area inhibited.
+
+`ARGS' are the arguments passed to `FUNCTION'.
+
+Intended to be used with `advice-add'."
+  (let ((inhibit-message t))
+    (apply function args)))
+
+(defun abz--advice-inhibit-echo-area (symbols)
+  "Inhibit echo area for the functions stored at `SYMBOLS'.
+
+`SYMBOLS' is a list of symbols to functions."
+  (dolist (symbol symbols)
+    (advice-add symbol :around #'abz--call-with-inhibited-echo-area)))
+
 ;;;###autoload
 (defun abz-just-one-blank-line-buffer ()
   "Replace consecutive blank lines to just one blank line in the current buffer.
