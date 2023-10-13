@@ -466,7 +466,39 @@ mouse-3: go to end")
   (tree-sitter-after-on . tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
+  :demand
   :after tree-sitter)
+
+(use-package treesit
+  :disabled
+  :straight nil
+  :config
+  ;; Change default output directory
+  ;;
+  ;; TODO: Doesn't work, there are a bunch of hardcoded path inside the C code of treesit
+  (advice-add #'treesit--install-language-grammar-1 :filter-args
+              (defun abz--advice-treesit--install-language-grammar-1 (args)
+                (setcar args (expand-file-name "tree-sitter" abz-cache-dir))
+                args)))
+
+;; https://github.com/renzmann/treesit-auto
+(use-package treesit-auto
+  :disabled
+  :demand t
+  :custom
+  (treesit-auto-install 'prompt "Auto install missing tree-sitter grammars")
+  :hook
+  (after-init . global-treesit-auto-mode))
+
+(use-package treesitter-context
+  :disabled
+  :straight
+  (:host github :repo "zbelial/treesitter-context.el")
+  :demand
+  :init
+  (use-package posframe-plus :straight (:host github :repo "zbelial/posframe-plus"))
+  :hook
+  (c-ts-base-mode . treesitter-context-focus-mode))
 
 ;; TODO: activate `minimap-mode' on toggle.
 (defcustom abz-use-minimap nil
