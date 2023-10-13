@@ -41,6 +41,13 @@
 
 (use-package flycheck-inline
   :after flycheck
+  :preface
+  (defun abz--advice-flycheck-inline-mode (&rest args)
+    "Don't enable flycheck-inline-mode if lsp-ui-sideline-mode is enabled."
+    (ignore args)
+    (bound-and-true-p lsp-ui-sideline-mode))
+  :config
+  (advice-add #'flycheck-inline-mode :before-until #' abz--advice-flycheck-inline-mode)
   :hook (flycheck-mode . flycheck-inline-mode))
 
 ;; Show errors under point in pos-tip popups
