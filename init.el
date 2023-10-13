@@ -124,6 +124,12 @@
                     "Local packages directory"))
 (add-to-list 'load-path abz-site-dir)
 
+;; Basic functions, main global mode with keymap
+(use-package abz
+  :straight nil
+  :hook
+  (after-init . abz-mode))
+
 ;; This emacs configuration variables
 (require 'abz-settings)
 

@@ -319,6 +319,16 @@ Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
     (set-visited-file-name newname nil t)
     (message "Renamed %s to %s" oldname newname)))
 
+(defvar abz-map (make-sparse-keymap))
+
+(define-minor-mode abz-mode
+  "Custom configurations."
+  :init-value nil
+  :group 'abz
+  :lighter ""
+  :global t
+  :keymap abz-map)
+
 (provide 'abz)
 
 ;;; abz.el ends here
