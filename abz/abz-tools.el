@@ -22,6 +22,7 @@
 
 ;;; Code:
 
+(require 'abz)
 (require 'abz-settings)
 (require 'files)
 (require 'use-package)
@@ -173,11 +174,15 @@
   (when (boundp 'vc-handled-backends)
     (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)))
   :bind
-  ("C-c m s" . magit-status)
-  ("C-c m b" . magit-blame)
-  ("C-c m d" . magit-diff-working-tree)
-  ("C-c m l" . magit-log-buffer-file)
-  ("C-c m L" . magit-log-all))
+  (:map abz-map
+        :prefix "C-c m"
+        :prefix-map abz-map-magit
+        :prefix-docstring "Prefix keymap for magit"
+        ("s" ("Status" . magit-status))
+        ("b" ("Blame" . magit-blame))
+        ("d" ("Diff working" . magit-diff-working-tree))
+        ("l" ("Log file" . magit-log-buffer-file))
+        ("L" ("Log all" . magit-log-all))))
 
 ;; Step through historic versions of git controlled file
 ;; https://gitlab.com/pidu/git-timemachine
