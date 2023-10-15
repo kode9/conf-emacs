@@ -22,24 +22,13 @@
 
 ;;; Code:
 
+(require 'abz)
+(require 'abz-completion)
 (require 'abz-tools)
 (require 'cl-extra)
 (require 'f)
 (require 's)
 (require 'use-package)
-(require 'abz-completion)
-
-;;;###autoload
-(cl-defun abz-process-window (process &optional (all-frames (selected-frame)))
-  "Get the window currently displaying the buffer of PROCESS, or nil if none.
-
-ALL-FRAMES specify which frames to consider as described in `get-buffer-window'."
-  (get-buffer-window (process-buffer process) all-frames))
-
-;;;###autoload
-(defun abz-select-process-window (process)
-  "Select the window currently displaying the buffer of PROCESS."
-  (select-window (abz-process-window process) 'norecord))
 
 ;; Highlight trailing whitespaces
 (add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
@@ -48,20 +37,67 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 (use-package compile
   :straight nil
   :init
-  ;; Kill a running compilation process without asking before starting a new one
-  (customize-set-variable 'compilation-always-kill t)
-  ;; Autoscoll compilation buffer and stop on first error
-  (customize-set-variable 'compilation-scroll-output 'first-error)
-  ;; Automatically jump to the first error during compilation
-  (customize-set-variable 'compilation-auto-jump-to-first-error nil)
-  ;; Skip 'info' and 'warnings' when jumping between errors
-  (customize-set-variable 'compilation-skip-threshold 2)
-  (add-hook 'compilation-start-hook #'abz-select-process-window)
-  :bind  (:map compilation-mode-map
-               ("n" . compilation-next-error)
-               ("p" . compilation-previous-error)
-               ("M-p" . compilation-previous-file)
-               ("M-n" . compilation-next-file)))
+  (cl-defun abz-process-window (process &optional (all-frames (selected-frame)))
+    "Get the window currently displaying the buffer of PROCESS, or nil if none.
+
+ALL-FRAMES specify which frames to consider as described in `get-buffer-window'."
+    (get-buffer-window (process-buffer process) all-frames))
+  (defun abz-select-process-window (process)
+    "Select the window currently displaying the buffer of PROCESS."
+    (select-window (abz-process-window process) 'norecord))
+  (defun abz-first-error-no-select (&optional n)
+    (interactive "p")
+    (save-selected-window
+      (let ((next-error-highlight next-error-highlight-no-select)
+            (display-buffer-overriding-action
+             '(nil (inhibit-same-window . t))))
+        (next-error n t))))
+  (defun abz-next-warning-no-select (&optional n)
+    (interactive "p")
+    (let ((compilation-skip-threshold 1))
+      (next-error-no-select n)))
+  (defun abz-previous-warning-no-select (&optional n)
+    (interactive "p")
+    (let ((compilation-skip-threshold 1))
+      (previous-error-no-select n)))
+  (defun abz-first-warning-no-select (&optional n)
+    (interactive "p")
+    (let ((compilation-skip-threshold 1))
+      (abz-first-error-no-select n)))
+  (defun abz-compilation-next-file (n)
+    (interactive "p")
+    (compilation-next-file n)
+    (compilation-display-error))
+  (defun abz-compilation-previous-file (n)
+    (interactive "p")
+    (compilation-previous-file n)
+    (compilation-display-error))
+  :config
+  (advice-add #'compilation-auto-jump :after (defun abz--advice-compilation-auto-jump (buffer pos)
+                                               "Display the error after auto-jump."
+                                               (compilation-display-error)))
+  :custom
+  (compilation-always-kill t "Kill a running compilation process without asking before starting a new one")
+  (compilation-scroll-output 'first-error "Autoscoll compilation buffer and stop on first error")
+  (compilation-auto-jump-to-first-error nil "Automatically jump to the first error during compilation")
+  (compilation-skip-threshold 2 "Skip 'info' and 'warnings' when jumping between errors")
+  (next-error-highlight 'fringe-arrow)
+  (next-error-highlight-no-select t)
+  (compilation-auto-jump-to-first-error 'first-known)
+  :hook
+  (compilation-start . abz-select-process-window)
+  :bind (
+         :map abz-map
+         ("C-c x" . compile)
+         :map compilation-mode-map
+         ("n" ("Next error" . next-error-no-select))
+         ("p" ("Prev error" . previous-error-no-select))
+         ("C-p" ("Prev file error" . abz-compilation-previous-file))
+         ("C-n" ("Next file error" . abz-compilation-next-file))
+         ("M-p" ("Prev warning" . abz-previous-warning-no-select))
+         ("M-n" ("Next warning" . abz-next-warning-no-select))
+         ("C-a" ("First error" . abz-first-error-no-select))
+         ("M-a" ("First warning" . abz-first-warning-no-select))))
 
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el

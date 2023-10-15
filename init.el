@@ -275,8 +275,6 @@ TODO: Accept a list of packages."
   :commands scf-mode
   :hook (compilation-mode . (lambda () (scf-mode t))))
 
-;; keys
-(global-set-key [(control c) (x)] 'compile)
 (defun command-line-diff ()
   "Usage: Emacs -diff file1 file2."
   (let ((file1 (pop command-line-args-left))
