@@ -272,6 +272,19 @@
   ("C-h k" . helpful-key)
   ("C-h p" . helpful-at-point))
 
+(use-package abz
+  :straight nil
+  :init
+  (defun abz-kill-current-buffer ()
+    "Kill the current buffer.
+
+Calls `kill-buffer' on the current buffer."
+    (interactive)
+    (kill-buffer (current-buffer)))
+  :bind
+  (:map abz-map
+        ([remap kill-buffer] ("Kill buffer" . abz-kill-current-buffer))))
+
 (provide 'abz-theme)
 
 ;;; abz-theme.el ends here

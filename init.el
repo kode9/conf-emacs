@@ -277,8 +277,6 @@ TODO: Accept a list of packages."
 
 ;; keys
 (global-set-key [(control c) (x)] 'compile)
-(global-set-key [(control x) (control k)] 'kill-some-buffers)
-
 (defun command-line-diff ()
   "Usage: Emacs -diff file1 file2."
   (let ((file1 (pop command-line-args-left))
