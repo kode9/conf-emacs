@@ -272,6 +272,33 @@
   ("C-h k" . helpful-key)
   ("C-h p" . helpful-at-point))
 
+;; Display key bindings
+;; https://github.com/justbur/emacs-which-key/
+(use-package which-key
+  :custom
+  (which-key-compute-remaps t "Show remapped command")
+  (which-key-sort-order 'which-key-local-then-key-order "Sorting order")
+  (which-key-max-display-columns 4 "Maximum number of columns to display")
+  :hook
+  (after-init . which-key-mode))
+
+;; Use posframe to display which-key
+(use-package which-key-posframe
+  :after which-key
+  :commands
+  (which-key-posframe--show-buffer)
+  :config
+  (advice-add #'which-key-posframe--show-buffer
+              :around (defun abz--advice-which-key-posframe--show-buffer (function &rest args)
+                        "Make `which-key-posframe` at least 25% of window width and height."
+                        (let ((which-key-posframe-parameters `((min-height . ,(round (* (window-height) 0.25)))
+                                                               (min-width . ,(round (* (window-width) 0.25))))))
+                          (apply function args))))
+  :custom
+  (which-key-posframe-poshandler #'posframe-poshandler-frame-top-center)
+  :hook
+  (which-key-mode . which-key-posframe-mode))
+
 (use-package abz
   :straight nil
   :init
