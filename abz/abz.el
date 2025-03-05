@@ -102,9 +102,11 @@ no such line exists."
 
 (defun abz--lsp-format? ()
   "Return t if `lsp-mode' is active and can handle formatting."
-  (and (abz--lsp-mode?)
-       (fboundp 'lsp-feature?)
-       (lsp-feature? "textDocument/formatting")))
+  (and
+   (not (derived-mode-p #'cmake-mode))
+   (abz--lsp-mode?)
+   (fboundp 'lsp-feature?)
+   (lsp-feature? "textDocument/formatting")))
 
 (defun abz--lsp-clang-format? ()
   "Return t if `clang-format' is available and can be used."
@@ -222,21 +224,27 @@ Indent the region between `START' and `END'."
 (defun abz-indent-dwim ()
   "Indent a region or a buffer.
 
-Same as `indent-region' but indents the whole buffer no region is active."
+Same as `indent-region' but indents the whole buffer when no region is active."
   (interactive)
   (if (use-region-p)
       (call-interactively #'abz-indent-region)
     (call-interactively #'abz-indent-buffer)))
 
 ;;;###autoload
+(defun abz-untabify-buffer ()
+  "Convert all tabs to spaces in a buffer."
+  (interactive)
+  (untabify (point-min) (point-max) nil))
+
+;;;###autoload
 (defun abz-untabify-dwim ()
   "Convert all tabs to spaces in a region or a buffer.
 
-Same as `untabify' but indents the whole buffer no region is active."
+Same as `untabify' but untabify the whole buffer when no region is active."
   (interactive)
   (if (use-region-p)
       (call-interactively #'untabify)
-    (untabify (point-min) (point-max) nil)))
+    (abz-untabify-buffer)))
 
 (defun abz--straight-upgrade-all ()
   "Upgrade all packages with `straight'."

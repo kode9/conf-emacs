@@ -37,23 +37,33 @@
   '(makefile-mode)
   "Don't untabify major modes that derive from one of this modes.")
 
+(defun abz--delete-trailing-whitespace-buffer? ()
+  "Return t if we should untabify the current buffer."
+  ;; lsp-pyslp with default configuration doesn't seem to remove trailing whitespace
+  ;; FIXME: Better detect this and/or find a proper lsp configuration
+  ;;
+  ;; cmake-lsp seems broken as well
+  (cond ((derived-mode-p #'(#'python-mode #'cmake-mode)))
+        ((not (or (and (derived-mode-p #'c++-mode)
+                       (fboundp #'projectile-project-root)
+                       (file-readable-p (expand-file-name ".clang-format" (projectile-project-root))))
+                  (abz--lsp-format?))))))
+
+(defun abz--untabify-buffer? ()
+  "Return t if we should untabify the current buffer."
+  (and (abz--delete-trailing-whitespace-buffer?)
+       (not (or (bound-and-true-p indent-tabs-mode)
+                (apply #'derived-mode-p abz--clean-mode-dont-untabify-parent-modes)))))
+
 (defun abz--clean-buffer ()
   "Indent, untabify and remove trailing whispaces in current buffer."
   (deactivate-mark)
   (unless (apply #'derived-mode-p abz--clean-mode-dont-indent-parent-modes)
     (abz-indent-dwim))
-  (unless (or (and (derived-mode-p #'c++-mode)
-                   (fboundp #'projectile-project-root)
-                   (file-readable-p (expand-file-name ".clang-format" (projectile-project-root))))
-              (and (bound-and-true-p lsp-mode)
-                   (lsp-feature? "textDocument/formatting")))
-    (unless (or (bound-and-true-p indent-tabs-mode)
-                (apply #'derived-mode-p abz--clean-mode-dont-untabify-parent-modes))
-      (abz-untabify-dwim))
-    (abz-delete-trailing-whitespace))
-  ;; lsp-pyslp with default configuration doesn't seem to remove trailing whitespace
-  ;; FIXME: Better detect this and/or find a proper lsp configuration
-  (when (derived-mode-p #'python-mode)
+  (when (abz--untabify-buffer?) (abz-untabify-buffer))
+  (when (abz--delete-trailing-whitespace-buffer?) (abz-delete-trailing-whitespace))
+  (when (or (derived-mode-p #'python-mode)
+            (derived-mode-p #'cmake-mode))
     (abz-delete-trailing-whitespace)))
 
 (define-minor-mode abz-clean-mode
