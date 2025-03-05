@@ -48,10 +48,13 @@
 (defvar bootstrap-version)
 (defconst straight-base-dir (expand-file-name (convert-standard-filename "emacs/")
                                               (xdg-cache-home)))
-(let ((bootstrap-file (expand-file-name
-                       (convert-standard-filename "straight/repos/straight.el/bootstrap.el")
-                       straight-base-dir))
-      (bootstrap-version 6))
+
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
@@ -61,17 +64,27 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(customize-set-variable 'straight-use-package-by-default t "Install packages by default in `use-package` forms")
+(declare-function straight-use-package "ext:straight")
+
 ;; use-package: package loading
 ;; https://github.com/jwiegley/use-package
-(declare-function straight-use-package "straight") ; Silence byte-compiler
-(straight-use-package 'use-package)
-(customize-set-variable 'straight-use-package-by-default t "Install packages by default in `use-package` forms")
+;; NOTE: use-package in Emacs core since Emacs 30.1
+;;
+;; `ensure-system-package' adds the keyword `:ensure-system-package' to `use-package'
+(if (or (> emacs-major-version 30)
+        (and (= emacs-major-version 30) (>= emacs-minor-version 1)))
+    (progn
+      (require 'use-package)
+      (require 'use-package-ensure-system-package))
+  (straight-use-package 'use-package)
+  (straight-use-package 'use-package-ensure-system-package))
+
 (customize-set-variable 'use-package-always-defer t "Use deferred loading by default")
 (customize-set-variable 'use-package-always-demand nil "Inhibit deferred loading by default")
 (customize-set-variable 'use-package-expand-minimally nil "Make the expanded code as minimal as possible")
 (customize-set-variable 'use-package-verbose t "Report about loading and configuration details")
 (customize-set-variable 'use-package-compute-statistics t "Report about loading and configuration details")
-(require 'use-package) ; Silence byte-compiler
 
 ;; Ensure environment variables inside Emacs look the same as in the user's shell
 ;; https://github.com/purcell/exec-path-from-shell
@@ -85,10 +98,6 @@
   :config
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
-
-;; Adds the keyword `:ensure-system-package' to `use-package'
-(use-package use-package-ensure-system-package
-  :demand t)
 
 ;; Customize mode lighters. use-package integration with `:diminish`.
 (use-package diminish :demand t)
