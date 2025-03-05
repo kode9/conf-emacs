@@ -55,44 +55,55 @@
   (unless (find-font (font-spec :name "all-the-icons"))
     (all-the-icons-install-fonts t)))
 
+(use-package page-break-lines
+  :functions global-page-break-lines-mode
+  :demand t
+  :config
+  (global-page-break-lines-mode))
+
+;; TODO: Find a way to open recent files in another window instead of replacing the dashboard window. The revelant function is `find-file-existing' in `dashboard-insert-recents' in library `dashboard-widgets'.
 (use-package dashboard
   :if (display-graphic-p)
   :requires all-the-icons
   :demand t
-  :functions dashboard-jump-to-recent-files
-  :commands dashboard-setup-startup-hook
+  :functions
+  (dashboard-setup-startup-hook)
   :custom
+  (dashboard-projects-backend 'projectile)
   (dashboard-startup-banner 'logo)
   (dashboard-center-content t)
-  (dashboard-items #'(
-                      (projects . 5)
-                      (recents  . 5)
-                      ;; (bookmarks . 5)
-                      ;; (agenda . 5)
-                      ;; (registers . 5)
-                      ))
+  (dashboard-vertically-center-content t)
+  (dashboard-items #'((projects . 5)
+                      (recents  . 5)))
+  (dashboard-navigation-cycle t)
+  (dashboard-heading-shorcut-format " 〈%s〉")
+  (dashboard-icon-type 'all-the-icons)
+  (dashboard-display-icons-p t)
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
-  (dashboard-set-navigator t)
-  (dashboard-navigator-buttons
-   `(;; line1
-     ((,(all-the-icons-faicon "unlock-alt" :height 1.1 :v-adjust 0.0)
-       "Pass"
-       "Password Store"
-       (lambda (&rest _) (pass))))))
+  (dashboard-icon-file-height 0.85)
+  (dashboard-heading-icon-height 0.95)
+  (dashboard-heading-icon-v-adjust 0.1)
+  (dashboard-page-separator "\n\f\n")
+  (dashboard-footer-icon nil)
+  (dashboard-startupify-list '(dashboard-insert-banner
+                               dashboard-insert-footer
+                               dashboard-insert-page-break
+                               dashboard-insert-newline
+                               dashboard-insert-navigator
+                               dashboard-insert-items
+                               dashboard-insert-newline
+                               dashboard-insert-init-info))
+  (dashboard-navigator-buttons `(((,(all-the-icons-faicon "unlock-alt" :height 1. :v-adjust 0.0)
+                                   "Pass"
+                                   "Password Store"
+                                   (lambda (&rest _) (pass)))
+                                  (,(all-the-icons-fileicon "emacs" :height 0.85 :v-adjust 0.0)
+                                   "Config"
+                                   "Emacs configuration"
+                                   (lambda (&rest _) (find-file-existing user-init-file))))))
   :config
-  (dashboard-setup-startup-hook)
-  :hook
-  (dashboard-after-initialize-hook . (lambda
-                                       (&rest _)
-                                       (switch-to-buffer dashboard-buffer-name)
-                                       (with-current-buffer dashboard-buffer-name
-                                         (with-selected-window (get-buffer-window)
-                                           ;; TODO Does not work
-                                           (setq-local show-trailing-whitespace nil)
-                                           (dashboard-jump-to-recent-files)
-                                           (redisplay)
-                                           )))))
+  (dashboard-setup-startup-hook))
 
 (use-package all-the-icons-dired
   :if (display-graphic-p)
