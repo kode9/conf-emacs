@@ -23,6 +23,11 @@
 ;;; Code:
 
 (require 'abz)
+(require 'abz-settings)
+
+(declare-function projectile-project-root "ext:projectile")
+(declare-function lsp-feature? "ext:lsp-mode")
+(declare-function cmake-mode "ext:cmake-mode")
 
 (defvar abz--clean-mode-dont-indent-parent-modes
   '(fundamental-mode text-mode makefile-mode)
@@ -54,10 +59,10 @@
 (define-minor-mode abz-clean-mode
   "Cleans buffer before saving.
 
-When called interactively, toggles ‘abz-clean-mode’.  With prefix ARG, enables
-‘abz-clean-mode’ if ARG is positive, and disables it otherwise.it.
+When called interactively, toggles `abz-clean-mode'.  With prefix ARG, enables
+`abz-clean-mode' if ARG is positive, and disables it otherwise.it.
 
-When called from Lisp, toggles ‘abz-clean-mode’ if ARG is 'toggle', disables it
+When called from Lisp, toggles `abz-clean-mode' if ARG is `toggle', disables it
 if ARG is zero or negative, and enables it otherwise."
   :group 'abz
   :group 'editing

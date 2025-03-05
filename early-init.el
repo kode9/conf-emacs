@@ -82,7 +82,7 @@
 (customize-set-variable 'cursor-in-non-selected-windows 'hollow "Cursor when window is not selected")
 
 ;; Display
-(customize-set-variable 'ctl-arrow nil "Display control characters as '\xx'")
+(customize-set-variable 'ctl-arrow nil "Display control characters as backslash and octal digits")
 (customize-set-variable 'cursor-type '(hbar . 4) "Cursor when window is selected")
 (customize-set-variable 'highlight-nonselected-windows t "Keep Highlightning region")
 (customize-set-variable 'visible-bell nil "Don't try the flash")

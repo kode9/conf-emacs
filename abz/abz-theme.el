@@ -26,6 +26,8 @@
 (require 'hl-line)
 (require 'use-package)
 
+(declare-function straight-use-package "ext:straight")
+
 ;;;###autoload
 (defcustom abz-font-default-size 10
   "Default font size."

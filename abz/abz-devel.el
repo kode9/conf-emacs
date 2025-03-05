@@ -171,13 +171,10 @@ mouse-3: go to end")
 ;;  - projectile-cache-file
 ;;  - projectile-known-projects-file
 (use-package projectile
-  :commands
+  :functions
   projectile-mode
+  projectile-project-name
   projectile-cleanup-known-projects
-  :preface
-  (defun abz--projectile-modeline-function ()
-    "The function to use to generate project-specific mode-line."
-    (format " π⌜%s⌟" (or (projectile-project-name) "∅")))
   :custom
   (projectile-enable-caching (not noninteractive) "Don't cache files when not in interactive mode")
   (compilation-save-buffers-predicate #'projectile-current-project-buffer-p)
@@ -193,6 +190,9 @@ mouse-3: go to end")
                               "Command used by projectile to get the files in a generic project")
   (projectile-per-project-compilation-buffer t)
   :init
+  (defun abz--projectile-modeline-function ()
+    "The function to use to generate project-specific mode-line."
+    (format " π⌜%s⌟" (or (projectile-project-name) "∅")))
   (cl-letf (((symbol-function 'projectile--cleanup-known-projects) #'ignore))
     (add-hook 'after-init-hook #'projectile-mode))
   :config

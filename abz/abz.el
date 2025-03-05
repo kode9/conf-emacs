@@ -29,20 +29,19 @@
 (require 'tramp)
 (require 'use-package)
 
-(declare-function straight-pull-recipe-repositories "straight")
-(declare-function straight-normalize-all "straight")
-(declare-function straight-pull-all "straight")
-(declare-function straight-check-all "straight")
+(declare-function clang-format-buffer "ext:clang-format")
+(declare-function clang-format-region "ext:clang-format")
+(declare-function cmake-mode "ext:cmake-mode")
+(declare-function lsp-feature? "ext:lsp-mode")
+(declare-function lsp-format-buffer "ext:lsp-mode")
+(declare-function lsp-format-region "ext:lsp-mode")
+(declare-function projectile-project-root "ext:projectile")
+(declare-function straight-check-all "ext:straight")
+(declare-function straight-normalize-all "ext:straight")
+(declare-function straight-pull-all "ext:straight")
+(declare-function straight-pull-recipe-repositories "ext:straight")
+
 (defvar straight-process-buffer)
-
-(declare-function projectile-project-root "projectile")
-
-(declare-function clang-format-region "clang-format")
-(declare-function clang-format-buffer "clang-format")
-
-(declare-function lsp-feature? "lsp-mode")
-(declare-function lsp-format-buffer "lsp-mode")
-(declare-function lsp-format-region "lsp-mode")
 
 (defconst abz-upgrade-buffer-name "*abz-upgrade*"
   "Name of the buffer for straight-upgrade.")
@@ -169,7 +168,9 @@ Intended to be used with `advice-add'."
 
 ;;;###autoload
 (defun abz-clone-and-comment-dwim ()
-  "Clone the region as defined by `abz-region-positions-dwim' and comment the previous one."
+  "Clone the current region and comment the previous original one.
+
+The region is defined by `abz-region-positions-dwim"
   (interactive)
   (let*
       ((region (abz-region-positions-dwim))
