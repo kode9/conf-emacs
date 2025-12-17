@@ -287,7 +287,10 @@
 
 ;; Display key bindings
 ;; https://github.com/justbur/emacs-which-key/
+;; NOTE: Didn't find a way to use the condition inside use-package
+(when (< emacs-major-version 30) (straight-use-package 'which-key))
 (use-package which-key
+  :straight nil
   :custom
   (which-key-compute-remaps t "Show remapped command")
   (which-key-sort-order 'which-key-local-then-key-order "Sorting order")
@@ -296,6 +299,7 @@
   (after-init . which-key-mode))
 
 ;; Use posframe to display which-key
+;; TODO: This makes straight clone which-key instead of just using the one from Emacs 30 and I don't know why.
 (use-package which-key-posframe
   :after which-key
   :commands

@@ -59,7 +59,8 @@
   lsp-ivy-workspace-symbol
   lsp-ivy-global-workspace-symbol)
 
-(use-package which-key)
+(use-package which-key
+  :straight nil)
 
 (use-package lsp-mode
   :functions
