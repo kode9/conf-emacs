@@ -174,15 +174,17 @@
   (when (boundp 'vc-handled-backends)
     (customize-set-variable 'vc-handled-backends (delq 'Git vc-handled-backends)))
   :bind
+  ;; NOTE: use-package from Emacs core does not support (KEY DESC . COMMAND),
+  ;; i.e. (KEY . (DESC . COMMAND)) form anymore, only (KEY . COMMAND) form.
   (:map abz-map
         :prefix "C-c m"
         :prefix-map abz-map-magit
         :prefix-docstring "Prefix keymap for magit"
-        ("s" ("Status" . magit-status))
-        ("b" ("Blame" . magit-blame))
-        ("d" ("Diff working" . magit-diff-working-tree))
-        ("l" ("Log file" . magit-log-buffer-file))
-        ("L" ("Log all" . magit-log-all))))
+        ("s" . magit-status)
+        ("b" . magit-blame)
+        ("d" . magit-diff-working-tree)
+        ("l" . magit-log-buffer-file)
+        ("L" . magit-log-all)))
 
 ;; Step through historic versions of git controlled file
 ;; https://gitlab.com/pidu/git-timemachine
