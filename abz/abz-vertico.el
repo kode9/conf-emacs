@@ -85,7 +85,7 @@
 
 (use-package orderless
   :disabled
-  :ensure t
+  ;; :ensure t
   :custom
   (orderless-matching-styles '(orderless-flex orderless-literal))
   (completion-styles '(orderless basic)))
