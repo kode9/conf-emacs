@@ -86,18 +86,20 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   (compilation-auto-jump-to-first-error 'first-known)
   :hook
   (compilation-start . abz-select-process-window)
-  :bind (
-         :map abz-map
-         ("C-c x" . compile)
-         :map compilation-mode-map
-         ("n" ("Next error" . next-error-no-select))
-         ("p" ("Prev error" . previous-error-no-select))
-         ("C-p" ("Prev file error" . abz-compilation-previous-file))
-         ("C-n" ("Next file error" . abz-compilation-next-file))
-         ("M-p" ("Prev warning" . abz-previous-warning-no-select))
-         ("M-n" ("Next warning" . abz-next-warning-no-select))
-         ("C-a" ("First error" . abz-first-error-no-select))
-         ("M-a" ("First warning" . abz-first-warning-no-select))))
+  :bind
+  ;; NOTE: use-package from Emacs core does not support (KEY DESC . COMMAND),
+  ;; i.e. (KEY . (DESC . COMMAND)) form anymore, only (KEY . COMMAND) form.
+  (:map abz-map
+        ("C-c x" . compile)
+        :map compilation-mode-map
+        ("n" . next-error-no-select)
+        ("p" . previous-error-no-select)
+        ("C-p" . abz-compilation-previous-file)
+        ("C-n" . abz-compilation-next-file)
+        ("M-p" . abz-previous-warning-no-select)
+        ("M-n" . abz-next-warning-no-select)
+        ("C-a" . abz-first-error-no-select)
+        ("M-a" . abz-first-warning-no-select)))
 
 ;; Wrap text with punctation or tag
 ;; https://github.com/rejeep/wrap-region.el
