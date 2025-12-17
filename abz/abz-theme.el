@@ -326,8 +326,10 @@ Calls `kill-buffer' on the current buffer."
     (interactive)
     (kill-buffer (current-buffer)))
   :bind
+  ;; NOTE: use-package from Emacs core does not support (KEY DESC . COMMAND),
+  ;; i.e. (KEY . (DESC . COMMAND)) form anymore, only (KEY . COMMAND) form.
   (:map abz-map
-        ([remap kill-buffer] ("Kill buffer" . abz-kill-current-buffer))))
+        ([remap kill-buffer] . abz-kill-current-buffer)))
 
 (provide 'abz-theme)
 
