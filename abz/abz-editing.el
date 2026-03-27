@@ -60,7 +60,6 @@
   (customize-set-variable 'c-basic-offset 2)                     ; Indentation offset
   (customize-set-variable 'standard-indent 2)
 
-  (customize-set-variable 'undo-outer-limit 26214400)                      ; Maximum information in a single undo command. 25MiB
   (customize-set-variable 'warning-suppress-types '((undo discard-info)))) ; Be quiet
 
 ;; Remember last cursor position in all files
@@ -154,34 +153,26 @@ With argument n go to the nth entry."
    ("M-Y" . yank-pop-forwards)
    ("C-S-y" . browse-kill-ring)))
 
-;; undo-tree: undo-redo as a tree, with visualizer.
-;; https://elpa.gnu.org/packages/undo-tree.html
-;;
-;; no-littering: `undo-tree-history-directory-alist`
-(use-package undo-tree
-  :diminish undo-tree-mode
+;; Undo/Redo
+(use-package emacs
+  :straight nil
   :custom
-  (undo-tree-auto-save-history nil)     ; Don't save undo tree to a file
-  (undo-tree-enable-undo-in-region nil) ; Don't enable in regions
-  (undo-tree-visualizer-diff t)         ; Display diff by default in visualizer
-  (undo-tree-visualizer-timestamps t)   ; Show timestamps
-  :preface
-  ;; Advice the function that compute the filename to compress history files
-  (let ((ext (cond
-              ;; `auto-compression-mode' does not seem to know a lot of formats (e.g lz4) but it knows zstd
-              ((executable-find "zstd") ".zst")
-              ((executable-find "gzip") ".gz")
-              (""))))
-    (defun abz--undo-tree-make-history-file-name-append-compression (filename)
-      "Append file extension to `undo-tree-save-history` uses compression."
-      (concat filename ext)))
-  :init
-  (advice-add 'undo-tree-make-history-save-file-name
-              :filter-return #'abz--undo-tree-make-history-file-name-append-compression)
-  :bind (:map undo-tree-visualizer-mode-map
-              ("RET" . undo-tree-visualizer-quit)
-              ("q" . undo-tree-visualizer-abort))
-  :hook (after-init . global-undo-tree-mode))
+  (undo-limit abz-undo-limit)
+  (undo-strong-limit abz-undo-strong-limit)
+  (undo-outer-limit abz-undo-outer-limit)
+  :bind
+  ("M-_" . undo-redo))
+
+;; https://github.com/casouri/vundo
+;; Visual undo tree for Emacs' built-in undo system.
+(use-package vundo
+  ;; :commands
+  ;; vundo
+  :custom
+  (vundo-glyph-alist vundo-unicode-symbols)
+  (vundo-compact-display t)
+  :bind
+  ("C-x u" . vundo))
 
 ;; AsciiDoc
 (use-package adoc-mode

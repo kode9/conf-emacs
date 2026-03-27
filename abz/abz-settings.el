@@ -78,6 +78,21 @@ If optional `OLDVALUE' is non-nil it will first try to rename `OLDVALUE' to
   :group 'environment
   :set (abz--make-set-custom-dir))
 
+(defcustom abz-undo-limit (* 128 1000 1000)
+  "Keep no more undo information once it exceeds this size."
+  :type 'integer
+  :group 'abz)
+
+(defcustom abz-undo-strong-limit (* 256 1000 1000)
+  "Don't keep more than this much size of undo information."
+  :type 'integer
+  :group 'abz)
+
+(defcustom abz-undo-outer-limit (* 512 1000 1000)
+  "Outer limit on size of undo information for one command."
+  :type 'integer
+  :group 'abz)
+
 (defun abz--locate-config-file (filename)
   "Return an absolute path to `FILENAME' under `abz-config-local-dir'."
   (make-directory abz-config-local-dir t)

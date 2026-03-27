@@ -104,6 +104,7 @@ TL;DR kbd:[M-x] kbd:[describe-personal-keybindings] kbd:[RET]
 
 |kbd:[C·=] |Increase selected region by semantic units |er/expand-region
 |kbd:[M·=] |Contract the selected region to its previous size |er/contract-region
+|kbd:[C·x u] |Open visual undo tree to navigate history |vundo
 
 |===
 
@@ -120,18 +121,6 @@ TL;DR kbd:[M-x] kbd:[describe-personal-keybindings] kbd:[RET]
 |===
 
 == TODO
-
-* Hydra
-* Window management
-* Swap windows
-* Check existing searcher (ripgrep, ag, grep)
-* chmod
-* keymaps
-* use functions in abz/abz.el
-* compress backup-each-save => fork => gz/zst w/ auto-compression mode, see undo-tree source
-* elpy -> gitignore -> no littering
-* https://github.com/jwiegley/use-package#use-package-ensure-system-package
-* https://github.com/regen100/cmake-language-server
 
 == License
 
