@@ -111,7 +111,7 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
 
 ;; clang-format
 (use-package clang-format
-  :load-path ("/usr/share/clang"))
+  :load-path (lambda () (file-expand-wildcards "/usr/share/clang*")))
 
 ;; git-gutter+: View, stage and revert Git changes straight from the
 ;; buffer.
