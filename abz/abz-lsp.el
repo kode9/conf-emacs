@@ -113,7 +113,6 @@
   (lsp-enable-semantic-highlighting nil)
   (lsp-enable-snippet nil "Propose snippets on completion")
   (lsp-enable-symbol-highlighting nil "Highlight references of the symbol at point")
-  (lsp-enable-text-document-color nil)
   (lsp-enable-text-document-color t)
   (lsp-enable-xref t)
   (lsp-headerline-breadcrumb-enable t)
