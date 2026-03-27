@@ -67,13 +67,11 @@
 (customize-set-variable 'straight-use-package-by-default t "Install packages by default in `use-package` forms")
 (declare-function straight-use-package "ext:straight")
 
-;; use-package: package loading
-;; https://github.com/jwiegley/use-package
-;; NOTE: use-package in Emacs core since Emacs 30.1
+;; Declarative packages initialization
+;; NOTE: use-package in Emacs core since Emacs 29.1
 ;;
 ;; `ensure-system-package' adds the keyword `:ensure-system-package' to `use-package'
-(if (or (> emacs-major-version 30)
-        (and (= emacs-major-version 30) (>= emacs-minor-version 1)))
+(if (version<= "29.1" emacs-version)
     (progn
       (require 'use-package)
       (require 'use-package-ensure-system-package))
