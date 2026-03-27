@@ -38,7 +38,7 @@
 ;;;###autoload
 (defcustom abz-grep-command
   (cond
-   ((executable-find "ripgrep") 'ripgrep)
+   ((or (executable-find "rg") (executable-find "ripgrep")) 'ripgrep)
    ((executable-find "ag") 'ag)
    ((executable-find "pt") 'pt)
    ((executable-find "sift") 'sift)
