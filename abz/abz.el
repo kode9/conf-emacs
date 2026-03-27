@@ -309,12 +309,41 @@ Asks to restart Emacs when `PROCESS' emits the event `EVENT'."
   (abz--straight-upgrade-all-async)
   (message "Packages upgrade started in a new Emacs frame."))
 
-;; http://www.emacswiki.org/emacs/TrampMode
+(defun abz--sudo-path (path)
+  "Transform PATH into a sudo/doas Tramp path."
+  (let ((method (if (executable-find "sudo") "sudo" "doas")) ; TODO: customize var
+        (remote-prefix (file-remote-p path))
+        (local-path (or (file-remote-p path 'localname) path)))
+    (if remote-prefix
+        (concat remote-prefix "|" method ":" local-path)
+      (concat "/" method "::" local-path))))
+
+;;;###autoload
+(defun abz-sudo-do (command)
+  "Execute COMMAND with `default-directory` elevated to root (doas/sudo)."
+  (interactive "CRun via sudo/doas: ")
+  (let ((default-directory (abz--sudo-path default-directory)))
+    (call-interactively command)))
+
+;;;###autoload
+(defun abz-sudo-find-file ()
+  "Prompt for a file to open as root."
+  (interactive)
+  (abz-sudo-do 'find-file))
+
 ;;;###autoload
 (defun abz-sudo-buffer ()
   "Reopen the current file as root."
   (interactive)
-  (when buffer-file-name (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+  (unless buffer-file-name
+    (user-error "Buffer is not visiting a file"))
+  (let ((pos (point))
+        (old-mode major-mode)
+        (root-file (abz--sudo-path buffer-file-name)))
+    (find-alternate-file root-file)
+    (unless (eq major-mode old-mode)
+      (funcall old-mode)) ; Preserve major-mode
+    (goto-char pos)))
 
 ;;;###autoload
 (defun abz-rename-buffer-file (newname)
