@@ -171,6 +171,7 @@
   ((c-mode-common . lsp)
    (cmake-mode . lsp)
    (python-mode . lsp)
+   (dockerfile-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration)))
 
 ;; Part of lsp-mode

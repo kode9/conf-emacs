@@ -455,7 +455,16 @@ mouse-3: go to end")
 
 (use-package dockerfile-mode
   :init
-  (customize-set-variable 'dockerfile-use-sudo t))
+  (customize-set-variable 'dockerfile-use-sudo t)
+  (customize-set-variable 'dockerfile-use-buildkit t)
+  (customize-set-variable 'dockerfile-enable-auto-indent nil)
+  :defines
+  tree-sitter-major-mode-language-table
+  :config
+  (with-eval-after-load 'tree-sitter-langs
+    (when (and (boundp 'tree-sitter-major-mode-language-table)
+               (hash-table-p tree-sitter-major-mode-language-table))
+      (remhash 'dockerfile-mode tree-sitter-major-mode-language-table))))
 
 (use-package ssh-config-mode)
 
