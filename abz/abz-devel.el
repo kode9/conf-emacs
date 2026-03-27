@@ -196,10 +196,19 @@ mouse-3: go to end")
   (defun abz--projectile-modeline-function ()
     "The function to use to generate project-specific mode-line."
     (format " π⌜%s⌟" (or (projectile-project-name) "∅")))
-  (cl-letf (((symbol-function 'projectile--cleanup-known-projects) #'ignore))
-    (add-hook 'after-init-hook #'projectile-mode))
+  ;; Enable projectile w/o cleanup, we will run it in a timer
+  (defun abz--projectile-enable-quick ()
+    (advice-add 'projectile--cleanup-known-projects :override #'ignore)
+    (projectile-mode 1)
+    (advice-remove 'projectile--cleanup-known-projects #'ignore))
+  (defun abz--projectile-cleanup-silently ()
+    "Run projectile cleanup without spamming the echo area."
+    (let ((inhibit-message t))
+      (projectile-cleanup-known-projects)))
   :config
-  (run-with-idle-timer 11 nil #'projectile-cleanup-known-projects)
+  (run-with-idle-timer 11 nil #'abz--projectile-cleanup-silently)
+  :hook
+  (after-init . abz--projectile-enable-quick)
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind

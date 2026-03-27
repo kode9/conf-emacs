@@ -129,7 +129,7 @@
 ;; Visual feedback on yanks, undo, etc
 ;; http://www.emacswiki.org/emacs/VolatileHighlights
 (use-package volatile-highlights
-  :custom-face (vhl/default-face ((t (:background ,(face-attribute 'default :background) :underline t))))
+  :custom-face (vhl/default-face ((t (:inherit default :underline t))))
   :hook (after-init . volatile-highlights-mode)
   :diminish volatile-highlights-mode)
 
@@ -186,10 +186,10 @@ With argument n go to the nth entry."
   (ispell-program-name (cond ((executable-find "aspell"))
                              ((executable-find "hunspell"))
                              ((executable-find "ispell"))))
-  (ispell-extra-args (cond ((string-match  "aspell$" ispell-program-name) #'("--sug-mode=normal"
-                                                                             "--dont-run-together"
-                                                                             "--run-together-limit=4"
-                                                                             "--run-together-min=2"))))
+  (ispell-extra-args (cond ((string-match  "aspell$" ispell-program-name) '("--sug-mode=normal"
+                                                                            "--dont-run-together"
+                                                                            "--run-together-limit=4"
+                                                                            "--run-together-min=2"))))
   :config
   (abz--advice-inhibit-echo-area #'(ispell-change-dictionary ispell-init-process)))
 
