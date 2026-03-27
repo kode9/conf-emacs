@@ -282,14 +282,17 @@
   (customize-set-variable 'ibuffer-projectile-prefix "∞ ")
   :hook (ibuffer . abz--ibuffer-group-by-projectile))
 
-;; immortal-scratch: respawn scratch buffer
-;; https://bitbucket.org/jpkotta/immortal-scratch/
-(use-package immortal-scratch
-  :straight (:type git
-                   :host nil
-                   :repo "https://notabug.org/pluc/immortal-scratch.el.git"
-                   :branch "master")
-  :hook (after-init . immortal-scratch-mode))
+;; https://github.com/EricCrosson/unkillable-scratch/tree/master
+;; Control `kill-buffer' behavior on scratch buffers
+(use-package unkillable-scratch
+  :functions
+  unkillable-scratch
+  :config
+  (unkillable-scratch t))
+
+;; https://codeberg.org/emacs-weirdware/scratch
+;; Create scratch buffer with the same mode as the current buffer
+(use-package scratch)
 
 (provide 'abz-custom)
 
