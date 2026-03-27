@@ -479,7 +479,7 @@ mouse-3: go to end")
 ;; Highlight and follow bug references in comments and strings
 (add-hook 'prog-mode-hook 'bug-reference-prog-mode)
 
-(use-package eldoc-mode
+(use-package eldoc
   :straight nil
   :init
   (customize-set-variable 'eldoc-idle-delay 0)           ; Delay before printing
