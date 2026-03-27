@@ -27,17 +27,20 @@
 ;; directory from `comp-eln-load-path' and or deleting it from the file system
 ;; will just make it recompile them at the next startup.
 (eval-and-compile
-  (when (boundp 'comp-eln-load-path)
-    (let* ((env (getenv "XDG_CACHE_HOME"))
-           (cache-home (if (or (null env) (not (file-name-absolute-p env)))
-                           (expand-file-name "~/.cache")
-                         env))
-           (comp-eln-default-load-path (expand-file-name "eln-cache/" user-emacs-directory))
-           (comp-eln-new-load-path (expand-file-name
-                                    (convert-standard-filename "emacs/native/")
-                                    cache-home)))
-      (unless (file-equal-p comp-eln-default-load-path comp-eln-new-load-path)
-        (push comp-eln-new-load-path comp-eln-load-path)))))
+  (let* ((env (getenv "XDG_CACHE_HOME"))
+         (cache-home (if (or (null env) (not (file-name-absolute-p env)))
+                         (expand-file-name "~/.cache")
+                       env))
+         (new-eln-path (expand-file-name (convert-standard-filename "emacs/native/") cache-home)))
+    (cond
+     ;; Emacs 29+
+     ((boundp 'native-comp-eln-load-path)
+      (unless (file-equal-p (car native-comp-eln-load-path) new-eln-path)
+        (push new-eln-path native-comp-eln-load-path)))
+     ;; Emacs 28
+     ((boundp 'comp-eln-load-path)
+      (unless (file-equal-p (car comp-eln-load-path) new-eln-path)
+        (push new-eln-path comp-eln-load-path))))))
 
 ;; Raise garbage collector thresholds for initialization to improve startup
 ;; time. They will be restored after initialization (see below).
