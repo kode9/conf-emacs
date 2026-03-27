@@ -110,9 +110,7 @@
   :after magit
   :demand
   :config
-  (message "abz: magit autorevert %s" (bound-and-true-p global-auto-revert-mode))
   (unless (bound-and-true-p global-auto-revert-mode)
-    (message "abz: magit autorevert activage")
     (magit-auto-revert-mode)))
 
 ;; Magit: A Git Porcelain inside Emacs
