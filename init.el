@@ -105,23 +105,52 @@
 (use-package bind-key :demand t)
 
 ;; Tweak garbage collector
-(defconst gc-threshold (* 4 1000 1000))
-(defconst gc-percentage 0.5)
+(defun abz--calculate-gc-thresholds ()
+  "Calculate optimal low and high GC thresholds based on system RAM.
+Returns a cons cell (LOW . HIGH) representing bytes.
+Low target: ~0.1% of RAM, minimum 8MB).
+High target: 5% of RAM, maximum 1GB)."
+  (let ((fallback-low (* 8 1000 1000))
+        (fallback-high (* 1000 1000 1000)))
+    (condition-case nil
+        (let* ((ram-kb (cond
+                        ((fboundp 'memory-info)
+                         (nth 0 (memory-info)))
+                        ((file-readable-p "/proc/meminfo")
+                         (with-temp-buffer
+                           (insert-file-contents "/proc/meminfo")
+                           (re-search-forward "^MemTotal:[ \t]+\\([0-9]+\\) kB")
+                           (string-to-number (match-string 1))))
+                        (t 0)))
+               (ram-bytes (* (max ram-kb 0) 1024)))
+          (if (> ram-bytes 0)
+              (let ((target-low (max (truncate (* ram-bytes 0.001)) fallback-low))
+                    (target-high (min (truncate (* ram-bytes 0.05)) fallback-high)))
+                (cons target-low target-high))
+            (cons fallback-low fallback-high)))
+      (error (cons fallback-low fallback-high)))))
+
+(defconst abz--gc-thresholds (abz--calculate-gc-thresholds))
+(defconst abz--gc-threshold (car abz--gc-thresholds))
+(defconst abz--gc-high-threshold (cdr abz--gc-thresholds))
+(defconst abz--gc-percentage 0.1)
+
 (use-package gcmh
   :demand t
   :commands gcmh-mode
   :preface
   (defun abz--restore-gc-parameters ()
-    "Restore garbage collector thresholds to sane values."
-    (customize-set-variable 'gc-cons-threshold gc-threshold)
-    (customize-set-variable 'gc-cons-percentage gc-percentage)
+    "Restore garbage collector thresholds to calculated dynamic values."
+    (customize-set-variable 'gc-cons-threshold abz--gc-threshold)
+    (customize-set-variable 'gc-cons-percentage abz--gc-percentage)
     (gcmh-mode 1))
   (defun abz--restore-gc-parameters-when-idle ()
     "Call `abz--restore-gc-parameters' when Emacs becomes idle."
-    (run-with-idle-timer 9 nil #'abz--restore-gc-parameters))
+    (run-with-idle-timer 1 nil #'abz--restore-gc-parameters))
   :custom
-  (gcmh-verbose nil)
-  (gcmh-low-cons-threshold gc-threshold)
+  (gcmh-verbose nil "Disable GC message logging")
+  (gcmh-low-cons-threshold abz--gc-threshold "GC threshold used while idling")
+  (gcmh-high-cons-threshold abz--gc-high-threshold "Threshold during active execution")
   :diminish gcmh-mode
   :hook (emacs-startup . abz--restore-gc-parameters-when-idle))
 
