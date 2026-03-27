@@ -482,7 +482,7 @@ mouse-3: go to end")
   (customize-set-variable 'eldoc-idle-delay 0)           ; Delay before printing
   (customize-set-variable 'eldoc-minor-mode-string nil)) ; Don't show in modeline
 
-(use-package csharp-mode)
+(when (< emacs-major-version 30) (use-package csharp-mode))
 
 (use-package elpy
   :disabled
