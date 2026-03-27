@@ -191,6 +191,7 @@ mouse-3: go to end")
                                   (string-join `("find" "." "-type f" "-print0") " ")))
                               "Command used by projectile to get the files in a generic project")
   (projectile-per-project-compilation-buffer t)
+  (projectile-sort-order 'recently-active "recently active buffers then recently opened file")
   :init
   (defun abz--projectile-modeline-function ()
     "The function to use to generate project-specific mode-line."
