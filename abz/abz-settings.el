@@ -95,7 +95,6 @@ If optional `OLDVALUE' is non-nil it will first try to rename `OLDVALUE' to
 
 (defun abz--locate-config-file (filename)
   "Return an absolute path to `FILENAME' under `abz-config-local-dir'."
-  (make-directory abz-config-local-dir t)
   (expand-file-name (convert-standard-filename filename)
                     abz-config-local-dir))
 
