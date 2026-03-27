@@ -88,7 +88,7 @@
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
   :demand
-  :when (or (memq window-system '(mac ns x))
+  :when (or (memq window-system '(mac ns x pgtk))
             (daemonp))
   :commands
   exec-path-from-shell-copy-env
