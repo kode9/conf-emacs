@@ -458,14 +458,7 @@ mouse-3: go to end")
   :init
   (customize-set-variable 'dockerfile-use-sudo t)
   (customize-set-variable 'dockerfile-use-buildkit t)
-  (customize-set-variable 'dockerfile-enable-auto-indent nil)
-  :defines
-  tree-sitter-major-mode-language-table
-  :config
-  (with-eval-after-load 'tree-sitter-langs
-    (when (and (boundp 'tree-sitter-major-mode-language-table)
-               (hash-table-p tree-sitter-major-mode-language-table))
-      (remhash 'dockerfile-mode tree-sitter-major-mode-language-table))))
+  (customize-set-variable 'dockerfile-enable-auto-indent nil))
 
 (use-package ssh-config-mode)
 
@@ -504,37 +497,31 @@ mouse-3: go to end")
 ;; https://github.com/jobbflykt/x509-mode
 (use-package x509-mode)
 
-(use-package tree-sitter
-  :commands
-  global-tree-sitter-mode
-  :custom
-  (tsc-dyn-get-from #'(:compilation :github))
-  :hook
-  (after-init . global-tree-sitter-mode)
-  (tree-sitter-after-on . tree-sitter-hl-mode))
-
-(use-package tree-sitter-langs
-  :demand
-  :after tree-sitter)
-
+;; Built-in binding for tree-sitter incremental parsing library
 (use-package treesit
-  :disabled
   :straight nil
-  :config
-  ;; Change default output directory
-  ;;
-  ;; TODO: Doesn't work, there are a bunch of hardcoded path inside the C code of treesit
-  (advice-add #'treesit--install-language-grammar-1 :filter-args
-              (defun abz--advice-treesit--install-language-grammar-1 (args)
-                (setcar args (expand-file-name "tree-sitter" abz-cache-dir))
-                args)))
+  :custom
+  (treesit-font-lock-level 4))
 
 ;; https://github.com/renzmann/treesit-auto
+;; Automatically install and use tree-sitter major modes.
 (use-package treesit-auto
-  :disabled
-  :demand t
+  :functions
+  treesit-auto-add-to-auto-mode-alist
   :custom
-  (treesit-auto-install 'prompt "Auto install missing tree-sitter grammars")
+  (treesit-auto-install 'prompt)
+  :config
+  (setq treesit-auto-recipe-list
+        (seq-remove (lambda (recipe) (eq (treesit-auto-recipe-lang recipe) 'dockerfile))
+                    treesit-auto-recipe-list))
+  (add-to-list 'treesit-auto-recipe-list (make-treesit-auto-recipe
+                                          :lang 'dockerfile
+                                          :ts-mode 'dockerfile-ts-mode
+                                          :remap 'dockerfile-mode
+                                          :url "https://github.com/kode9/tree-sitter-dockerfile"
+                                          :revision "main"
+                                          :ext "[/\\]\\(?:Containerfile\\|Dockerfile\\)\\(?:\\.[^/\\]*\\)?\\'"))
+  (treesit-auto-add-to-auto-mode-alist 'all)
   :hook
   (after-init . global-treesit-auto-mode))
 
