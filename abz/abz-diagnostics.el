@@ -42,8 +42,7 @@
        (use-package flymake
          :straight nil
          :hook (prog-mode . flymake-mode)))
-      (eq abz-diagnostics-backend :none)
-      (nil))
+      (t nil))
 
 (provide 'abz-diagnostics)
 
