@@ -68,6 +68,8 @@
   make-lsp-client
   lsp-tramp-connection
   lsp-activate-on
+  lsp-async-start-process
+  lsp-stdio-connection
   :defines
   lsp-clients-clangd-library-directories
   :init
@@ -159,6 +161,21 @@
                     :remote? t
                     :server-id 'clangd-remote
                     :library-folders-fn (lambda (_workspace) lsp-clients-clangd-library-directories)))
+  ;; https://github.com/neocmakelsp/neocmakelsp
+  (defun abz--lsp-cmakeneo--download-server (_client callback error-callback update?)
+    "Install/update neocmakelsp CMake language server using `cargo
+
+Will invoke CALLBACK or ERROR-CALLBACK based on result.
+Will update if UPDATE? is t."
+    (lsp-async-start-process
+     callback
+     error-callback
+     "cargo" "install" "neocmakelsp" (when update? "--force")))
+  (lsp-register-client (make-lsp-client
+                        :new-connection (lsp-stdio-connection '("neocmakelsp" "stdio"))
+                        :activation-fn (lsp-activate-on "cmake")
+                        :priority 0
+                        :server-id 'cmakeneo))
   (advice-add (if (progn (require 'json)
                          (fboundp 'json-parse-buffer))
                   'json-parse-buffer
