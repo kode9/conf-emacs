@@ -31,7 +31,7 @@
   (lsp-ui-doc-show-with-cursor nil "Move the cursor over a symbol to show its documentation")
   (lsp-ui-doc-show-with-mouse nil "Move the mouse pointer over a symbol to show its documentation")
   (lsp-ui-doc-delay 0.2)
-  (lsp-ui-doc-position #'top)
+  (lsp-ui-doc-position 'top)
 
   (lsp-ui-sideline-enable t)
   (lsp-ui-sideline-show-code-actions t)
@@ -126,9 +126,9 @@
   (lsp-print-performance nil)
   (lsp-response-timeout 5)
   (lsp-server-trace nil)
-  (lsp-signature-auto-activate #'(:after-completion
-                                  :on-trigger-char
-                                  :on-server-request) "Auto activate signature conditions")
+  (lsp-signature-auto-activate '(:after-completion
+                                 :on-trigger-char
+                                 :on-server-request) "Auto activate signature conditions")
   (lsp-signature-render-documentation nil "Display signature documentation in `eldoc'")
   (lsp-rust-server 'rust-analyzer "Which LSP server to use (`rust-analyzer' or `rls')")
   (lsp-clients-clangd-args '("--all-scopes-completion"
