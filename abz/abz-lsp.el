@@ -167,10 +167,14 @@
               #'lsp-booster--advice-json-parse)
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   :hook
-  ((c-mode-common . lsp)
-   (cmake-mode . lsp)
-   (python-mode . lsp)
-   (dockerfile-mode . lsp)
+  ((c-mode-common . lsp-deferred)
+   (c-ts-base-mode . lsp-deferred)
+   (cmake-mode . lsp-deferred)
+   (cmake-ts-mode . lsp-deferred)
+   (python-mode . lsp-deferred)
+   (python-ts-mode . lsp-deferred)
+   (dockerfile-mode . lsp-deferred)
+   (dockerfile-ts-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration)))
 
 ;; Part of lsp-mode
