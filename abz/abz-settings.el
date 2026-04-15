@@ -33,6 +33,35 @@
   :group 'emacs
   :link '(url-link :tag "Homepage" "https://git.the-pluc.net/conf-emacs.git/"))
 
+(defcustom abz-debug-elisp nil
+  "When t, add some debug messages."
+  :type 'boolean
+  :group 'abz)
+
+(defconst abz--log-buffer-name "*abz-log*")
+
+(defun abz--log-buffer-get ()
+  "Get or create the `abz--log-buffer-name' buffer."
+  (cond ((get-buffer abz--log-buffer-name))
+        ((let ((buffer (get-buffer-create abz--log-buffer-name)))
+           (with-current-buffer buffer
+             (view-mode 1)
+             (buffer-disable-undo))
+           buffer))))
+
+(defun abz--log (format &rest args)
+  "Log messages to the `abz--log-buffer-name' buffer when `abz-debug-elisp' is t.
+
+FORMAT and ARGS are the same as in `message'."
+  (when abz-debug-elisp
+    (with-current-buffer (abz--log-buffer-get)
+      (let ((inhibit-read-only t)
+            (message (apply 'format format args)))
+        (goto-char (point-max))
+        (insert message)
+        (insert "\n")
+        (goto-char (point-max))))))
+
 (defun abz--make-set-custom-dir (&optional oldvalue)
   "Create a function to be used to set a `defcustom' directory variable.
 
