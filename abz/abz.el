@@ -22,6 +22,7 @@
 
 ;;; Code:
 
+(require 'abz-settings)
 (require 'files)
 (require 'simple)
 (require 'subr-x)
@@ -103,7 +104,6 @@ no such line exists."
 (defun abz--lsp-format? ()
   "Return t if `lsp-mode' is active and can handle formatting."
   (and
-   (not (derived-mode-p #'cmake-mode))
    (abz--lsp-mode?)
    (fboundp 'lsp-feature?)
    (lsp-feature? "textDocument/formatting")))
@@ -193,6 +193,7 @@ The region is defined by `abz-region-positions-dwim"
 Acts as `delete-trailing-whitespace' with `delete-trailing-lines' and
 `require-final-newline' set to true."
   (interactive)
+  (abz--log "abz: delete-trailing-whitespace")
   (let ((delete-trailing-lines t)
         (require-final-newline t))
     (call-interactively #'delete-trailing-whitespace)))
@@ -226,6 +227,7 @@ Indent the region between `START' and `END'."
 
 Same as `indent-region' but indents the whole buffer when no region is active."
   (interactive)
+  (abz--log "abz: indent-dwim")
   (if (use-region-p)
       (call-interactively #'abz-indent-region)
     (call-interactively #'abz-indent-buffer)))
@@ -234,6 +236,7 @@ Same as `indent-region' but indents the whole buffer when no region is active."
 (defun abz-untabify-buffer ()
   "Convert all tabs to spaces in a buffer."
   (interactive)
+  (abz--log "abz: untabify-buffer")
   (untabify (point-min) (point-max) nil))
 
 ;;;###autoload

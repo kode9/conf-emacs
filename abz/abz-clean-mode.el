@@ -27,7 +27,6 @@
 
 (declare-function projectile-project-root "ext:projectile")
 (declare-function lsp-feature? "ext:lsp-mode")
-(declare-function cmake-mode "ext:cmake-mode")
 
 (defvar abz--clean-mode-dont-indent-parent-modes
   '(fundamental-mode text-mode makefile-mode)
@@ -41,9 +40,7 @@
   "Return t if we should untabify the current buffer."
   ;; lsp-pyslp with default configuration doesn't seem to remove trailing whitespace
   ;; FIXME: Better detect this and/or find a proper lsp configuration
-  ;;
-  ;; cmake-lsp seems broken as well
-  (cond ((derived-mode-p #'(#'python-mode #'cmake-mode)))
+  (cond ((derived-mode-p '(python-mode)))
         ((not (or (and (derived-mode-p #'c++-mode)
                        (fboundp #'projectile-project-root)
                        (file-readable-p (expand-file-name ".clang-format" (projectile-project-root))))
@@ -57,14 +54,12 @@
 
 (defun abz--clean-buffer ()
   "Indent, untabify and remove trailing whispaces in current buffer."
+  (abz--log "abz: clean-buffer")
   (deactivate-mark)
   (unless (apply #'derived-mode-p abz--clean-mode-dont-indent-parent-modes)
     (abz-indent-dwim))
   (when (abz--untabify-buffer?) (abz-untabify-buffer))
-  (when (abz--delete-trailing-whitespace-buffer?) (abz-delete-trailing-whitespace))
-  (when (or (derived-mode-p #'python-mode)
-            (derived-mode-p #'cmake-mode))
-    (abz-delete-trailing-whitespace)))
+  (when (abz--delete-trailing-whitespace-buffer?) (abz-delete-trailing-whitespace)))
 
 (define-minor-mode abz-clean-mode
   "Cleans buffer before saving.
