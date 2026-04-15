@@ -305,30 +305,6 @@ mouse-3: go to end")
 (use-package csv-mode
   :mode "\\.csv\\'")
 
-;; CMake
-(use-package cmake-mode
-  :straight nil
-  :mode
-  ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
-
-;; Better syntax highlightning for CMake
-;;; Disabled: It is VERY slow. I'm not sure if it's a clash with
-;;; something else.
-(use-package cmake-font-lock
-  :disabled
-  :commands cmake-font-lock-activate
-  :init
-  ;; cmake-font-lock-activate must be called BEFORE fic-mode. Since
-  ;; cmake-mode will call prog-mode hooks and then after cmake-mode
-  ;; hooks, the workaroung is to add cmake-font-lock-activate at the
-  ;; start of the prog-mode hooks.
-  (remove-hook 'cmake-mode-hook 'cmake-font-lock-activate) ; package autoloads
-  (defun abz-cmake-font-lock-activate()
-    "Call cmake-font-lock-activate only for cmake-mode."
-    (when (derived-mode-p #'cmake-mode)
-      (cmake-font-lock-activate)))
-  (add-hook 'prog-mode-hook #'abz-cmake-font-lock-activate))
-
 ;; Scilab
 (use-package scilab-mode
   :straight nil
@@ -388,34 +364,6 @@ mouse-3: go to end")
   (("C-c g a" . gdb-display-disassembly-buffer)
    ("C-c g m" . gdb-display-memory-buffer)
    ("C-c g r" . gdb-restore-windows)))
-
-;; cmake-ide
-(use-package cmake-ide
-  :disabled
-  :demand t
-  :init
-  ;; Persistent build directories under `XDG_CACHE_HOME/cmake-ide/`
-  (when-let ((cache-dir (getenv "XDG_CACHE_HOME")))
-    (customize-set-variable 'cmake-ide-build-pool-dir (concat (file-name-as-directory (expand-file-name cache-dir "~"))
-                                                              "cmake-ide"))
-    (customize-set-variable 'cmake-ide-build-pool-use-persistent-naming t))
-  ;; Use `cmake --build <DIR>` as the compile command
-  ;; We advise the function because the custom variable `cmake-ide-compile-command` is not given the build directory
-  (defun abz--cide-get-compile-command (dir)
-    (let ((r (combine-and-quote-strings `(,cmake-ide-cmake-command "--build" ,dir))))
-      (message "abz--cide-get-compile-command(%s) => %s" dir r)
-      r)
-    )
-  (advice-add 'cide--get-compile-command :before-until #'abz--cide-get-compile-command)
-  :config
-  ;; Add `-DCPM_SOURCE_CACHE=$XDG_CACHE_HOME/CPM` (for CPM.cmake) when necessary
-  (when-let ((cache-dir (and (not (getenv "CPM_SOURCE_CACHE")) (getenv "XDG_CACHE_HOME"))))
-    (add-to-list 'cmake-ide-cmake-args
-                 (combine-and-quote-strings `("-DCPM_SOURCE_CACHE"
-                                              ,(concat (file-name-as-directory (expand-file-name cache-dir "~")) "CPM"))
-                                            "=")))
-  (add-to-list 'cmake-ide-src-extensions ".cu")
-  (cmake-ide-setup))
 
 ;; YAML
 (use-package yaml-mode
@@ -566,6 +514,7 @@ mouse-3: go to end")
 (add-to-list 'load-path (expand-file-name "languages"
                                           (file-name-directory load-file-name)))
 (mapc 'require (list
+                'abz-cmake
                 'abz-golang
                 'abz-web
                 ))
