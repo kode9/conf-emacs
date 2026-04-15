@@ -316,6 +316,9 @@
   :hook
   (which-key-mode . which-key-posframe-mode))
 
+(use-package beacon
+  :hook (after-init . beacon-mode))
+
 (use-package abz
   :straight nil
   :init
