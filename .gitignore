@@ -5,4 +5,5 @@ elpy/
 flycheck_init.el
 session.*
 straight/
+tmp/
 var/

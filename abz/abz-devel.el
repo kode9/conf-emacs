@@ -255,7 +255,6 @@ mouse-3: go to end")
                                                 (null (null byte-compile-current-file))))))
                             (t
                              `((comment "")))))))
-                  ;; (message "%S" env)
                   (eval `(let* ,env
                            (if ',arg
                                (save-excursion
