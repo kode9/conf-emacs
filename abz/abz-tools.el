@@ -55,7 +55,14 @@
      :commands rg-project
      :bind*
      ("C-c a a" . rg-project)
-     ("C-c a r" . rg)))
+     ("C-c a r" . rg)
+     :bind
+     (:map rg-mode-map
+           ("SPC" . compilation-display-error)
+           ("C-n" . rg-next-file)
+           ("C-p" . rg-prev-file))
+     :hook
+     (rg-mode . (lambda () (setq-local compilation-auto-jump-to-first-error nil)))))
 
   (ag
    ;; ag the silver searcher: a better grep alternative

@@ -148,10 +148,11 @@
   (vertico-posframe-mode +1))
 
 ;; Mini-buffer actions
+;; https://github.com/oantolin/embark
 (use-package embark
-  ;; :init
-  ;; ;; Optionally replace the key help with a completing-read interface
-  ;; (setq prefix-help-command #'embark-prefix-help-command)
+  :init
+  ;; Replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
   ;; :config
   ;; ;; Hide the mode line of the Embark live/completions buffers
   ;; (add-to-list 'display-buffer-alist
@@ -161,7 +162,10 @@
   :bind
   (("M-," . embark-act)
    ("M-;" . embark-dwim)
-   ("C-h B" . embark-bindings)))
+   ("C-h B" . embark-bindings)
+   :map minibuffer-local-map
+   ("M-," . embark-act)
+   ("M-;" . embark-dwim)))
 
 ;; In-buffer search dispatch
 ;; ctrlf is always available on C-S-s regardless of abz-line-search
