@@ -24,6 +24,7 @@
 
 (require 'abz)
 (require 'abz-settings)
+(require 'cl-lib)
 (require 'use-package)
 
 (progn
@@ -134,6 +135,7 @@
   :diminish volatile-highlights-mode)
 
 ;; Kill ring visualizer / browser
+;; https://github.com/browse-kill-ring/browse-kill-ring
 (use-package browse-kill-ring
   :demand t
   :init
@@ -142,16 +144,17 @@
         browse-kill-ring-separator "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         browse-kill-ring-show-preview t
         browse-kill-ring-separator-face 'font-lock-comment-face)
-  (defun yank-pop-forwards (n)
-    "Cycle the `kill-ring` forward (reverse of `yank-pop`).
-With argument n go to the nth entry."
-    (interactive "p")
-    (yank-pop (- n)))
   :bind*
   (("C-y" . yank)
-   ("M-y" . yank-pop)
-   ("M-Y" . yank-pop-forwards)
    ("C-S-y" . browse-kill-ring)))
+
+(cl-case abz-yank-handler
+  (consult
+   (bind-key* "M-y" #'consult-yank-pop))
+  (browse-kill-ring
+   (bind-key* "M-y" #'browse-kill-ring))
+  (default
+   (bind-key* "M-y" #'yank-pop)))
 
 ;; Undo/Redo
 (use-package emacs
@@ -245,7 +248,6 @@ With argument n go to the nth entry."
 
 (bind-keys
  ("RET" . reindent-then-newline-and-indent) ; Indent on new line
- ("M-g" . goto-line)
  ("C-c s" . sort-lines)
  ("S-SPC" . abz-mark-next-paragraph)
  ("S-M-SPC" . abz-mark-previous-paragraph))

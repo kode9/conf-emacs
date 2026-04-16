@@ -22,6 +22,8 @@
 
 ;;; Code:
 
+(require 'abz-settings)
+(require 'cl-lib)
 (require 'use-package)
 
 (use-package vertico
@@ -161,10 +163,21 @@
    ("M-;" . embark-dwim)
    ("C-h B" . embark-bindings)))
 
-;; TODO: Move somewhere else
+;; In-buffer search dispatch
+;; ctrlf is always available on C-S-s regardless of abz-line-search
+;; https://github.com/radian-software/ctrlf
 (use-package ctrlf
-  :hook
-  (after-init . ctrlf-mode))
+  :bind
+  ("C-S-s" . ctrlf-forward-literal))
+
+(cl-case abz-line-search
+  (consult-line
+   (bind-key "C-s" #'consult-line))
+  (ctrlf
+   (ctrlf-mode +1)
+   (bind-key "C-s" #'ctrlf-forward-default))
+  (isearch
+   nil))
 
 (provide 'abz-vertico)
 

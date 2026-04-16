@@ -253,6 +253,11 @@
   (customize-set-variable 'ibuffer-show-empty-filter-groups nil) ; Hide empty groups
   :bind ([remap list-buffers] . ibuffer))
 
+;; Buffer switching dispatch
+(cl-case abz-buffer-switcher
+  (consult-buffer
+   (bind-key "C-x b" #'consult-buffer)))
+
 ;; Group buffers in ibuffer list by projectile project
 (use-package ibuffer-projectile
   :after ibuffer
