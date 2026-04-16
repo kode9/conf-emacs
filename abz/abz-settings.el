@@ -198,9 +198,9 @@ If optional `OLDVALUE' is non-nil it will first try to rename `OLDVALUE' to
 
 (defcustom abz-search-backend
   (cond
-   ((or (executable-find "rg") (executable-find "ripgrep")) 'consult-ripgrep)
+   ((or (executable-find "rg") (executable-find "ripgrep")) 'ripgrep)
    ((executable-find "ag") 'ag)
-   (t 'consult-grep))
+   (t 'grep))
   "The project-wide search tool to use.
 Consult variants provide live preview and embark integration.
 Non-consult variants use dedicated packages."
