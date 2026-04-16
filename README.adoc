@@ -35,7 +35,8 @@ CAUTION: The first start might take some time as dependencies are cloned and bui
 The configuration provides integration of external tools:
 
 * https://git-scm.com/[Git^] with https://magit.vc/[Magit^]
-* https://github.com/ggreer/the_silver_searcher[AG the silver searcher^] with https://github.com/Wilfred/ag.el[ag.el^]
+* https://github.com/BurntSushi/ripgrep[ripgrep^] with https://github.com/minad/consult[Consult^] (default) or https://github.com/dajva/rg.el[rg.el^]
+* https://github.com/ggreer/the_silver_searcher[AG the silver searcher^] with https://github.com/Wilfred/ag.el[ag.el^] (fallback)
 * A spell checker such as http://aspell.net/[Aspell^] or https://hunspell.github.io/[Hunspell^] for the https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html[built-in spell checker^] and https://www.flycheck.org/en/latest/[Flycheck^]
 
 == Customization
@@ -106,6 +107,111 @@ TL;DR kbd:[M-x] kbd:[describe-personal-keybindings] kbd:[RET]
 |kbd:[M·=] |Contract the selected region to its previous size |er/contract-region
 |kbd:[C·x u] |Open visual undo tree to navigate history |vundo
 
+|===
+
+=== Search and Navigation
+
+All search and navigation features are powered by https://github.com/minad/consult[Consult^] by default, with fallbacks configurable via `kbd:[M-x] customize-group kbd:[RET] abz kbd:[RET]`.
+
+.In-buffer search
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[C·s] |Search in current buffer (consult-line) |consult-line
+|kbd:[C·S·s] |Browser-style search (ctrlf, always available) |ctrlf-forward-literal
+|===
+
+.Project search kbd:[C·c a]
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[C·c a a] |Search in project (ripgrep) |consult-ripgrep
+|kbd:[C·c a r] |Search in project (regex) |consult-ripgrep
+|===
+
+:goto: M·g
+.Navigation kbd:[{goto}]
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[{goto} g] |Go to line with live preview |consult-goto-line
+|kbd:[{goto} o] |Jump to outline heading |consult-outline
+|kbd:[{goto} m] |Jump to mark in current buffer |consult-mark
+|kbd:[{goto} M] |Jump to mark across all buffers |consult-global-mark
+|kbd:[{goto} b] |Bookmarks with live preview |consult-bookmark
+|kbd:[{goto} i] |Symbol navigation (imenu, when enabled) |consult-imenu
+|kbd:[{goto} e] |Jump to compilation error |consult-compile-error
+|kbd:[{goto} r] |Access registers |consult-register
+|kbd:[{goto} k] |Select keyboard macro |consult-kmacro
+|kbd:[{goto} M·m] |Man page lookup |consult-man
+|kbd:[{goto} M·i] |Search info manuals |consult-info
+|===
+
+.Buffer and file management
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[C·x b] |Switch buffer with preview (shows recent files, bookmarks) |consult-buffer
+|kbd:[C·x C·b] |Full buffer list (ibuffer, grouped by project) |ibuffer
+|===
+
+.Kill ring
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[C·y] |Yank (paste) |yank
+|kbd:[M·y] |Browse kill ring with preview |consult-yank-pop
+|kbd:[C·S·y] |Visual kill ring browser (always available) |browse-kill-ring
+|===
+
+.Diagnostics
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[C·c f f] |Next error |flycheck-next-error
+|kbd:[C·c f p] |Previous error |flycheck-previous-error
+|kbd:[C·c f l] |List all errors with preview |consult-flycheck
+|kbd:[C·c f c] |Clear errors |flycheck-clear
+|===
+
+.Embark actions
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[M·,] |Show available actions on current candidate |embark-act
+|kbd:[M·;] |Quick default action |embark-dwim
+|kbd:[C·h B] |Show all key bindings |embark-bindings
+|===
+
+TIP: In any consult search, press kbd:[M·,] (`embark-act`) to export results to an editable buffer (via wgrep), jump to a result, or perform other context-sensitive actions.
+
+TIP: kbd:[M·r] in the minibuffer browses command history with completion.
+
+=== Customization Reference
+
+All features can be configured via `kbd:[M-x] customize-group kbd:[RET] abz kbd:[RET]`. The following variables control the search and navigation stack:
+
+[cols="2m,3d,2m"]
+|===
+|Variable |Purpose |Default
+
+|abz-completion-framework |Completion UI |vertico
+|abz-search-backend |Project-wide search tool |consult-ripgrep
+|abz-line-search |In-buffer search (C-s) |consult-line
+|abz-buffer-switcher |Buffer switching (C-x b) |consult-buffer
+|abz-compile-navigation |Compilation error navigation |consult
+|abz-diagnostics-list |Error list (C-c f l) |consult
+|abz-xref-show |Xref results display |consult
+|abz-imenu |Symbol navigation |disabled
+|abz-yank-handler |Kill ring browsing (M-y) |consult
+|abz-diagnostics-backend |Syntax checker engine |flycheck
 |===
 
 == Custom functions
