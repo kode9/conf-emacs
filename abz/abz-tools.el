@@ -34,26 +34,6 @@
 ;; https://github.com/gvansickle/ucg
 ;; https://git-scm.com/docs/git-grep
 ;;
-;; TODO Use `:set` to check the executable exists, and if not, revert back to one that does.
-;;;###autoload
-(defcustom abz-grep-command
-  (cond
-   ((or (executable-find "rg") (executable-find "ripgrep")) 'ripgrep)
-   ((executable-find "ag") 'ag)
-   ((executable-find "pt") 'pt)
-   ((executable-find "sift") 'sift)
-   ((executable-find "ucg") 'ucg)
-   ((executable-find "grep") 'grep))
-  "The search tool to use."
-  :type '(choice (const ripgrep)
-                 (const ag)
-                 (const pt)
-                 (const sift)
-                 (const ucg)
-                 (const grep))
-  :tag "Grep command"
-  :group 'abz
-  :group 'external)
 
 ;; ag the silver searcher: a better grep alternative
 (use-package ag
