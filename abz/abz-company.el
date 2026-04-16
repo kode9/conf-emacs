@@ -35,63 +35,31 @@
   (company-dabbrev-other-buffers t "Make dabbrev search only in buffers with the same major-mode")
   (company-idle-delay 0.25 "Seconds before starting completion")
   (company-minimum-prefix-length 2 "Minimum numbers of characters to start completion")
-  (company-require-match nil "Let me type whatever I want")
-  (company-show-numbers t "Quick access to first 10 candidates")
-  (company-tooltip-align-annotations t "Align annotations to the right tooltip border")
+  ;; (company-require-match nil "Let me type whatever I want")
+  (company-show-numbers nil "Quick access to first 10 candidates")
+  (company-tooltip-align-annotations nil "Align annotations to the right tooltip border")
   (company-tooltip-limit 15 "The maximum number of **visible** candidates")
-
-  (company-frontends #'(company-pseudo-tooltip-unless-just-one-frontend
-                        company-preview-if-just-one-frontend
-                        company-echo-metadata-frontend)
+  ;; (company-frontends #'(company-pseudo-tooltip-unless-just-one-frontend
+  ;;                       company-preview-if-just-one-frontend
+  ;;                       company-echo-metadata-frontend)
+  ;;                    "Active frontends")
+  (company-frontends '(company-preview-common-frontend
+                       company-pseudo-tooltip-frontend
+                       company-echo-metadata-frontend)
                      "Active frontends")
-  ;; disabled: company-dabbrev-code: shows up unexpectedly after '<', '>', ':' etc
-  ;; disabled: company-dabbrev: same as company-dabbrev-code
-  ;; enabled: company-capf: uses standard completion at point
-  ;; disabled: company-yasnippet: TODO: configure
-  ;; disabled: company-keywords: useless with LSP
-  (company-backends #'((company-files
-                        company-capf
-                        ;; :with company-yasnippet
-                        ;; :with company-keywords
-                        ;; :with company-dabbrev-code
-                        ;; :with company-dabbrev
-                        ;; :with company-abbrev
-                        ))
-                    "Globally enabled backends")
-  (company-transformers #'(;; company-sort-by-occurrence
-                           company-sort-by-backend-importance
-                           ;; company-sort-prefer-same-case-prefix
-                           )
+  (company-backends '(company-capf
+                      company-files
+                      (company-dabbrev-code company-keywords)
+                      company-dabbrev)
+                    "Globally enabled backends prioritizing CAPF (LSP/native modes)")
+  (company-transformers '(delete-consecutive-dups
+                          company-sort-by-occurrence
+                          company-sort-by-backend-importance)
                         "Candidate sorting")
-  (company-global-modes #'(not gud-mode help-mode)
+  (company-global-modes '(not gud-mode help-mode)
                         "Manage modes where global-company-mode is enabled")
   :hook
-  (after-init  . global-company-mode)
-  ;; TODO I guess this should be refactored
-  (cmake-mode . (lambda () (set (make-local-variable 'company-backends) #'((company-files
-                                                                            company-cmake
-                                                                            company-capf
-                                                                            :with company-yasnippet
-                                                                            :with company-keywords
-                                                                            :with company-dabbrev-code
-                                                                            :with company-dabbrev
-                                                                            :with company-abbrev)))))
-  (text-mode . (lambda () (set (make-local-variable 'company-backends) #'((company-files
-                                                                           company-ispell
-                                                                           company-capf
-                                                                           :with company-yasnippet
-                                                                           :with company-keywords
-                                                                           :with company-dabbrev-code
-                                                                           :with company-dabbrev
-                                                                           :with company-abbrev)))))
-  (adoc-mode . (lambda () (set (make-local-variable 'company-backends) #'((company-files
-                                                                           company-ispell
-                                                                           company-capf
-                                                                           :with company-yasnippet
-                                                                           :with company-keywords
-                                                                           :with company-dabbrev-code
-                                                                           :with company-dabbrev
-                                                                           :with company-abbrev))))))
+  (after-init . global-company-mode))
 
 ;; Cycle candidates using TAB. Part of company. Insert itself in `company-frontends'.
 (use-package company-tgn
@@ -104,6 +72,7 @@
 ;; Company frontend with icons using a child frame
 ;; Can differentiate backends with colors
 (use-package company-box
+  :disabled
   :diminish
   :custom
   (company-box-frame-behavior 'point "Frame position behavior")
@@ -117,7 +86,7 @@
   (company-box-doc-enable t "Show candidate documentation")
 
   ;; Debug
-  (company-box-backends-colors #'((company-yasnippet . (:all "DarkGoldenrod"))
+  (company-box-backends-colors '((company-yasnippet . (:all "DarkGoldenrod"))
                                   (company-elisp . (:all "YellowGreen"))
                                   (company-dabbrev . (:all "PaleVioletRed"))
                                   (company-files . (:all "SaddleBrown"))
@@ -156,6 +125,20 @@
   :config
   (add-to-list 'company-c-headers-path-system "/usr/include/c++/v1/")
   (add-to-list 'company-backends 'company-c-headers nil))
+
+;; (use-package cape
+;;   :functions
+;;   cape-capf-debug
+;;   :preface
+;;   (defun abz-debug-instrument-capf ()
+;;     "Wrap all current `completion-at-point-functions' with `cape-capf-debug'.
+;; Logs CAPF execution steps, boundaries, and returned properties to the *Messages* buffer.
+;; Invoke `revert-buffer' (C-c b r) to clear the instrumentation."
+;;     (interactive)
+;;     (require 'cape)
+;;     (setq-local completion-at-point-functions
+;;                 (mapcar #'cape-capf-debug completion-at-point-functions))
+;;     (message "CAPFs instrumented. Monitor the *Messages* buffer during completion.")))
 
 (provide 'abz-company)
 
