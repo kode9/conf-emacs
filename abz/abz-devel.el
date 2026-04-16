@@ -456,8 +456,27 @@ mouse-3: go to end")
 ;; Built-in binding for tree-sitter incremental parsing library
 (use-package treesit
   :straight nil
+  :init
+  ;; https://github.com/doomemacs/doomemacs/issues/8746
+  (defun abz--treesit-python-abi-mismatch-p ()
+    "Return t if Emacs is missing the Tree-sitter 0.26+ predicate patches.
+     Unpatched Emacs translates `:match` to `(#match ...)`, while patched Emacs correctly generates `(#match? ...)`. "
+    (and (fboundp 'treesit-query-expand)
+         (string-match-p "(#match " (treesit-query-expand '((n) @id (:match "x" @id))))))
   :custom
-  (treesit-font-lock-level 4))
+  (treesit-font-lock-level 4)
+  :config
+  (setq treesit-extra-load-path
+        (cons (expand-file-name "tree-sitter" user-emacs-directory)
+              treesit-extra-load-path))
+  (if (abz--treesit-python-abi-mismatch-p)
+      (progn
+        (message "Tree-sitter unpatched: Falling back from python-ts-mode to python-mode.")
+        (when (boundp 'treesit-auto-langs)
+          (setq treesit-auto-langs (delq 'python treesit-auto-langs)))
+        (setq major-mode-remap-alist
+              (rassq-delete-all 'python-ts-mode major-mode-remap-alist))
+        (add-to-list 'major-mode-remap-alist '(python-ts-mode . python-mode)))))
 
 ;; https://github.com/renzmann/treesit-auto
 ;; Automatically install and use tree-sitter major modes.
