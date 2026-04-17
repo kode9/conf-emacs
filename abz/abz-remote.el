@@ -111,6 +111,41 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
  '(:application tramp :protocol "sshx")
  'abz-remote-connection-profile)
 
+;;;; Magit over TRAMP
+
+(defun abz--remote-magit-lighten ()
+  "Reduce magit sections and features when visiting a remote repository.
+Controlled by `abz-remote-tramp-magit-lightweight'."
+  (when (and abz-remote-tramp-magit-lightweight
+             (file-remote-p default-directory))
+    ;; Minimal status sections: headers, unstaged, staged, untracked, stashes
+    (setq-local magit-status-sections-hook
+                '(magit-insert-status-headers
+                  magit-insert-unstaged-changes
+                  magit-insert-staged-changes
+                  magit-insert-untracked-files
+                  magit-insert-stashes))
+    ;; Minimal headers: branch, upstream, errors
+    (setq-local magit-status-headers-hook
+                '(magit-insert-head-branch-header
+                  magit-insert-upstream-branch-header
+                  magit-insert-error-header))
+    ;; Disable expensive features
+    (setq-local magit-diff-refine-hunk nil)
+    (setq-local magit-refs-show-commit-count nil)
+    (setq-local magit-refresh-status-buffer nil)))
+
+(with-eval-after-load 'magit
+  (add-hook 'magit-status-mode-hook #'abz--remote-magit-lighten))
+
+;; Suppress auto-revert for remote buffers
+(with-eval-after-load 'autorevert
+  (defun abz--remote-inhibit-auto-revert ()
+    "Disable auto-revert-mode in remote buffers."
+    (when (and buffer-file-name (file-remote-p buffer-file-name))
+      (auto-revert-mode -1)))
+  (add-hook 'find-file-hook #'abz--remote-inhibit-auto-revert))
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
