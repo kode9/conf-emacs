@@ -95,18 +95,6 @@
 
 ;; (debug-on-variable-change 'magit-auto-revert-mode)
 
-;; Commit in a wip/ branch on some actions
-;; Part of magit
-(use-package magit-wip
-  :straight nil
-  :after magit
-  :demand
-  :diminish magit-wip-mode
-  :custom
-  (magit-wip-merge-branch nil "Reset wip branch on new commits")
-  :config
-  (magit-wip-mode))
-
 ;; Auto-revert tracked files buffers
 ;; Part of magit
 (use-package magit-autorevert
