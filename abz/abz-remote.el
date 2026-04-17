@@ -195,6 +195,22 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
                     :remote? t
                     :server-id 'cmakeneo-remote)))
 
+;;;; Miscellaneous remote tuning
+
+;; Exclude TRAMP paths from recentf to avoid stat calls on startup
+(with-eval-after-load 'recentf
+  (add-to-list 'recentf-exclude tramp-file-name-regexp))
+
+;; Ensure projectile uses alien indexing for remote projects
+(with-eval-after-load 'projectile
+  (defun abz--remote-projectile-tune ()
+    "Ensure alien indexing and caching for remote projects."
+    (when (file-remote-p default-directory)
+      (setq-local projectile-indexing-method 'alien)
+      (setq-local projectile-enable-caching t)))
+  (add-hook 'projectile-before-project-cache-hook #'abz--remote-projectile-tune)
+  (add-hook 'projectile-find-file-hook #'abz--remote-projectile-tune))
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
