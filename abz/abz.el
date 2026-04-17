@@ -27,7 +27,6 @@
 (require 'simple)
 (require 'subr-x)
 (require 'tabify)
-(require 'tramp)
 (require 'use-package)
 
 (declare-function clang-format-buffer "ext:clang-format")

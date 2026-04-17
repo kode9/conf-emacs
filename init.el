@@ -170,35 +170,13 @@ High target: 5% of RAM, maximum 1GB)."
 ;; This emacs configuration variables
 (require 'abz-settings)
 
-;; tramp: Transparent Remote Access, Multiple Protocol (built-in)
-;; no-littering:
-;;   - tramp-auto-save-directory
-;;   - tramp-persistency-file-name
-(use-package tramp
-  :straight nil
-  :custom
-  (tramp-default-method "ssh")
-  (tramp-backup-directory-alist
-   `(("." . ,(abz--locate-data-dir "backup/tramp")))
-   "Backup files location")
-  :init
-  ;; Disable version control for tramp files
-  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
-  (use-package vc
-    :straight nil
-    :init
-    (customize-set-variable 'vc-ignore-dir-regexp
-                            (format "\\(%s\\)\\|\\(%s\\)"
-                                    vc-ignore-dir-regexp
-                                    tramp-file-name-regexp)))
-  :config
-  (setenv "SHELL" "/bin/bash"))
+;; Remote work: TRAMP tuning, display proxies, remote Emacs sessions
+(require 'abz-remote)
 
 ;; Wraps package managers
 (use-package system-packages
   :functions system-packages-install
   :config
-  (require 'tramp)
   (when (executable-find "paru")
     (add-to-list 'system-packages-supported-package-managers
                  '(paru . ((default-sudo . nil)
