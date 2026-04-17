@@ -114,50 +114,61 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
 
 ;;;; Magit over TRAMP
 
-(defun abz--remote-magit-lighten ()
-  "Reduce magit sections and features when visiting a remote repository.
+;; Magit: lightweight mode for remote repositories
+;; https://magit.vc/
+(use-package magit
+  :straight nil
+  :preface
+  (defun abz--remote-magit-lighten ()
+    "Reduce magit sections and features when visiting a remote repository.
 Controlled by `abz-remote-tramp-magit-lightweight'."
-  (when (and abz-remote-tramp-magit-lightweight
-             (file-remote-p default-directory))
-    ;; Minimal status sections: headers, unstaged, staged, untracked, stashes
-    (setq-local magit-status-sections-hook
-                '(magit-insert-status-headers
-                  magit-insert-unstaged-changes
-                  magit-insert-staged-changes
-                  magit-insert-untracked-files
-                  magit-insert-stashes))
-    ;; Minimal headers: branch, upstream, errors
-    (setq-local magit-status-headers-hook
-                '(magit-insert-head-branch-header
-                  magit-insert-upstream-branch-header
-                  magit-insert-error-header))
-    ;; Disable expensive features
-    (setq-local magit-diff-refine-hunk nil)
-    (setq-local magit-refs-show-commit-count nil)
-    (setq-local magit-refresh-status-buffer nil)))
+    (when (and abz-remote-tramp-magit-lightweight
+               (file-remote-p default-directory))
+      ;; Minimal status sections: headers, unstaged, staged, untracked, stashes
+      (setq-local magit-status-sections-hook
+                  '(magit-insert-status-headers
+                    magit-insert-unstaged-changes
+                    magit-insert-staged-changes
+                    magit-insert-untracked-files
+                    magit-insert-stashes))
+      ;; Minimal headers: branch, upstream, errors
+      (setq-local magit-status-headers-hook
+                  '(magit-insert-head-branch-header
+                    magit-insert-upstream-branch-header
+                    magit-insert-error-header))
+      ;; Disable expensive features
+      (setq-local magit-diff-refine-hunk nil)
+      (setq-local magit-refs-show-commit-count nil)
+      (setq-local magit-refresh-status-buffer nil)))
+  :hook
+  (magit-status-mode . abz--remote-magit-lighten))
 
-(with-eval-after-load 'magit
-  (add-hook 'magit-status-mode-hook #'abz--remote-magit-lighten))
-
-;; Suppress auto-revert for remote buffers
-(with-eval-after-load 'autorevert
+;; autorevert: suppress auto-revert for remote buffers (built-in)
+(use-package autorevert
+  :straight nil
+  :preface
   (defun abz--remote-inhibit-auto-revert ()
     "Disable auto-revert-mode in remote buffers."
     (when (and buffer-file-name (file-remote-p buffer-file-name))
       (auto-revert-mode -1)))
+  :config
   (add-hook 'find-file-hook #'abz--remote-inhibit-auto-revert))
 
 ;;;; LSP over TRAMP
 
-;; Disable expensive features for remote buffers
-(with-eval-after-load 'lsp-mode
+;; lsp-mode: remote-specific tuning and TRAMP client registrations
+;; https://emacs-lsp.github.io/lsp-mode/
+(use-package lsp-mode
+  :straight nil
+  :preface
   (defun abz--remote-lsp-tune ()
     "Tune LSP settings for remote buffers."
     (when (file-remote-p default-directory)
       (setq-local lsp-enable-file-watchers nil)
       (setq-local lsp-idle-delay 1.0)))
-  (add-hook 'lsp-configure-hook #'abz--remote-lsp-tune)
-
+  :hook
+  (lsp-configure . abz--remote-lsp-tune)
+  :config
   ;; Remote LSP clients
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-tramp-connection '("clangd"
@@ -198,19 +209,25 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 
 ;;;; Miscellaneous remote tuning
 
-;; Exclude TRAMP paths from recentf to avoid stat calls on startup
-(with-eval-after-load 'recentf
+;; recentf: exclude TRAMP paths to avoid stat calls on startup (built-in)
+(use-package recentf
+  :straight nil
+  :config
   (add-to-list 'recentf-exclude tramp-file-name-regexp))
 
-;; Ensure projectile uses alien indexing for remote projects
-(with-eval-after-load 'projectile
+;; Projectile: ensure alien indexing for remote projects
+;; https://github.com/bbatsov/projectile
+(use-package projectile
+  :straight nil
+  :preface
   (defun abz--remote-projectile-tune ()
     "Ensure alien indexing and caching for remote projects."
     (when (file-remote-p default-directory)
       (setq-local projectile-indexing-method 'alien)
       (setq-local projectile-enable-caching t)))
-  (add-hook 'projectile-after-switch-project-hook #'abz--remote-projectile-tune)
-  (add-hook 'projectile-find-file-hook #'abz--remote-projectile-tune))
+  :hook
+  ((projectile-after-switch-project . abz--remote-projectile-tune)
+   (projectile-find-file . abz--remote-projectile-tune)))
 
 ;;;; SSH host completion
 
@@ -422,15 +439,17 @@ Starts the daemon if not running. Checks prerequisites on first use."
 
 ;;;; Keymap
 
-(with-eval-after-load 'abz
-  (define-prefix-command 'abz-map-remote)
-  (define-key abz-map (kbd "C-c r") 'abz-map-remote)
-  (define-key abz-map-remote (kbd "e") #'abz-remote-emacs)
-  (define-key abz-map-remote (kbd "q") #'abz-remote-emacs-stop)
-  (define-key abz-map-remote (kbd "s") #'abz-remote-shell)
-  (define-key abz-map-remote (kbd "i") #'abz-remote-status)
-  (when (fboundp 'which-key-add-key-based-replacements)
-    (which-key-add-key-based-replacements "C-c r" "remote")))
+(use-package abz
+  :straight nil
+  :bind
+  (:map abz-map
+        :prefix "C-c r"
+        :prefix-map abz-map-remote
+        :prefix-docstring "Prefix keymap for remote work"
+        ("e" . abz-remote-emacs)
+        ("q" . abz-remote-emacs-stop)
+        ("s" . abz-remote-shell)
+        ("i" . abz-remote-status)))
 
 (provide 'abz-remote)
 
