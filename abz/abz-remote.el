@@ -25,6 +25,7 @@
 
 (require 'abz-settings)
 (require 'use-package)
+(require 'cl-lib)
 
 ;;;; Customization
 
@@ -208,7 +209,7 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
     (when (file-remote-p default-directory)
       (setq-local projectile-indexing-method 'alien)
       (setq-local projectile-enable-caching t)))
-  (add-hook 'projectile-before-project-cache-hook #'abz--remote-projectile-tune)
+  (add-hook 'projectile-after-switch-project-hook #'abz--remote-projectile-tune)
   (add-hook 'projectile-find-file-hook #'abz--remote-projectile-tune))
 
 ;;;; SSH host completion
@@ -268,7 +269,7 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 (defun abz--remote-check-emacs-pgtk (host)
   "Check if Emacs on HOST is built with pgtk support."
   (zerop (call-process "ssh" nil nil nil host
-                       "emacs --batch --eval '(when (eq (framep (selected-frame)) (quote pgtk)) (kill-emacs 0))' 2>/dev/null; exit $?")))
+                       "emacs --batch --eval '(unless (featurep (quote pgtk)) (kill-emacs 1))'")))
 
 (defun abz--remote-check-prerequisites (host)
   "Check prerequisites on HOST for the current display method.
@@ -427,7 +428,9 @@ Starts the daemon if not running. Checks prerequisites on first use."
   (define-key abz-map-remote (kbd "e") #'abz-remote-emacs)
   (define-key abz-map-remote (kbd "q") #'abz-remote-emacs-stop)
   (define-key abz-map-remote (kbd "s") #'abz-remote-shell)
-  (define-key abz-map-remote (kbd "i") #'abz-remote-status))
+  (define-key abz-map-remote (kbd "i") #'abz-remote-status)
+  (when (fboundp 'which-key-add-key-based-replacements)
+    (which-key-add-key-based-replacements "C-c r" "remote")))
 
 (provide 'abz-remote)
 

@@ -255,11 +255,7 @@ TODO: Accept a list of packages."
                     (t '(fd . fd)))
                   ;; Remote display proxies
                   (xpra . xpra)
-                  (waypipe . waypipe)
-                  ;; POSIX shell (used by TRAMP for remote commands)
-                  ,(cond
-                    ((abz-os-is-arch?) '(nil . nil))
-                    ((abz-os-is-debian-derivative?) '(dash . dash))))))
+                  (waypipe . waypipe))))
   (map-do #'abz--ensure-system-package packages))
 
 ;; Basic setup
