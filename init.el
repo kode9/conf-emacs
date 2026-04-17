@@ -217,15 +217,14 @@ High target: 5% of RAM, maximum 1GB)."
 The package is installed with `system-packages-install'.
 
 TODO: Accept a list of packages."
-  (abz--log "abz: Check target '%s' for package '%s'" target package)
-  (cond
-   ((null target) (error "abz: Tried to check null target for package '%s'" package))
-   ((null package) (error "abz: Tried to check target '%s' for null package" target))
-   ((and (stringp target) (file-exists-p target)) (abz--log "abz: File '%s' exists for package '%s'" target package))
-   ((and (symbolp target) (executable-find (symbol-name target))) (abz--log "abz: Executable '%s' exists for package '%s'" target package))
-   ((progn
-      (abz--log "abz: Installing system package '%s' for target '%s'" package target)
-      (system-packages-install (symbol-name package))))))
+  (when (and target package)
+    (abz--log "abz: Check target '%s' for package '%s'" target package)
+    (cond
+     ((and (stringp target) (file-exists-p target)) (abz--log "abz: File '%s' exists for package '%s'" target package))
+     ((and (symbolp target) (executable-find (symbol-name target))) (abz--log "abz: Executable '%s' exists for package '%s'" target package))
+     ((progn
+        (abz--log "abz: Installing system package '%s' for target '%s'" package target)
+        (system-packages-install (symbol-name package)))))))
 
 (let ((packages `(;; Fonts
                   ,(cond
