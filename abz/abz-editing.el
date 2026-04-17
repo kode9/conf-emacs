@@ -148,9 +148,30 @@
   (("C-y" . yank)
    ("C-S-y" . browse-kill-ring)))
 
+(defvar abz--yank-pop-count 0
+  "Consecutive yank-pop count since last `yank'.")
+
+(defun abz-yank-pop-or-consult (&optional arg)
+  "After `yank': first M-y cycles inline, second M-y opens consult history.
+When not after `yank', opens consult history directly."
+  (interactive "p")
+  (if (not (eq last-command 'yank))
+      (progn
+        (setq abz--yank-pop-count 0)
+        (consult-yank-pop arg))
+    (if (< abz--yank-pop-count 1)
+        (progn
+          (cl-incf abz--yank-pop-count)
+          (yank-pop arg))
+      (setq abz--yank-pop-count 0)
+      ;; Break the yank chain so consult-yank-pop opens the minibuffer
+      ;; instead of delegating to yank-pop
+      (let ((last-command 'abz-yank-pop-or-consult))
+        (consult-yank-pop arg)))))
+
 (cl-case abz-yank-handler
   (consult
-   (bind-key* "M-y" #'consult-yank-pop))
+   (bind-key* "M-y" #'abz-yank-pop-or-consult))
   (browse-kill-ring
    (bind-key* "M-y" #'browse-kill-ring))
   (default
