@@ -80,6 +80,18 @@
 (setq window-divider-default-right-width 1)
 (add-hook 'window-setup-hook #'window-divider-mode)
 
+;; Terminal key translations
+;; Some terminals send non-standard escape sequences for modified keys.
+;; Map them to the expected Emacs key events.
+(defun abz--setup-terminal-keys ()
+  "Configure key translations for terminal frames."
+  (define-key input-decode-map "\e[1;5H" [C-home])
+  (define-key input-decode-map "\e[1;5F" [C-end])
+  ;; Some terminals send lowercase variants
+  (define-key input-decode-map "\e[1;5h" [C-home])
+  (define-key input-decode-map "\e[1;5f" [C-end]))
+(add-hook 'tty-setup-hook #'abz--setup-terminal-keys)
+
 ;; Cursor
 (setq cursor-in-non-selected-windows 'hollow) ; Cursor when window is not selected
 

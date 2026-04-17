@@ -208,23 +208,26 @@ High target: 5% of RAM, maximum 1GB)."
 ;; `ensure-system-package' keyword of `use-package' i.e to discriminate by OS so
 ;; it's easier just to list them all here.
 ;;
-;; TODO We could collect all missing packages and make a single call to system-packages-install
+;; Missing packages are collected and reported after init rather than
+;; installed interactively, which avoids sudo prompts and async shell
+;; conflicts during startup.
+(defvar abz--missing-system-packages nil
+  "List of missing system package names detected during init.")
+
 (defun abz--ensure-system-package (target package)
-  "If `TARGET' does not exists, install `PACKAGE'.
+  "If TARGET does not exist, record PACKAGE as missing.
 
-`TARGET' can be either a symbol or a string.
+TARGET can be either a symbol or a string.
 
-The package is installed with `system-packages-install'.
-
-TODO: Accept a list of packages."
+Missing packages are collected in `abz--missing-system-packages'
+and reported after init."
   (when (and target package)
     (abz--log "abz: Check target '%s' for package '%s'" target package)
-    (cond
-     ((and (stringp target) (file-exists-p target)) (abz--log "abz: File '%s' exists for package '%s'" target package))
-     ((and (symbolp target) (executable-find (symbol-name target))) (abz--log "abz: Executable '%s' exists for package '%s'" target package))
-     ((progn
-        (abz--log "abz: Installing system package '%s' for target '%s'" package target)
-        (system-packages-install (symbol-name package)))))))
+    (unless (cond
+             ((stringp target) (file-exists-p target))
+             ((symbolp target) (executable-find (symbol-name target))))
+      (abz--log "abz: Missing system package '%s' for target '%s'" package target)
+      (push (symbol-name package) abz--missing-system-packages))))
 
 (let ((packages `(;; Fonts
                   ,(cond
@@ -256,6 +259,22 @@ TODO: Accept a list of packages."
                   (xpra . xpra)
                   (waypipe . waypipe))))
   (map-do #'abz--ensure-system-package packages))
+
+(when abz--missing-system-packages
+  (let ((pkgs (nreverse abz--missing-system-packages)))
+    (run-with-idle-timer
+     2 nil
+     (lambda ()
+       (display-warning
+        'abz
+        (format "Missing system packages: %s\nInstall with: %s"
+                (string-join pkgs ", ")
+                (concat (cond
+                         ((abz-os-is-arch?) "paru -S ")
+                         ((abz-os-is-debian-derivative?) "sudo apt install ")
+                         (t ""))
+                        (string-join pkgs " ")))
+        :warning)))))
 
 ;; Basic setup
 (require 'abz-custom)
