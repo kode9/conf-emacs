@@ -252,7 +252,14 @@ TODO: Accept a list of packages."
                   ;; fd: find alternative
                   ,(cond
                     ((abz-os-is-debian-derivative?) '(fdfind . fd-find))
-                    (t '(fd . fd))))))
+                    (t '(fd . fd)))
+                  ;; Remote display proxies
+                  (xpra . xpra)
+                  (waypipe . waypipe)
+                  ;; POSIX shell (used by TRAMP for remote commands)
+                  ,(cond
+                    ((abz-os-is-arch?) '(nil . nil))
+                    ((abz-os-is-debian-derivative?) '(dash . dash))))))
   (map-do #'abz--ensure-system-package packages))
 
 ;; Basic setup
