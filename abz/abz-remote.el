@@ -211,6 +211,49 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
   (add-hook 'projectile-before-project-cache-hook #'abz--remote-projectile-tune)
   (add-hook 'projectile-find-file-hook #'abz--remote-projectile-tune))
 
+;;;; SSH host completion
+
+(defvar abz--remote-ssh-hosts-cache nil
+  "Cached list of SSH hosts from ~/.ssh/config.")
+
+(defvar abz--remote-ssh-config-mtime nil
+  "Modification time of ~/.ssh/config when cache was populated.")
+
+(defun abz--remote-ssh-config-file ()
+  "Return the path to the SSH config file."
+  (expand-file-name "~/.ssh/config"))
+
+(defun abz--remote-parse-ssh-hosts ()
+  "Parse Host entries from ~/.ssh/config, excluding wildcards."
+  (let ((config-file (abz--remote-ssh-config-file))
+        hosts)
+    (when (file-readable-p config-file)
+      (with-temp-buffer
+        (insert-file-contents config-file)
+        (goto-char (point-min))
+        (while (re-search-forward "^Host\\s-+\\(.+\\)" nil t)
+          (let ((host-line (match-string 1)))
+            (dolist (host (split-string host-line))
+              (unless (string-match-p "[*?!]" host)
+                (push host hosts)))))))
+    (nreverse hosts)))
+
+(defun abz--remote-ssh-hosts ()
+  "Return SSH hosts with caching. Invalidates when config file changes."
+  (let* ((config-file (abz--remote-ssh-config-file))
+         (mtime (and (file-exists-p config-file)
+                     (file-attribute-modification-time
+                      (file-attributes config-file)))))
+    (when (or (null abz--remote-ssh-hosts-cache)
+              (not (equal mtime abz--remote-ssh-config-mtime)))
+      (setq abz--remote-ssh-hosts-cache (abz--remote-parse-ssh-hosts))
+      (setq abz--remote-ssh-config-mtime mtime))
+    abz--remote-ssh-hosts-cache))
+
+(defun abz--remote-read-host ()
+  "Prompt for a remote host with completion from SSH config."
+  (completing-read "Remote host: " (abz--remote-ssh-hosts) nil nil))
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
