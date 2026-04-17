@@ -72,6 +72,8 @@
   :bind
   (("M-r" . vertico-repeat)
    :map vertico-map
+   ("C-s" . vertico-next)
+   ("C-r" . vertico-previous)
    ("DEL" . vertico-directory-delete-char)
    ("M-DEL" . vertico-directory-delete-word)
    ("C-DEL" . vertico-directory-delete-word))
