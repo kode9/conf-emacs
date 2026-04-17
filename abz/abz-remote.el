@@ -352,24 +352,26 @@ describing what to install. Results are cached per session."
                             (shell-quote-argument daemon-name))))))
 
 (defun abz--remote-xpra-connect (host)
-  "Start an XPRA session on HOST and attach to it."
-  (let ((daemon-name abz-remote-daemon-name)
-        (display (format "ssh://%s" host)))
+  "Start an XPRA session on HOST and attach to it.
+Starts the XPRA server on the remote via SSH using the remote's own
+xpra binary to avoid version mismatch issues between local and remote
+XPRA installations. Then attaches from the local client."
+  (let ((daemon-name abz-remote-daemon-name))
     (abz--remote-ensure-daemon host)
-    ;; Start xpra on the remote with emacsclient as the child process.
-    ;; --ssh=ssh forces the system ssh binary so that ~/.ssh/config,
-    ;; ControlMaster sockets, and identity files are used.
+    ;; Start xpra server on the remote using the remote's own binary.
+    ;; This avoids the local xpra passing options the remote can't parse.
     (message "Starting XPRA session on %s..." host)
     (let ((start-buf (format "*xpra-start:%s*" host)))
-      (call-process "xpra" nil start-buf nil "start" display
-                    "--ssh=ssh"
-                    "--start"
-                    (format "emacsclient -c -s %s"
+      (call-process "ssh" nil start-buf nil host
+                    (format "xpra start --start='emacsclient -c -s %s'"
                             (shell-quote-argument daemon-name))))
-    ;; Attach to the remote display
+    ;; Attach from local client.
+    ;; --ssh=ssh forces the system ssh binary so that ~/.ssh/config,
+    ;; ControlMaster sockets, and identity files are used.
     (let ((attach-buf (format "*xpra:%s*" host)))
       (message "Attaching to %s via XPRA..." host)
-      (start-process attach-buf attach-buf "xpra" "attach" display
+      (start-process attach-buf attach-buf "xpra" "attach"
+                     (format "ssh://%s" host)
                      "--ssh=ssh"))))
 
 (defun abz--remote-waypipe-connect (host)
