@@ -24,6 +24,7 @@
 
 (require 'abz)
 (require 'abz-settings)
+(require 'cl-lib)
 (require 'files)
 (require 'use-package)
 
@@ -34,59 +35,63 @@
 ;; https://github.com/gvansickle/ucg
 ;; https://git-scm.com/docs/git-grep
 ;;
-;; TODO Use `:set` to check the executable exists, and if not, revert back to one that does.
-;;;###autoload
-(defcustom abz-grep-command
-  (cond
-   ((or (executable-find "rg") (executable-find "ripgrep")) 'ripgrep)
-   ((executable-find "ag") 'ag)
-   ((executable-find "pt") 'pt)
-   ((executable-find "sift") 'sift)
-   ((executable-find "ucg") 'ucg)
-   ((executable-find "grep") 'grep))
-  "The search tool to use."
-  :type '(choice (const ripgrep)
-                 (const ag)
-                 (const pt)
-                 (const sift)
-                 (const ucg)
-                 (const grep))
-  :tag "Grep command"
-  :group 'abz
-  :group 'external)
 
-;; ag the silver searcher: a better grep alternative
-(use-package ag
-  :if (eql abz-grep-command 'ag)
-  :init
-  (customize-set-variable 'ag-arguments #'("--smart-case"))      ; Additional arguments
-  (customize-set-variable 'ag-context-lines nil)                 ; Number of context lines
-  (customize-set-variable 'ag-executable (executable-find "ag")) ; Command to use
-  (customize-set-variable 'ag-group-matches t)                   ; Group matches by file
-  (customize-set-variable 'ag-highlight-search t)                ; Highlight search terms
-  (customize-set-variable 'ag-reuse-buffers t)                   ; Use a single buffer
-  :bind*
-  ;; Search STRING in DIR
-  ("C-c a A" . ag)
-  ("C-c a a" . ag-project)
-  ;; Search REGEX in DIR
-  ("C-c a R" . ag-regexp)
-  ("C-c a r" . ag-project-regexp)
-  ;; Search STRING in DIR, limited FILE TYPES
-  ("C-c a s" . ag-files)
-  ("C-c a S" . ag-project-files)
-  ;; Find FILES in DIR
-  ("C-c a F" . ag-dired)
-  ("C-c a f" . ag-project-dired)
-  ;; Find FILES matching REGEX in DIR
-  ("C-c a D" . ag-dired-regexp)
-  ("C-c a d" . ag-project-regexp))
+(cl-case abz-search-backend
+  (consult-ripgrep
+   (bind-keys*
+    ("C-c a a" . consult-ripgrep)
+    ("C-c a r" . consult-ripgrep)))
 
-;; Edit ag buffers inplace
-(use-package wgrep-ag
-  :after ag
-  :commands wgrep-ag-setup
-  :hook (ag-mode . wgrep-ag-setup))
+  (consult-grep
+   (bind-keys*
+    ("C-c a a" . consult-grep)
+    ("C-c a r" . consult-grep)))
+
+  (ripgrep
+   ;; ripgrep frontend for Emacs
+   ;; https://github.com/dajva/rg.el
+   (use-package rg
+     :demand t
+     :commands rg-project
+     :bind*
+     ("C-c a a" . rg-project)
+     ("C-c a r" . rg)
+     :bind
+     (:map rg-mode-map
+           ("SPC" . compilation-display-error)
+           ("C-n" . rg-next-file)
+           ("C-p" . rg-prev-file))
+     :hook
+     (rg-mode . (lambda () (setq-local compilation-auto-jump-to-first-error nil)))))
+
+  (ag
+   ;; ag the silver searcher: a better grep alternative
+   ;; https://github.com/ggreer/the_silver_searcher
+   (use-package ag
+     :init
+     (customize-set-variable 'ag-arguments #'("--smart-case"))
+     (customize-set-variable 'ag-executable (executable-find "ag"))
+     (customize-set-variable 'ag-group-matches t)
+     (customize-set-variable 'ag-highlight-search t)
+     (customize-set-variable 'ag-reuse-buffers t)
+     :bind*
+     ("C-c a A" . ag)
+     ("C-c a a" . ag-project)
+     ("C-c a R" . ag-regexp)
+     ("C-c a r" . ag-project-regexp)
+     ("C-c a s" . ag-files)
+     ("C-c a S" . ag-project-files)
+     ("C-c a F" . ag-dired)
+     ("C-c a f" . ag-project-dired)
+     ("C-c a D" . ag-dired-regexp)
+     ("C-c a d" . ag-project-regexp))
+
+   ;; Edit ag buffers inplace
+   ;; https://github.com/mhayashi1120/Emacs-wgrep
+   (use-package wgrep-ag
+     :after ag
+     :commands wgrep-ag-setup
+     :hook (ag-mode . wgrep-ag-setup))))
 
 ;; (debug-on-variable-change 'magit-auto-revert-mode)
 

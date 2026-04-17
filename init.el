@@ -22,6 +22,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'map)
 (require 'xdg)
 
@@ -284,7 +285,12 @@ TODO: Accept a list of packages."
 (require 'abz-theme)
 
 ;; Completion framework
-(require 'abz-completion)
+(cl-case abz-completion-framework
+  (vertico (require 'abz-vertico)))
+
+;; Search and navigation (consult integration)
+(when (abz--consult-needed-p)
+  (require 'abz-consult))
 
 ;; Common edition settings
 (require 'abz-editing)

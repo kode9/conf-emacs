@@ -20,6 +20,7 @@
 
 ;;; Code:
 
+(require 'abz-settings)
 (require 'use-package)
 
 (defcustom abz-lsp-use-lsp-booster nil
@@ -149,7 +150,7 @@
   (lsp-enable-snippet nil "Propose snippets on completion")
 
   ;; Imenu
-  (lsp-enable-imenu nil)
+  (lsp-enable-imenu (not (eq abz-imenu 'disabled)) "Enable imenu when abz-imenu is not disabled")
   (lsp-imenu-container-name-separator "⦿")
   (lsp-imenu-show-container-name t)
 

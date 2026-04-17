@@ -23,6 +23,8 @@
 
 ;;; Code:
 
+(require 'abz-settings)
+(require 'cl-lib)
 (require 'use-package)
 
 ;; On the fly error checking
@@ -35,8 +37,13 @@
   :bind
   (("C-c f f" . flycheck-next-error)
    ("C-c f p" . flycheck-previous-error)
-   ("C-c f l" . flycheck-list-errors)
    ("C-c f c" . flycheck-clear))
+  :config
+  (cl-case abz-diagnostics-list
+    (consult
+     (bind-key "C-c f l" #'consult-flycheck))
+    (t
+     (bind-key "C-c f l" #'flycheck-list-errors)))
   :hook (after-init . global-flycheck-mode))
 
 (use-package flycheck-inline

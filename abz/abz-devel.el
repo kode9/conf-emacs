@@ -23,7 +23,7 @@
 ;;; Code:
 
 (require 'abz)
-(require 'abz-completion)
+(require 'abz-settings)
 (require 'abz-tools)
 (require 'cl-extra)
 (require 'f)

@@ -182,6 +182,127 @@ If optional `OLDVALUE' is non-nil it will first try to rename `OLDVALUE' to
 (setq custom-file abz-custom-file)
 (load custom-file 'no-error 'no-message)
 
+;;; Completion framework
+
+;;;###autoload
+(defcustom abz-completion-framework 'vertico
+  "The completion frontend to use."
+  :type '(radio
+          (const :tag "Built-in" built-in)
+          (const :tag "Vertico" vertico))
+  :tag "Completion framework"
+  :group 'abz
+  :group 'convenience)
+
+;;; Search and navigation
+
+(defcustom abz-search-backend
+  (cond
+   ((or (executable-find "rg") (executable-find "ripgrep")) 'ripgrep)
+   ((executable-find "ag") 'ag)
+   (t 'grep))
+  "The project-wide search tool to use.
+Consult variants provide live preview and embark integration.
+Non-consult variants use dedicated packages."
+  :type '(radio
+          (const :tag "Consult + ripgrep" consult-ripgrep)
+          (const :tag "Consult + grep" consult-grep)
+          (const :tag "ripgrep (rg.el)" ripgrep)
+          (const :tag "The Silver Searcher (ag.el)" ag)
+          (const :tag "grep (built-in)" grep))
+  :tag "Search backend"
+  :group 'abz
+  :group 'external)
+
+(defcustom abz-line-search 'consult-line
+  "In-buffer search command bound to \\[isearch-forward].
+`consult-line' provides minibuffer-based search with live narrowing.
+`ctrlf' provides modernized isearch (browser-style).
+`isearch' is the built-in incremental search."
+  :type '(radio
+          (const :tag "consult-line" consult-line)
+          (const :tag "ctrlf" ctrlf)
+          (const :tag "isearch (built-in)" isearch))
+  :tag "In-buffer search"
+  :group 'abz
+  :group 'convenience)
+
+(defcustom abz-buffer-switcher 'consult-buffer
+  "Buffer switching command bound to \\[switch-to-buffer].
+`consult-buffer' shows buffers, recent files, and bookmarks with live preview."
+  :type '(radio
+          (const :tag "consult-buffer" consult-buffer)
+          (const :tag "Default" default))
+  :tag "Buffer switcher"
+  :group 'abz
+  :group 'convenience)
+
+(defcustom abz-compile-navigation 'consult
+  "Compilation error navigation style.
+`consult' provides minibuffer-based jump-to-any-error with live preview.
+`default' uses the custom compilation-mode-map bindings (n/p/C-n/C-p/M-n/M-p)."
+  :type '(radio
+          (const :tag "Consult" consult)
+          (const :tag "Default" default))
+  :tag "Compilation navigation"
+  :group 'abz
+  :group 'tools)
+
+(defcustom abz-diagnostics-list 'consult
+  "Error list command bound to \\[flycheck-list-errors].
+Independent from `abz-diagnostics-backend' which controls the checker engine."
+  :type '(radio
+          (const :tag "Consult" consult)
+          (const :tag "Flycheck" flycheck)
+          (const :tag "Flymake" flymake))
+  :tag "Diagnostics list"
+  :group 'abz
+  :group 'tools)
+
+(defcustom abz-xref-show 'consult
+  "Xref results display backend.
+`consult' shows results in the minibuffer with live preview and embark actions.
+`default' uses the built-in xref buffer."
+  :type '(radio
+          (const :tag "Consult" consult)
+          (const :tag "Default" default))
+  :tag "Xref display"
+  :group 'abz
+  :group 'tools)
+
+(defcustom abz-imenu 'disabled
+  "Symbol navigation via imenu.
+When set to a non-disabled value, also enables `lsp-enable-imenu'."
+  :type '(radio
+          (const :tag "Consult" consult)
+          (const :tag "Default" default)
+          (const :tag "Disabled" disabled))
+  :tag "Imenu"
+  :group 'abz
+  :group 'convenience)
+
+(defcustom abz-yank-handler 'consult
+  "Kill ring browsing command bound to \\[yank-pop].
+`browse-kill-ring' on \\`C-S-y' is always available regardless of this setting."
+  :type '(radio
+          (const :tag "Consult" consult)
+          (const :tag "browse-kill-ring" browse-kill-ring)
+          (const :tag "Default" default))
+  :tag "Yank handler"
+  :group 'abz
+  :group 'convenience)
+
+(defun abz--consult-needed-p ()
+  "Return non-nil if any defcustom selects a consult variant."
+  (or (memq abz-search-backend '(consult-ripgrep consult-grep))
+      (eq abz-line-search 'consult-line)
+      (eq abz-buffer-switcher 'consult-buffer)
+      (eq abz-compile-navigation 'consult)
+      (eq abz-diagnostics-list 'consult)
+      (eq abz-xref-show 'consult)
+      (eq abz-imenu 'consult)
+      (eq abz-yank-handler 'consult)))
+
 (provide 'abz-settings)
 
 ;;; abz-settings.el ends here
