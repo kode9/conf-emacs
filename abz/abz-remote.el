@@ -254,6 +254,72 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
   "Prompt for a remote host with completion from SSH config."
   (completing-read "Remote host: " (abz--remote-ssh-hosts) nil nil))
 
+;;;; Prerequisite checking
+
+(defvar abz--remote-prereq-cache (make-hash-table :test 'equal)
+  "Per-host prerequisite check results. Keys are HOST strings.")
+
+(defun abz--remote-check-executable (host command)
+  "Check if COMMAND exists on HOST via SSH. Return t or nil."
+  (zerop (call-process "ssh" nil nil nil host
+                       (format "command -v %s >/dev/null 2>&1"
+                               (shell-quote-argument command)))))
+
+(defun abz--remote-check-emacs-pgtk (host)
+  "Check if Emacs on HOST is built with pgtk support."
+  (zerop (call-process "ssh" nil nil nil host
+                       "emacs --batch --eval '(when (eq (framep (selected-frame)) (quote pgtk)) (kill-emacs 0))' 2>/dev/null; exit $?")))
+
+(defun abz--remote-check-prerequisites (host)
+  "Check prerequisites on HOST for the current display method.
+Returns an alist of (ITEM . STATUS) where STATUS is t or a string
+describing what to install. Results are cached per session."
+  (or (gethash host abz--remote-prereq-cache)
+      (let ((results nil)
+            (method abz-remote-display-method))
+        ;; Check dash
+        (push (cons 'dash
+                    (if (abz--remote-check-executable host "dash")
+                        t
+                      "Install dash: sudo apt install dash"))
+              results)
+        ;; Check display proxy
+        (let ((proxy (symbol-name method)))
+          (push (cons method
+                      (if (abz--remote-check-executable host proxy)
+                          t
+                        (format "Install %s: sudo apt install %s" proxy proxy)))
+                results))
+        ;; Check emacs
+        (push (cons 'emacs
+                    (if (abz--remote-check-executable host "emacs")
+                        t
+                      "Install emacs: sudo apt install emacs"))
+              results)
+        ;; For waypipe, check pgtk
+        (when (eq method 'waypipe)
+          (push (cons 'emacs-pgtk
+                      (if (and (abz--remote-check-executable host "emacs")
+                               (abz--remote-check-emacs-pgtk host))
+                          t
+                        "Remote Emacs must be built with pgtk support for waypipe"))
+                results))
+        (setq results (nreverse results))
+        (puthash host results abz--remote-prereq-cache)
+        results)))
+
+(defun abz--remote-prerequisites-met-p (results)
+  "Return t if all prerequisites in RESULTS are met."
+  (cl-every (lambda (pair) (eq (cdr pair) t)) results))
+
+(defun abz--remote-report-missing (results)
+  "Display missing prerequisites from RESULTS."
+  (let ((missing (cl-remove-if (lambda (pair) (eq (cdr pair) t)) results)))
+    (when missing
+      (message "Missing prerequisites:\n%s"
+               (mapconcat (lambda (pair) (format "  - %s" (cdr pair)))
+                          missing "\n")))))
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
