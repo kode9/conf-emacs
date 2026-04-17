@@ -208,9 +208,9 @@ High target: 5% of RAM, maximum 1GB)."
 ;; `ensure-system-package' keyword of `use-package' i.e to discriminate by OS so
 ;; it's easier just to list them all here.
 ;;
-;; Missing packages are collected and reported after init rather than
-;; installed interactively, which avoids sudo prompts and async shell
-;; conflicts during startup.
+;; Missing packages are collected first, then installed in a single
+;; batch call after init to avoid racing async buffers and duplicate
+;; sudo prompts.
 (defvar abz--missing-system-packages nil
   "List of missing system package names detected during init.")
 
@@ -220,7 +220,7 @@ High target: 5% of RAM, maximum 1GB)."
 TARGET can be either a symbol or a string.
 
 Missing packages are collected in `abz--missing-system-packages'
-and reported after init."
+and installed in a single batch after init."
   (when (and target package)
     (abz--log "abz: Check target '%s' for package '%s'" target package)
     (unless (cond
@@ -260,21 +260,14 @@ and reported after init."
                   (waypipe . waypipe))))
   (map-do #'abz--ensure-system-package packages))
 
+;; Install all missing packages in a single batch call after init.
+;; One sudo prompt, one confirmation, one async buffer.
 (when abz--missing-system-packages
   (let ((pkgs (nreverse abz--missing-system-packages)))
     (run-with-idle-timer
      2 nil
      (lambda ()
-       (display-warning
-        'abz
-        (format "Missing system packages: %s\nInstall with: %s"
-                (string-join pkgs ", ")
-                (concat (cond
-                         ((abz-os-is-arch?) "paru -S ")
-                         ((abz-os-is-debian-derivative?) "sudo apt install ")
-                         (t ""))
-                        (string-join pkgs " ")))
-        :warning)))))
+       (system-packages-install (string-join pkgs " "))))))
 
 ;; Basic setup
 (require 'abz-custom)
