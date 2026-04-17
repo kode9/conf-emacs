@@ -214,6 +214,78 @@ All features can be configured via `kbd:[M-x] customize-group kbd:[RET] abz kbd:
 |abz-diagnostics-backend |Syntax checker engine |flycheck
 |===
 
+== Remote Work
+
+Two complementary workflows for remote development:
+
+=== TRAMP (light editing)
+
+Open remote files with `kbd:[C-x C-f] /ssh:host:/path/to/file`. TRAMP is tuned for reduced latency:
+
+* File attribute caching (60s)
+* Connection sharing via SSH ControlMaster
+* Dash as TRAMP shell (lower overhead than bash)
+* Lightweight magit (reduced sections over remote)
+* Disabled file watchers and auto-revert for remote buffers
+
+=== Remote Emacs (project work)
+
+For sustained work, run an Emacs daemon on the remote machine and display its GUI locally via https://github.com/Xpra-org/xpra[XPRA^] or https://gitlab.freedesktop.org/mstoeckl/waypipe[waypipe^].
+
+==== Requirements
+
+.Local machine
+[cols="1m,3"]
+|===
+|Package |Notes
+
+|xpra |Arch: `extra`, Ubuntu: `universe`
+|waypipe |Arch: `extra`, Ubuntu: `universe`. Requires local Wayland compositor.
+|===
+
+.Remote machine
+[cols="1m,3"]
+|===
+|Package |Notes
+
+|xpra |Ubuntu 22.04: `universe`
+|waypipe |Ubuntu 22.04: `universe`. Requires Emacs built with pgtk.
+|emacs |Same configuration deployed (`~/.config/emacs/`)
+|dash |Ubuntu: installed by default (`/usr/bin/dash`)
+|===
+
+==== XPRA vs Waypipe
+
+[cols="2,3,3"]
+|===
+|Aspect |XPRA |Waypipe
+
+|Session persistence |Yes (survives disconnects) |No
+|Remote requirements |`xpra`, X11 libs |`waypipe`, pgtk Emacs
+|Local requirements |`xpra` |`waypipe`, Wayland compositor
+|Protocol |Compressed frame diffs |Wayland buffer forwarding
+|===
+
+==== Commands
+
+:remote: C·c r
+[cols="1d,6d,5m"]
+|===
+|Keybinding |Description |Function
+
+|kbd:[{remote} e] |Connect to remote Emacs daemon |abz-remote-emacs
+|kbd:[{remote} q] |Stop remote Emacs daemon |abz-remote-emacs-stop
+|kbd:[{remote} s] |Open shell on remote host via TRAMP |abz-remote-shell
+|kbd:[{remote} i] |Show remote session status |abz-remote-status
+|===
+
+==== Troubleshooting
+
+* **pgtk not available on remote**: waypipe requires Emacs built with pgtk. On Ubuntu 22.04, the default Emacs package uses GTK/X11. Use a PPA, Snap, or build from source with `--with-pgtk`.
+* **XPRA version mismatch**: XPRA client and server versions should be compatible. Update both to the same major version.
+* **Wayland not running locally**: waypipe requires a Wayland compositor on the local machine. If running X11, use XPRA instead.
+* **`dash` not found on remote**: Install with `sudo apt install dash` (Ubuntu) or use `/bin/sh` as fallback.
+
 == Custom functions
 
 [cols="1m,2"]
