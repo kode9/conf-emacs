@@ -320,6 +320,115 @@ describing what to install. Results are cached per session."
                (mapconcat (lambda (pair) (format "  - %s" (cdr pair)))
                           missing "\n")))))
 
+;;;; Display proxy commands
+
+(defun abz--remote-xpra-start-attach (host)
+  "Start an XPRA session on HOST with emacsclient and attach."
+  (let ((daemon-name abz-remote-daemon-name))
+    ;; Start daemon if not running
+    (unless (zerop (call-process "ssh" nil nil nil host
+                                 (format "emacsclient -s %s -e t 2>/dev/null"
+                                         (shell-quote-argument daemon-name))))
+      (message "Starting Emacs daemon '%s' on %s..." daemon-name host)
+      (call-process "ssh" nil nil nil host
+                    (format "emacs --daemon=%s"
+                            (shell-quote-argument daemon-name))))
+    ;; Attach via xpra
+    (let ((buf (format "*xpra:%s*" host)))
+      (message "Attaching to %s via XPRA..." host)
+      (start-process buf buf "xpra" "start+attach"
+                     (format "ssh://%s" host)
+                     "--start"
+                     (format "emacsclient -c -s %s"
+                             (shell-quote-argument daemon-name))))))
+
+(defun abz--remote-waypipe-connect (host)
+  "Connect to remote Emacs on HOST via waypipe."
+  (let ((daemon-name abz-remote-daemon-name))
+    ;; Start daemon if not running
+    (unless (zerop (call-process "ssh" nil nil nil host
+                                 (format "emacsclient -s %s -e t 2>/dev/null"
+                                         (shell-quote-argument daemon-name))))
+      (message "Starting Emacs daemon '%s' on %s..." daemon-name host)
+      (call-process "ssh" nil nil nil host
+                    (format "emacs --daemon=%s"
+                            (shell-quote-argument daemon-name))))
+    ;; Connect via waypipe
+    (let ((buf (format "*waypipe:%s*" host)))
+      (message "Connecting to %s via waypipe..." host)
+      (start-process buf buf "waypipe" "ssh" host
+                     "emacsclient" "-c" "-s" daemon-name))))
+
+;;;###autoload
+(defun abz-remote-emacs ()
+  "Connect to a remote Emacs daemon via the configured display proxy.
+Starts the daemon if not running. Checks prerequisites on first use."
+  (interactive)
+  (let* ((host (abz--remote-read-host))
+         (prereqs (abz--remote-check-prerequisites host)))
+    (if (abz--remote-prerequisites-met-p prereqs)
+        (cl-case abz-remote-display-method
+          (xpra (abz--remote-xpra-start-attach host))
+          (waypipe (abz--remote-waypipe-connect host)))
+      (abz--remote-report-missing prereqs))))
+
+;;;###autoload
+(defun abz-remote-emacs-stop ()
+  "Stop a remote Emacs daemon."
+  (interactive)
+  (let* ((host (abz--remote-read-host))
+         (daemon-name abz-remote-daemon-name))
+    (message "Stopping Emacs daemon '%s' on %s..." daemon-name host)
+    (call-process "ssh" nil nil nil host
+                  (format "emacsclient -s %s -e '(kill-emacs)'"
+                          (shell-quote-argument daemon-name)))
+    (message "Daemon '%s' on %s stopped." daemon-name host)))
+
+;;;###autoload
+(defun abz-remote-shell ()
+  "Open a shell on a remote host via TRAMP."
+  (interactive)
+  (let* ((host (abz--remote-read-host))
+         (default-directory (format "/ssh:%s:~/" host)))
+    (shell (format "*shell:%s*" host))))
+
+;;;###autoload
+(defun abz-remote-status ()
+  "Show status of remote sessions and prerequisites."
+  (interactive)
+  (let ((host (abz--remote-read-host)))
+    ;; Clear cached results to force re-check
+    (remhash host abz--remote-prereq-cache)
+    (let ((prereqs (abz--remote-check-prerequisites host))
+          (daemon-name abz-remote-daemon-name))
+      (with-output-to-temp-buffer "*remote-status*"
+        (princ (format "Remote status for %s\n" host))
+        (princ (format "Display method: %s\n" abz-remote-display-method))
+        (princ (format "Daemon name: %s\n\n" daemon-name))
+        (princ "Prerequisites:\n")
+        (dolist (pair prereqs)
+          (princ (format "  %s: %s\n"
+                         (car pair)
+                         (if (eq (cdr pair) t) "OK" (cdr pair)))))
+        ;; Check if daemon is running
+        (princ (format "\nDaemon '%s': %s\n"
+                       daemon-name
+                       (if (zerop (call-process "ssh" nil nil nil host
+                                                (format "emacsclient -s %s -e t 2>/dev/null"
+                                                        (shell-quote-argument daemon-name))))
+                           "running"
+                         "not running")))))))
+
+;;;; Keymap
+
+(with-eval-after-load 'abz
+  (define-prefix-command 'abz-map-remote)
+  (define-key abz-map (kbd "C-c r") 'abz-map-remote)
+  (define-key abz-map-remote (kbd "e") #'abz-remote-emacs)
+  (define-key abz-map-remote (kbd "q") #'abz-remote-emacs-stop)
+  (define-key abz-map-remote (kbd "s") #'abz-remote-shell)
+  (define-key abz-map-remote (kbd "i") #'abz-remote-status))
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
