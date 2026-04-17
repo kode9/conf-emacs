@@ -85,7 +85,6 @@
   :functions
   lsp-register-client
   make-lsp-client
-  lsp-tramp-connection
   lsp-activate-on
   lsp-async-start-process
   lsp-stdio-connection
@@ -181,23 +180,6 @@
                              "--pch-storage=memory"))
   :config
   (cl-pushnew "[/\\\\]build\\'" lsp-file-watch-ignored-directories :test #'string=)
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection '("clangd"
-                                                            "--all-scopes-completion"
-                                                            "--background-index"
-                                                            "--clang-tidy"
-                                                            "--completion-style=bundled"
-                                                            "--header-insertion-decorators=0"
-                                                            "--header-insertion=iwyu"
-                                                            "--limit-references=500"
-                                                            "--limit-results=500"
-                                                            "--log=error"
-                                                            "--pch-storage=memory"))
-                    :activation-fn (lsp-activate-on "c" "cpp" "objective-c" "cuda")
-                    :major-modes '(c-mode c++-mode)
-                    :remote? t
-                    :server-id 'clangd-remote
-                    :library-folders-fn (lambda (_workspace) lsp-clients-clangd-library-directories)))
   ;; https://github.com/neocmakelsp/neocmakelsp
   (defun abz--lsp-cmakeneo--download-server (_client callback error-callback update?)
     "Install/update neocmakelsp CMake language server using `cargo

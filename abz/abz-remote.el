@@ -146,6 +146,55 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
       (auto-revert-mode -1)))
   (add-hook 'find-file-hook #'abz--remote-inhibit-auto-revert))
 
+;;;; LSP over TRAMP
+
+;; Disable expensive features for remote buffers
+(with-eval-after-load 'lsp-mode
+  (defun abz--remote-lsp-tune ()
+    "Tune LSP settings for remote buffers."
+    (when (file-remote-p default-directory)
+      (setq-local lsp-enable-file-watchers nil)
+      (setq-local lsp-idle-delay 1.0)))
+  (add-hook 'lsp-configure-hook #'abz--remote-lsp-tune)
+
+  ;; Remote LSP clients
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection '("clangd"
+                                                            "--all-scopes-completion"
+                                                            "--background-index"
+                                                            "--clang-tidy"
+                                                            "--completion-style=bundled"
+                                                            "--header-insertion-decorators=0"
+                                                            "--header-insertion=iwyu"
+                                                            "--limit-references=500"
+                                                            "--limit-results=500"
+                                                            "--log=error"
+                                                            "--pch-storage=memory"))
+                    :activation-fn (lsp-activate-on "c" "cpp" "objective-c" "cuda")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote
+                    :library-folders-fn (lambda (_workspace)
+                                          (bound-and-true-p lsp-clients-clangd-library-directories))))
+
+  ;; Python LSP (pylsp)
+  ;; https://github.com/python-lsp/python-lsp-server
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "pylsp")
+                    :activation-fn (lsp-activate-on "python")
+                    :major-modes '(python-mode python-ts-mode)
+                    :remote? t
+                    :server-id 'pylsp-remote))
+
+  ;; CMake LSP (neocmakelsp)
+  ;; https://github.com/neocmakelsp/neocmakelsp
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection '("neocmakelsp" "stdio"))
+                    :activation-fn (lsp-activate-on "cmake")
+                    :major-modes '(cmake-mode cmake-ts-mode)
+                    :remote? t
+                    :server-id 'cmakeneo-remote)))
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
