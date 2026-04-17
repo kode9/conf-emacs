@@ -94,6 +94,23 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
   ;; Cache remote file attributes longer (default 10s)
   (customize-set-variable 'remote-file-name-inhibit-cache 60))
 
+;;;; Connection-local profiles
+
+;; Use dash as TRAMP's internal shell for lower overhead.
+;; Interactive shells (M-x shell) still use bash.
+(connection-local-set-profile-variables
+ 'abz-remote-connection-profile
+ `((shell-file-name . ,abz-remote-tramp-shell)
+   (explicit-shell-file-name . "/bin/bash")))
+
+(connection-local-set-profiles
+ '(:application tramp :protocol "ssh")
+ 'abz-remote-connection-profile)
+
+(connection-local-set-profiles
+ '(:application tramp :protocol "sshx")
+ 'abz-remote-connection-profile)
+
 (provide 'abz-remote)
 
 ;;; abz-remote.el ends here
