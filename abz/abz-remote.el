@@ -356,17 +356,21 @@ describing what to install. Results are cached per session."
   (let ((daemon-name abz-remote-daemon-name)
         (display (format "ssh://%s" host)))
     (abz--remote-ensure-daemon host)
-    ;; Start xpra on the remote with emacsclient as the child process
+    ;; Start xpra on the remote with emacsclient as the child process.
+    ;; --ssh=ssh forces the system ssh binary so that ~/.ssh/config,
+    ;; ControlMaster sockets, and identity files are used.
     (message "Starting XPRA session on %s..." host)
     (let ((start-buf (format "*xpra-start:%s*" host)))
       (call-process "xpra" nil start-buf nil "start" display
+                    "--ssh=ssh"
                     "--start"
                     (format "emacsclient -c -s %s"
                             (shell-quote-argument daemon-name))))
     ;; Attach to the remote display
     (let ((attach-buf (format "*xpra:%s*" host)))
       (message "Attaching to %s via XPRA..." host)
-      (start-process attach-buf attach-buf "xpra" "attach" display))))
+      (start-process attach-buf attach-buf "xpra" "attach" display
+                     "--ssh=ssh"))))
 
 (defun abz--remote-waypipe-connect (host)
   "Connect to remote Emacs on HOST via waypipe."
