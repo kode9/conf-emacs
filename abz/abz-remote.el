@@ -340,38 +340,38 @@ describing what to install. Results are cached per session."
 
 ;;;; Display proxy commands
 
-(defun abz--remote-xpra-start-attach (host)
-  "Start an XPRA session on HOST with emacsclient and attach."
+(defun abz--remote-ensure-daemon (host)
+  "Ensure an Emacs daemon is running on HOST. Start one if needed."
   (let ((daemon-name abz-remote-daemon-name))
-    ;; Start daemon if not running
     (unless (zerop (call-process "ssh" nil nil nil host
                                  (format "emacsclient -s %s -e t 2>/dev/null"
                                          (shell-quote-argument daemon-name))))
       (message "Starting Emacs daemon '%s' on %s..." daemon-name host)
       (call-process "ssh" nil nil nil host
                     (format "emacs --daemon=%s"
+                            (shell-quote-argument daemon-name))))))
+
+(defun abz--remote-xpra-connect (host)
+  "Start an XPRA session on HOST and attach to it."
+  (let ((daemon-name abz-remote-daemon-name)
+        (display (format "ssh://%s" host)))
+    (abz--remote-ensure-daemon host)
+    ;; Start xpra on the remote with emacsclient as the child process
+    (message "Starting XPRA session on %s..." host)
+    (let ((start-buf (format "*xpra-start:%s*" host)))
+      (call-process "xpra" nil start-buf nil "start" display
+                    "--start"
+                    (format "emacsclient -c -s %s"
                             (shell-quote-argument daemon-name))))
-    ;; Attach via xpra
-    (let ((buf (format "*xpra:%s*" host)))
+    ;; Attach to the remote display
+    (let ((attach-buf (format "*xpra:%s*" host)))
       (message "Attaching to %s via XPRA..." host)
-      (start-process buf buf "xpra" "start+attach"
-                     (format "ssh://%s" host)
-                     "--start"
-                     (format "emacsclient -c -s %s"
-                             (shell-quote-argument daemon-name))))))
+      (start-process attach-buf attach-buf "xpra" "attach" display))))
 
 (defun abz--remote-waypipe-connect (host)
   "Connect to remote Emacs on HOST via waypipe."
   (let ((daemon-name abz-remote-daemon-name))
-    ;; Start daemon if not running
-    (unless (zerop (call-process "ssh" nil nil nil host
-                                 (format "emacsclient -s %s -e t 2>/dev/null"
-                                         (shell-quote-argument daemon-name))))
-      (message "Starting Emacs daemon '%s' on %s..." daemon-name host)
-      (call-process "ssh" nil nil nil host
-                    (format "emacs --daemon=%s"
-                            (shell-quote-argument daemon-name))))
-    ;; Connect via waypipe
+    (abz--remote-ensure-daemon host)
     (let ((buf (format "*waypipe:%s*" host)))
       (message "Connecting to %s via waypipe..." host)
       (start-process buf buf "waypipe" "ssh" host
@@ -386,7 +386,7 @@ Starts the daemon if not running. Checks prerequisites on first use."
          (prereqs (abz--remote-check-prerequisites host)))
     (if (abz--remote-prerequisites-met-p prereqs)
         (cl-case abz-remote-display-method
-          (xpra (abz--remote-xpra-start-attach host))
+          (xpra (abz--remote-xpra-connect host))
           (waypipe (abz--remote-waypipe-connect host)))
       (abz--remote-report-missing prereqs))))
 
