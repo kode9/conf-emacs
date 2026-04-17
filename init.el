@@ -267,7 +267,14 @@ and installed in a single batch after init."
     (run-with-idle-timer
      2 nil
      (lambda ()
-       (system-packages-install (string-join pkgs " "))))))
+       (let ((cmd (concat
+                   (cond
+                    ((and (abz-os-is-arch?) (executable-find "paru")) "paru -S ")
+                    ((abz-os-is-arch?) "sudo pacman -S ")
+                    ((abz-os-is-debian-derivative?) "sudo apt install ")
+                    (t "echo Missing packages: "))
+                   (string-join pkgs " "))))
+         (async-shell-command cmd "*system-packages*"))))))
 
 ;; Basic setup
 (require 'abz-custom)
