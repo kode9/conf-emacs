@@ -71,8 +71,6 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
   :custom
   (tramp-default-method "ssh")
   (tramp-verbose 1 "Only show errors (default 3). Reduces format overhead.")
-  (tramp-completion-reread-directory-timeout 120
-   "Seconds before re-reading directory during completion (default nil).")
   (tramp-backup-directory-alist
    `(("." . ,(abz--locate-data-dir "backup/tramp")))
    "Backup files location")
