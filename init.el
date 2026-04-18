@@ -95,6 +95,11 @@
   exec-path-from-shell-copy-env
   exec-path-from-shell-initialize
   :config
+  ;; Set before exec-path-from-shell-initialize so it persists regardless
+  ;; of the shell environment. lsp-use-plists is defined as
+  ;; (defvar lsp-use-plists (getenv "LSP_USE_PLISTS")) at lsp-mode load
+  ;; time, so the env var must exist before lsp-mode loads.
+  (setenv "LSP_USE_PLISTS" "true")
   (exec-path-from-shell-copy-env "CPM_SOURCE_CACHE")
   (exec-path-from-shell-initialize))
 

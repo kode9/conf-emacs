@@ -42,6 +42,10 @@
       (unless (file-equal-p (car comp-eln-load-path) new-eln-path)
         (push new-eln-path comp-eln-load-path))))))
 
+;; Native compilation: use all available cores for async compilation
+(when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
+  (setq native-comp-async-jobs-number (num-processors)))
+
 ;; Raise garbage collector thresholds for initialization to improve startup
 ;; time. They will be restored after initialization (see below).
 ;; https://emacs.stackexchange.com/a/34367
