@@ -69,12 +69,14 @@
       (setf (alist-get 'vertico--index state) 0))
     state)
   (advice-add #'vertico--recompute :filter-return #'abz--vertico-select-first)
-  ;; Prevent quit signals from propagating through post-command-hook.
-  ;; Without this, C-g during a slow operation (e.g. TRAMP) in the
-  ;; minibuffer produces "Error in post-command-hook (vertico--exhibit)".
+  ;; post-command-hook functions must be resilient to quit signals
+  ;; (Elisp manual, 21.1 "Command Loop Overview"). vertico--exhibit
+  ;; does not catch quit, so C-g during any long operation in the
+  ;; minibuffer propagates through post-command-hook and produces
+  ;; "Error in post-command-hook (vertico--exhibit): (quit ...)".
   (advice-add #'vertico--exhibit :around
-              (defun abz--vertico-exhibit-suppress-quit (orig &rest args)
-                "Catch quit signals in `vertico--exhibit'."
+              (defun abz--vertico-exhibit-catch-quit (orig &rest args)
+                "Ensure `vertico--exhibit' is quit-safe per Elisp manual 21.1."
                 (condition-case nil
                     (apply orig args)
                   (quit nil))))

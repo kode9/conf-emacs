@@ -69,7 +69,12 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
 (use-package tramp
   :straight nil
   :custom
-  (tramp-default-method "ssh")
+  (tramp-default-method "sshx"
+   "Use sshx over ssh. The ssh method interacts with the remote login
+shell and must parse its prompt, which fails with non-POSIX shells
+like fish (e.g. prompts using characters outside [#$%>]). The sshx
+method starts /bin/sh directly via RemoteCommand, bypassing the
+login shell entirely.")
   (tramp-verbose 1 "Only show errors (default 3). Reduces format overhead.")
   (tramp-backup-directory-alist
    `(("." . ,(abz--locate-data-dir "backup/tramp")))
