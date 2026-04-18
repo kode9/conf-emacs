@@ -85,11 +85,6 @@
 (customize-set-variable 'use-package-verbose nil "Report about loading and configuration details")
 (customize-set-variable 'use-package-compute-statistics nil "Report about loading and configuration details")
 
-;; lsp-use-plists is defined as (defvar lsp-use-plists (getenv "LSP_USE_PLISTS"))
-;; at lsp-mode load time. Must be set before lsp-mode is loaded or compiled.
-;; After changing this, rebuild lsp-mode: M-x straight-rebuild-package RET lsp-mode
-(setenv "LSP_USE_PLISTS" "true")
-
 ;; Ensure environment variables inside Emacs look the same as in the user's shell
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell

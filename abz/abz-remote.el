@@ -213,7 +213,7 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
   :config
   (add-to-list 'recentf-exclude tramp-file-name-regexp))
 
-;; Projectile: ensure alien indexing for remote projects
+;; Projectile: remote project tuning
 ;; https://github.com/bbatsov/projectile
 (use-package projectile
   :straight nil
@@ -223,6 +223,13 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
     (when (file-remote-p default-directory)
       (setq-local projectile-indexing-method 'alien)
       (setq-local projectile-enable-caching t)))
+  :custom
+  ;; Prevent TRAMP paths from being saved to known projects.
+  ;; Remote projects trigger TRAMP connections on startup when
+  ;; projectile tries to verify them.
+  (projectile-ignored-project-function
+   (lambda (path) (file-remote-p path))
+   "Ignore remote TRAMP projects.")
   :hook
   ((projectile-after-switch-project . abz--remote-projectile-tune)
    (projectile-find-file . abz--remote-projectile-tune)))

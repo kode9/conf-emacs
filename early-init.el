@@ -46,6 +46,12 @@
 (when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
   (setq native-comp-async-jobs-number (num-processors)))
 
+;; lsp-mode plist serialization.
+;; lsp-use-plists is defined as (defvar lsp-use-plists (getenv "LSP_USE_PLISTS"))
+;; at lsp-mode load time. Must be set before lsp-mode is loaded or compiled.
+;; After changing this, rebuild lsp-mode: M-x straight-rebuild-package RET lsp-mode
+(setenv "LSP_USE_PLISTS" "true")
+
 ;; Raise garbage collector thresholds for initialization to improve startup
 ;; time. They will be restored after initialization (see below).
 ;; https://emacs.stackexchange.com/a/34367

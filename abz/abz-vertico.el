@@ -69,6 +69,15 @@
       (setf (alist-get 'vertico--index state) 0))
     state)
   (advice-add #'vertico--recompute :filter-return #'abz--vertico-select-first)
+  ;; Prevent quit signals from propagating through post-command-hook.
+  ;; Without this, C-g during a slow operation (e.g. TRAMP) in the
+  ;; minibuffer produces "Error in post-command-hook (vertico--exhibit)".
+  (advice-add #'vertico--exhibit :around
+              (defun abz--vertico-exhibit-suppress-quit (orig &rest args)
+                "Catch quit signals in `vertico--exhibit'."
+                (condition-case nil
+                    (apply orig args)
+                  (quit nil))))
   :bind
   (("M-r" . vertico-repeat)
    :map vertico-map
