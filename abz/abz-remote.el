@@ -115,6 +115,17 @@ login shell entirely.")
 ;;  '(:application tramp :protocol "sshx")
 ;;  'abz-remote-connection-profile)
 
+;;;; tramp-rpc: high-performance TRAMP backend using JSON-RPC
+
+;; https://github.com/ArthurHeymans/emacs-tramp-rpc
+;; Replaces shell-based file operations with a lightweight Rust server
+;; on the remote, communicating via MessagePack-RPC over SSH. Provides
+;; batch operations, filesystem watch, and fast project root detection.
+;; Access remote files with /rpc:user@host:/path.
+(use-package tramp-rpc
+  :straight (tramp-rpc :host github :repo "ArthurHeymans/emacs-tramp-rpc")
+  :after tramp)
+
 ;;;; Magit over TRAMP
 
 ;; Magit: lightweight mode for remote repositories
@@ -473,11 +484,20 @@ With prefix argument, prompt for daemon session name."
       (message "No daemon '%s' running on %s." daemon-name host))))
 
 ;;;###autoload
+(defun abz-remote-find-file ()
+  "Open a file on a remote host via TRAMP.
+Prompts for a host, then opens `find-file' at the remote home directory."
+  (interactive)
+  (let* ((host (abz--remote-read-host))
+         (default-directory (format "/%s:%s:~/" tramp-default-method host)))
+    (call-interactively #'find-file)))
+
+;;;###autoload
 (defun abz-remote-shell ()
   "Open a shell on a remote host via TRAMP."
   (interactive)
   (let* ((host (abz--remote-read-host))
-         (default-directory (format "/ssh:%s:~/" host)))
+         (default-directory (format "/%s:%s:~/" tramp-default-method host)))
     (shell (format "*shell:%s*" host))))
 
 ;;;###autoload
@@ -514,6 +534,7 @@ With prefix argument, prompt for daemon session name."
         :prefix-docstring "Prefix keymap for remote work"
         ("e" . abz-remote-emacs-dwim)
         ("E" . abz-remote-emacs)
+        ("f" . abz-remote-find-file)
         ("q" . abz-remote-emacs-stop)
         ("s" . abz-remote-shell)
         ("i" . abz-remote-status)))
