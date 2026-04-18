@@ -273,7 +273,9 @@ For sustained work, run an Emacs daemon on the remote machine and display its GU
 |===
 |Keybinding |Description |Function
 
-|kbd:[{remote} e] |Connect to remote Emacs daemon |abz-remote-emacs
+|kbd:[{remote} e] |Connect to remote Emacs (DWIM: infer host from TRAMP buffer) |abz-remote-emacs-dwim
+|kbd:[{remote} E] |Connect to remote Emacs (prompt for host) |abz-remote-emacs
+|kbd:[{remote} f] |Open file on remote host via TRAMP |abz-remote-find-file
 |kbd:[{remote} q] |Stop remote Emacs daemon |abz-remote-emacs-stop
 |kbd:[{remote} s] |Open shell on remote host via TRAMP |abz-remote-shell
 |kbd:[{remote} i] |Show remote session status |abz-remote-status

@@ -24,22 +24,11 @@
 ;;; Code:
 
 (require 'abz-settings)
+(require 'tramp)
 (require 'use-package)
 (require 'cl-lib)
 
 ;;;; Customization
-
-(defcustom abz-remote-tramp-shell "/usr/bin/dash"
-  "Preferred shell for TRAMP internal commands on remote hosts.
-Dash is POSIX-minimal with lower overhead than bash. Used for
-TRAMP's own stat/test/cat operations, not for interactive shells."
-  :type 'string
-  :group 'abz)
-
-(defcustom abz-remote-tramp-shell-fallback "/bin/sh"
-  "Fallback shell if `abz-remote-tramp-shell' is not available."
-  :type 'string
-  :group 'abz)
 
 (defcustom abz-remote-tramp-magit-lightweight t
   "When non-nil, reduce magit sections and features over TRAMP.
@@ -97,23 +86,6 @@ login shell entirely.")
     (customize-set-variable 'tramp-use-connection-share t))
   ;; Cache remote file attributes longer (default 10s)
   (customize-set-variable 'remote-file-name-inhibit-cache 60))
-
-;;;; Connection-local profiles
-
-;; TODO: Connection-local profiles setting shell-file-name to dash
-;; cause TRAMP connection hangs. Disabled pending investigation.
-;; The intended optimization: use dash as TRAMP's internal shell for
-;; lower per-command overhead on remote hosts.
-;; (connection-local-set-profile-variables
-;;  'abz-remote-connection-profile
-;;  `((shell-file-name . ,abz-remote-tramp-shell)
-;;    (explicit-shell-file-name . "/bin/bash")))
-;; (connection-local-set-profiles
-;;  '(:application tramp :protocol "ssh")
-;;  'abz-remote-connection-profile)
-;; (connection-local-set-profiles
-;;  '(:application tramp :protocol "sshx")
-;;  'abz-remote-connection-profile)
 
 ;;;; tramp-rpc: high-performance TRAMP backend using JSON-RPC
 
@@ -234,6 +206,9 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 (use-package projectile
   :straight nil
   :preface
+  (defun abz--remote-projectile-ignore-remote (path)
+    "Return non-nil if PATH is a remote TRAMP path."
+    (file-remote-p path))
   (defun abz--remote-projectile-tune ()
     "Ensure alien indexing and caching for remote projects."
     (when (file-remote-p default-directory)
@@ -244,7 +219,7 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
   ;; Remote projects trigger TRAMP connections on startup when
   ;; projectile tries to verify them.
   (projectile-ignored-project-function
-   (lambda (path) (file-remote-p path))
+   #'abz--remote-projectile-ignore-remote
    "Ignore remote TRAMP projects.")
   :hook
   ((projectile-after-switch-project . abz--remote-projectile-tune)
@@ -364,8 +339,6 @@ describing what to install. Results are cached per session."
       (message "Missing prerequisites:\n%s"
                (mapconcat (lambda (pair) (format "  - %s" (cdr pair)))
                           missing "\n")))))
-
-;;;; Display proxy commands
 
 ;;;; Daemon management
 
