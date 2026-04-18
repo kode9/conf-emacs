@@ -95,20 +95,20 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
 
 ;;;; Connection-local profiles
 
-;; Use dash as TRAMP's internal shell for lower overhead.
-;; Interactive shells (M-x shell) still use bash.
-(connection-local-set-profile-variables
- 'abz-remote-connection-profile
- `((shell-file-name . ,abz-remote-tramp-shell)
-   (explicit-shell-file-name . "/bin/bash")))
-
-(connection-local-set-profiles
- '(:application tramp :protocol "ssh")
- 'abz-remote-connection-profile)
-
-(connection-local-set-profiles
- '(:application tramp :protocol "sshx")
- 'abz-remote-connection-profile)
+;; TODO: Connection-local profiles setting shell-file-name to dash
+;; cause TRAMP connection hangs. Disabled pending investigation.
+;; The intended optimization: use dash as TRAMP's internal shell for
+;; lower per-command overhead on remote hosts.
+;; (connection-local-set-profile-variables
+;;  'abz-remote-connection-profile
+;;  `((shell-file-name . ,abz-remote-tramp-shell)
+;;    (explicit-shell-file-name . "/bin/bash")))
+;; (connection-local-set-profiles
+;;  '(:application tramp :protocol "ssh")
+;;  'abz-remote-connection-profile)
+;; (connection-local-set-profiles
+;;  '(:application tramp :protocol "sshx")
+;;  'abz-remote-connection-profile)
 
 ;;;; Magit over TRAMP
 
@@ -275,16 +275,22 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 (defvar abz--remote-prereq-cache (make-hash-table :test 'equal)
   "Per-host prerequisite check results. Keys are HOST strings.")
 
+(defun abz--remote-ssh-command (host command &optional buffer)
+  "Run COMMAND on HOST via SSH using /bin/sh for POSIX compatibility.
+Returns the exit code. If BUFFER is non-nil, capture output there."
+  (call-process "ssh" nil (or buffer nil) nil host
+                (format "/bin/sh -c %s" (shell-quote-argument command))))
+
 (defun abz--remote-check-executable (host command)
   "Check if COMMAND exists on HOST via SSH. Return t or nil."
-  (zerop (call-process "ssh" nil nil nil host
-                       (format "command -v %s >/dev/null 2>&1"
-                               (shell-quote-argument command)))))
+  (zerop (abz--remote-ssh-command
+          host (format "command -v %s >/dev/null 2>&1"
+                       (shell-quote-argument command)))))
 
 (defun abz--remote-check-emacs-pgtk (host)
   "Check if Emacs on HOST is built with pgtk support."
-  (zerop (call-process "ssh" nil nil nil host
-                       "emacs --batch --eval '(unless (featurep (quote pgtk)) (kill-emacs 1))'")))
+  (zerop (abz--remote-ssh-command
+          host "emacs --batch --eval '(unless (featurep (quote pgtk)) (kill-emacs 1))'")))
 
 (defun abz--remote-check-prerequisites (host)
   "Check prerequisites on HOST for the current display method.
@@ -342,15 +348,16 @@ describing what to install. Results are cached per session."
 
 (defun abz--remote-daemon-running-p (host daemon-name)
   "Return t if Emacs daemon DAEMON-NAME is running on HOST."
-  (zerop (call-process "ssh" nil nil nil host
-                       (format "emacsclient -s %s -e t 2>/dev/null"
-                               (shell-quote-argument daemon-name)))))
+  (zerop (abz--remote-ssh-command
+          host (format "emacsclient -s %s -e t 2>/dev/null"
+                       (shell-quote-argument daemon-name)))))
 
 (defun abz--remote-list-daemons (host)
   "Return a list of running Emacs daemon socket names on HOST."
   (let ((output (with-temp-buffer
-                  (call-process "ssh" nil t nil host
-                                "ls /run/user/$(id -u)/emacs/ 2>/dev/null || ls /tmp/emacs$(id -u)/ 2>/dev/null")
+                  (abz--remote-ssh-command
+                   host "ls /run/user/$(id -u)/emacs/ 2>/dev/null || ls /tmp/emacs$(id -u)/ 2>/dev/null"
+                   t)
                   (buffer-string))))
     (when (and output (not (string-empty-p (string-trim output))))
       (split-string (string-trim output) "\n" t))))
@@ -369,9 +376,8 @@ With prefix argument, prompt with completion from running daemons."
   "Ensure Emacs daemon DAEMON-NAME is running on HOST. Start if needed."
   (unless (abz--remote-daemon-running-p host daemon-name)
     (message "Starting Emacs daemon '%s' on %s..." daemon-name host)
-    (call-process "ssh" nil nil nil host
-                  (format "emacs --daemon=%s"
-                          (shell-quote-argument daemon-name)))))
+    (abz--remote-ssh-command
+     host (format "emacs --daemon=%s" (shell-quote-argument daemon-name)))))
 
 ;;;; Display proxy commands
 
@@ -385,9 +391,10 @@ XPRA installations. Then attaches from the local client."
   ;; This avoids the local xpra passing options the remote can't parse.
   (message "Starting XPRA session on %s (daemon '%s')..." host daemon-name)
   (let ((start-buf (format "*xpra-start:%s*" host)))
-    (call-process "ssh" nil start-buf nil host
-                  (format "xpra start --start='emacsclient -c -s %s'"
-                          (shell-quote-argument daemon-name))))
+    (abz--remote-ssh-command
+     host (format "xpra start --start='emacsclient -c -s %s'"
+                  (shell-quote-argument daemon-name))
+     start-buf))
   ;; Attach from local client.
   ;; --ssh=ssh forces the system ssh binary so that ~/.ssh/config,
   ;; ControlMaster sockets, and identity files are used.
@@ -447,9 +454,9 @@ With prefix argument, prompt for daemon session name."
     (if (abz--remote-daemon-running-p host daemon-name)
         (progn
           (message "Stopping Emacs daemon '%s' on %s..." daemon-name host)
-          (call-process "ssh" nil nil nil host
-                        (format "emacsclient -s %s -e '(kill-emacs)'"
-                                (shell-quote-argument daemon-name)))
+          (abz--remote-ssh-command
+           host (format "emacsclient -s %s -e '(kill-emacs)'"
+                        (shell-quote-argument daemon-name)))
           (message "Daemon '%s' on %s stopped." daemon-name host))
       (message "No daemon '%s' running on %s." daemon-name host))))
 
