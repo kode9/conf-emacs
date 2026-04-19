@@ -115,6 +115,15 @@
 (setq truncate-partial-width-windows 40) ; Well still truncate if frame width is small
 (setq word-wrap t) ; Wrap long lines
 
+;; Disable bidirectional text scanning for users who don't work with
+;; right-to-left languages. Measurable gains in large files.
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;; Defer syntax highlighting until typing pauses to eliminate micro-stutters
+(setq redisplay-skip-fontification-on-input t)
+
 ;; https://github.com/kiwanami/emacs-epc/issues/35
 (setq byte-compile-warnings '(cl-functions))
 

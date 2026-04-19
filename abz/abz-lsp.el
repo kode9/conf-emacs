@@ -91,7 +91,13 @@
   :defines
   lsp-clients-clangd-library-directories
   :init
-  (setq read-process-output-max (* 1024 1024))
+  (setq read-process-output-max
+        (min (* 4 1024 1024)
+             (if (file-readable-p "/proc/sys/fs/pipe-max-size")
+                 (with-temp-buffer
+                   (insert-file-contents "/proc/sys/fs/pipe-max-size")
+                   (string-to-number (buffer-string)))
+               (* 1024 1024))))
   :preface
   ;; https://github.com/blahgeek/emacs-lsp-booster
   (when abz-lsp-use-lsp-booster
