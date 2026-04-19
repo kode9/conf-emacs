@@ -27,6 +27,13 @@
 (require 'cl-lib)
 (require 'use-package)
 
+(defun abz--savehist-strip-kill-ring ()
+  "Remove text properties from `kill-ring' entries before saving.
+Prevents savehist file bloat when `kill-ring' is persisted."
+  (setq kill-ring
+        (mapcar #'substring-no-properties
+                (cl-remove-if-not #'stringp kill-ring))))
+
 ;;;###autoload
 (defun abz--init-custom ()
   "Initialise custom configuration variables."
@@ -52,6 +59,14 @@
   ;; History file
   (customize-set-variable 'savehist-file
                           (expand-file-name "history" abz-cache-dir)) ; Minibuffer history location
+
+  ;; Persist kill ring and search rings across sessions
+  (add-to-list 'savehist-additional-variables 'kill-ring)
+  (add-to-list 'savehist-additional-variables 'search-ring)
+  (add-to-list 'savehist-additional-variables 'regexp-search-ring)
+  ;; Strip text properties before saving to prevent savehist file bloat
+  ;; (adapted from Doom Emacs)
+  (add-hook 'savehist-save-hook #'abz--savehist-strip-kill-ring)
 
   ;; Minibuffer
   (customize-set-variable 'enable-recursive-minibuffers t)   ; Allow minibuffer commands while in the minibuffer
@@ -129,7 +144,9 @@
   (auto-save-timeout 101)    ; Idle time before auto-save
   (delete-auto-save-files t) ; Keep auto-save files
   :config
-  (abz--advice-inhibit-echo-area #'(save-buffer)))
+  (abz--advice-inhibit-echo-area #'(save-buffer))
+  :hook
+  (after-save . executable-make-buffer-file-executable-if-script-p))
 
 ;; List of recently visited files (built-in)
 (use-package recentf
