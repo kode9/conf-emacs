@@ -100,6 +100,10 @@ Prevents savehist file bloat when `kill-ring' is persisted."
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
 
+;; Proportional window resizing
+(when abz-proportional-window-resize
+  (customize-set-variable 'window-combination-resize t))
+
 ;; Window nagivation (built-in)
 (use-package windmove
   :straight nil
@@ -182,9 +186,20 @@ Prevents savehist file bloat when `kill-ring' is persisted."
 ;; Default keybindings: `C-c <left>` and `C-c <right>`
 (use-package winner
   :straight nil
+  :preface
+  ;; Adapted from Purcell's emacs.d
+  (defun abz-toggle-delete-other-windows ()
+    "Delete other windows in frame if any, or restore previous window config."
+    (interactive)
+    (if (and winner-mode
+             (equal (selected-window) (next-window)))
+        (winner-undo)
+      (delete-other-windows)))
   :init
   (defun abz--winner-mode ()
     (winner-mode 1))
+  :bind
+  ("C-x 1" . abz-toggle-delete-other-windows)
   :hook (after-init . abz--winner-mode))
 
 ;; Emacs server (emacsclient)
