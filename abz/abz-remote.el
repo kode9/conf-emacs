@@ -227,19 +227,18 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 
 ;;;; SSH host completion
 
+(defconst abz--remote-ssh-config-file (expand-file-name "~/.ssh/config")
+  "Path to the SSH config file.")
+
 (defvar abz--remote-ssh-hosts-cache nil
   "Cached list of SSH hosts from ~/.ssh/config.")
 
 (defvar abz--remote-ssh-config-mtime nil
   "Modification time of ~/.ssh/config when cache was populated.")
 
-(defun abz--remote-ssh-config-file ()
-  "Return the path to the SSH config file."
-  (expand-file-name "~/.ssh/config"))
-
 (defun abz--remote-parse-ssh-hosts ()
   "Parse Host entries from ~/.ssh/config, excluding wildcards."
-  (let ((config-file (abz--remote-ssh-config-file))
+  (let ((config-file abz--remote-ssh-config-file)
         hosts)
     (when (file-readable-p config-file)
       (with-temp-buffer
@@ -254,7 +253,7 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 
 (defun abz--remote-ssh-hosts ()
   "Return SSH hosts with caching. Invalidates when config file changes."
-  (let* ((config-file (abz--remote-ssh-config-file))
+  (let* ((config-file abz--remote-ssh-config-file)
          (mtime (and (file-exists-p config-file)
                      (file-attribute-modification-time
                       (file-attributes config-file)))))
@@ -311,19 +310,18 @@ describing what to install. Results are cached per session."
                         (format "Install %s: sudo apt install %s" proxy proxy)))
                 results))
         ;; Check emacs
-        (push (cons 'emacs
-                    (if (abz--remote-check-executable host "emacs")
-                        t
-                      "Install emacs: sudo apt install emacs"))
-              results)
-        ;; For waypipe, check pgtk
-        (when (eq method 'waypipe)
-          (push (cons 'emacs-pgtk
-                      (if (and (abz--remote-check-executable host "emacs")
-                               (abz--remote-check-emacs-pgtk host))
-                          t
-                        "Remote Emacs must be built with pgtk support for waypipe"))
-                results))
+        (let ((emacs-ok (abz--remote-check-executable host "emacs")))
+          (push (cons 'emacs
+                      (if emacs-ok t
+                        "Install emacs: sudo apt install emacs"))
+                results)
+          ;; For waypipe, check pgtk
+          (when (eq method 'waypipe)
+            (push (cons 'emacs-pgtk
+                        (if (and emacs-ok (abz--remote-check-emacs-pgtk host))
+                            t
+                          "Remote Emacs must be built with pgtk support for waypipe"))
+                  results)))
         (setq results (nreverse results))
         (puthash host results abz--remote-prereq-cache)
         results)))
@@ -350,13 +348,14 @@ describing what to install. Results are cached per session."
 
 (defun abz--remote-list-daemons (host)
   "Return a list of running Emacs daemon socket names on HOST."
-  (let ((output (with-temp-buffer
-                  (abz--remote-ssh-command
-                   host "ls /run/user/$(id -u)/emacs/ 2>/dev/null || ls /tmp/emacs$(id -u)/ 2>/dev/null"
-                   t)
-                  (buffer-string))))
-    (when (and output (not (string-empty-p (string-trim output))))
-      (split-string (string-trim output) "\n" t))))
+  (let ((output (string-trim
+                 (with-temp-buffer
+                   (abz--remote-ssh-command
+                    host "ls /run/user/$(id -u)/emacs/ 2>/dev/null || ls /tmp/emacs$(id -u)/ 2>/dev/null"
+                    t)
+                   (buffer-string)))))
+    (unless (string-empty-p output)
+      (split-string output "\n" t))))
 
 (defun abz--remote-read-daemon-name (host)
   "Prompt for a daemon name with completion from running daemons on HOST.
