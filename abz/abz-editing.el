@@ -69,15 +69,15 @@
 ;; Remember last cursor position in all files
 (use-package saveplace
   :straight nil
-  :init
-  (customize-set-variable 'save-place-limit nil)
-  (customize-set-variable 'save-place-save-skipped nil)
-  (customize-set-variable 'save-place-version-control t)
   :preface
   ;; Recenter after restoring position (adapted from Doom Emacs)
   (defun abz--save-place-recenter (&rest _)
     "Recenter the view after `save-place' restores cursor position."
     (when buffer-file-name (ignore-errors (recenter))))
+  :init
+  (customize-set-variable 'save-place-limit nil)
+  (customize-set-variable 'save-place-save-skipped nil)
+  (customize-set-variable 'save-place-version-control t)
   :config
   (advice-add 'save-place-find-file-hook :after #'abz--save-place-recenter)
   :hook (after-init . save-place-mode))

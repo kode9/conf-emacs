@@ -296,7 +296,8 @@ When set to a non-disabled value, also enables `lsp-enable-imenu'."
   "When non-nil, splitting a window resizes all windows proportionally.
 When nil, only the split window is halved."
   :type 'boolean
-  :group 'abz)
+  :group 'abz
+  :group 'convenience)
 
 (defun abz--consult-needed-p ()
   "Return non-nil if any defcustom selects a consult variant."
