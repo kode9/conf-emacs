@@ -24,7 +24,6 @@
 ;;; Code:
 
 (require 'abz-settings)
-(require 'tramp)
 (require 'use-package)
 (require 'cl-lib)
 
@@ -51,12 +50,15 @@ and headers (tags, modules, etc.) to minimize SSH roundtrips."
 
 ;;;; TRAMP core tuning
 
-;; tramp: Transparent Remote Access, Multiple Protocol (built-in)
+;; tramp: Transparent Remote Access, Multiple Protocol
+;; https://www.gnu.org/software/tramp/
 ;; no-littering:
 ;;   - tramp-auto-save-directory
 ;;   - tramp-persistency-file-name
+;;
+;; Use the GNU ELPA version rather than the built-in. The ELPA release
+;; is updated between Emacs releases and is required by tramp-rpc.
 (use-package tramp
-  :straight nil
   :custom
   (tramp-default-method "sshx"
    "Use sshx over ssh. The ssh method interacts with the remote login
@@ -68,16 +70,6 @@ login shell entirely.")
   (tramp-backup-directory-alist
    `(("." . ,(abz--locate-data-dir "backup/tramp")))
    "Backup files location")
-  :init
-  ;; Disable version control for tramp files
-  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
-  (use-package vc
-    :straight nil
-    :init
-    (customize-set-variable 'vc-ignore-dir-regexp
-                            (format "\\(%s\\)\\|\\(%s\\)"
-                                    vc-ignore-dir-regexp
-                                    tramp-file-name-regexp)))
   :config
   ;; Prevent remote programs from inheriting local fish shell.
   ;; Scoped to TRAMP's remote process environment to avoid overriding
@@ -88,6 +80,16 @@ login shell entirely.")
     (customize-set-variable 'tramp-use-connection-share t))
   ;; Cache remote file attributes longer (default 10s)
   (customize-set-variable 'remote-file-name-inhibit-cache 60))
+
+;; Disable version control for tramp files (built-in)
+;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+(use-package vc
+  :straight nil
+  :after tramp
+  :custom
+  (vc-ignore-dir-regexp
+   (format "\\(%s\\)\\|\\(%s\\)" vc-ignore-dir-regexp tramp-file-name-regexp)
+   "Exclude TRAMP paths from VC operations."))
 
 ;;;; tramp-rpc: high-performance TRAMP backend using JSON-RPC
 
