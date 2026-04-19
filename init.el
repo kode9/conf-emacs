@@ -262,17 +262,16 @@ and installed in a single batch after init."
 
 ;; Install all missing packages in a single batch call after init.
 ;; One sudo prompt, one confirmation, one async buffer.
+;; Uses system-packages-get-command to respect the configured package manager.
 (when abz--missing-system-packages
   (let ((pkgs (nreverse abz--missing-system-packages)))
     (run-with-idle-timer
      2 nil
      (lambda ()
+       (require 'system-packages)
        (let ((cmd (concat
-                   (cond
-                    ((and (abz-os-is-arch?) (executable-find "paru")) "paru -S ")
-                    ((abz-os-is-arch?) "sudo pacman -S ")
-                    ((abz-os-is-debian-derivative?) "sudo apt install ")
-                    (t "echo Missing packages: "))
+                   (when system-packages-use-sudo "sudo ")
+                   (system-packages-get-command "install") " "
                    (string-join pkgs " "))))
          (async-shell-command cmd "*system-packages*"))))))
 

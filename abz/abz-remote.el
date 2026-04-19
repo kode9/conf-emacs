@@ -79,8 +79,10 @@ login shell entirely.")
                                     vc-ignore-dir-regexp
                                     tramp-file-name-regexp)))
   :config
-  ;; Prevent remote programs from inheriting local fish shell
-  (setenv "SHELL" "/bin/bash")
+  ;; Prevent remote programs from inheriting local fish shell.
+  ;; Scoped to TRAMP's remote process environment to avoid overriding
+  ;; the user's login shell for local subprocesses (M-x compile, etc.).
+  (add-to-list 'tramp-remote-process-environment "SHELL=/bin/bash")
   ;; Reuse existing ControlMaster sockets (Emacs 30+)
   (when (boundp 'tramp-use-connection-share)
     (customize-set-variable 'tramp-use-connection-share t))
@@ -132,13 +134,8 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 ;; autorevert: suppress auto-revert for remote buffers (built-in)
 (use-package autorevert
   :straight nil
-  :preface
-  (defun abz--remote-inhibit-auto-revert ()
-    "Disable auto-revert-mode in remote buffers."
-    (when (and buffer-file-name (file-remote-p buffer-file-name))
-      (auto-revert-mode -1)))
-  :config
-  (add-hook 'find-file-hook #'abz--remote-inhibit-auto-revert))
+  :custom
+  (auto-revert-remote-files nil "Do not poll remote files for changes."))
 
 ;;;; LSP over TRAMP
 
@@ -272,22 +269,29 @@ Controlled by `abz-remote-tramp-magit-lightweight'."
 (defvar abz--remote-prereq-cache (make-hash-table :test 'equal)
   "Per-host prerequisite check results. Keys are HOST strings.")
 
+(defconst abz--remote-ssh-timeout 30
+  "Timeout in seconds for synchronous SSH commands.")
+
 (defun abz--remote-ssh-command (host command &optional buffer)
   "Run COMMAND on HOST via SSH using /bin/sh for POSIX compatibility.
-Returns the exit code. If BUFFER is non-nil, capture output there."
-  (call-process "ssh" nil (or buffer nil) nil host
-                (format "/bin/sh -c %s" (shell-quote-argument command))))
+Returns the exit code, or nil on timeout. If BUFFER is non-nil,
+capture output there. Times out after `abz--remote-ssh-timeout' seconds."
+  (with-timeout (abz--remote-ssh-timeout
+                 (message "SSH command to %s timed out after %ds" host abz--remote-ssh-timeout)
+                 nil)
+    (call-process "ssh" nil (or buffer nil) nil host
+                  (format "/bin/sh -c %s" (shell-quote-argument command)))))
 
 (defun abz--remote-check-executable (host command)
   "Check if COMMAND exists on HOST via SSH. Return t or nil."
-  (zerop (abz--remote-ssh-command
-          host (format "command -v %s >/dev/null 2>&1"
-                       (shell-quote-argument command)))))
+  (eql 0 (abz--remote-ssh-command
+           host (format "command -v %s >/dev/null 2>&1"
+                        (shell-quote-argument command)))))
 
 (defun abz--remote-check-emacs-pgtk (host)
   "Check if Emacs on HOST is built with pgtk support."
-  (zerop (abz--remote-ssh-command
-          host "emacs --batch --eval '(unless (featurep (quote pgtk)) (kill-emacs 1))'")))
+  (eql 0 (abz--remote-ssh-command
+           host "emacs --batch --eval '(unless (featurep (quote pgtk)) (kill-emacs 1))'")))
 
 (defun abz--remote-check-prerequisites (host)
   "Check prerequisites on HOST for the current display method.
@@ -342,9 +346,9 @@ describing what to install. Results are cached per session."
 
 (defun abz--remote-daemon-running-p (host daemon-name)
   "Return t if Emacs daemon DAEMON-NAME is running on HOST."
-  (zerop (abz--remote-ssh-command
-          host (format "emacsclient -s %s -e t 2>/dev/null"
-                       (shell-quote-argument daemon-name)))))
+  (eql 0 (abz--remote-ssh-command
+           host (format "emacsclient -s %s -e t 2>/dev/null"
+                        (shell-quote-argument daemon-name)))))
 
 (defun abz--remote-list-daemons (host)
   "Return a list of running Emacs daemon socket names on HOST."
@@ -368,11 +372,15 @@ With prefix argument, prompt with completion from running daemons."
     abz-remote-daemon-name))
 
 (defun abz--remote-ensure-daemon (host daemon-name)
-  "Ensure Emacs daemon DAEMON-NAME is running on HOST. Start if needed."
+  "Ensure Emacs daemon DAEMON-NAME is running on HOST. Start if needed.
+Signals an error if the daemon fails to start."
   (unless (abz--remote-daemon-running-p host daemon-name)
     (message "Starting Emacs daemon '%s' on %s..." daemon-name host)
-    (abz--remote-ssh-command
-     host (format "emacs --daemon=%s" (shell-quote-argument daemon-name)))))
+    (let ((exit-code (abz--remote-ssh-command
+                      host (format "emacs --daemon=%s" (shell-quote-argument daemon-name)))))
+      (unless (eql 0 exit-code)
+        (user-error "Failed to start Emacs daemon '%s' on %s (exit %s)"
+                    daemon-name host (or exit-code "timeout"))))))
 
 ;;;; Display proxy commands
 
