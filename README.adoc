@@ -38,6 +38,7 @@ The configuration provides integration of external tools:
 * https://github.com/BurntSushi/ripgrep[ripgrep^] with https://github.com/minad/consult[Consult^] (default) or https://github.com/dajva/rg.el[rg.el^]
 * https://github.com/ggreer/the_silver_searcher[AG the silver searcher^] with https://github.com/Wilfred/ag.el[ag.el^] (fallback)
 * A spell checker such as http://aspell.net/[Aspell^] or https://hunspell.github.io/[Hunspell^] for the https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html[built-in spell checker^] and https://www.flycheck.org/en/latest/[Flycheck^]
+* For optimal LSP throughput, the Linux kernel pipe buffer should be at least 4{nbsp}MB: `sysctl -w fs.pipe-max-size=4194304` (or add `fs.pipe-max-size = 4194304` to `/etc/sysctl.d/99-emacs.conf`)
 
 == Customization
 
@@ -212,7 +213,23 @@ All features can be configured via `kbd:[M-x] customize-group kbd:[RET] abz kbd:
 |abz-imenu |Symbol navigation |disabled
 |abz-yank-handler |Kill ring browsing (M-y) |consult
 |abz-diagnostics-backend |Syntax checker engine |flycheck
+|abz-proportional-window-resize |Proportional window splitting |t
 |===
+
+=== Window Management
+
+Winner mode records window configurations and allows undo/redo:
+
+[cols="1d,8m"]
+|===
+|Keybinding |Function
+
+|kbd:[C-c <left>] |winner-undo (restore previous window layout)
+|kbd:[C-c <right>] |winner-redo (redo window layout change)
+|kbd:[C-x 1] |abz-toggle-delete-other-windows (toggle single window / restore)
+|===
+
+TIP: `kbd:[C-x 1]` is reversible: press it once to collapse to a single window, press it again to restore the previous layout.
 
 == Remote Work
 
@@ -298,9 +315,14 @@ For sustained work, run an Emacs daemon on the remote machine and display its GU
 |abz-find-custom-file |Open the custom file
 |abz-indent-dwim |Indent region or buffer
 |abz-sudo-buffer |Reopen the current file as root
+|abz-toggle-delete-other-windows |Toggle between single window and previous layout (reversible C-x 1)
 |===
 
 == TODO
+
+* Evaluate `minibuffer-regexp-mode` (Emacs 30+ built-in: live feedback on regexp structure with color-coded groups and character classes)
+* Evaluate lazy isearch counting (built-in "match N of M" display, replacing packages like `anzu`)
+* Evaluate `repeat-mode` for streamlined repeated commands (e.g. mark popping, winner undo/redo)
 
 == License
 
