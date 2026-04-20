@@ -48,10 +48,6 @@
   :demand t
   :commands all-the-icons-install-fonts
   :config
-  ;; If non-nil, don't compact font caches during GC
-  ;; https://github.com/domtronn/all-the-icons.el#slow-rendering
-  (setq inhibit-compacting-font-caches t)
-  :config
   (unless (find-font (font-spec :name "all-the-icons"))
     (all-the-icons-install-fonts t)))
 

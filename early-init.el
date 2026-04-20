@@ -58,6 +58,15 @@
 (setq gc-cons-threshold (* 1000 1000 1000)
       gc-cons-percentage 90)
 
+;; Subprocess I/O: read up to min(4MB, pipe-max-size) per chunk
+(setq read-process-output-max
+      (min (* 4 1024 1024)
+           (if (file-readable-p "/proc/sys/fs/pipe-max-size")
+               (with-temp-buffer
+                 (insert-file-contents "/proc/sys/fs/pipe-max-size")
+                 (string-to-number (buffer-string)))
+             (* 1024 1024))))
+
 ;; Package.el
 (setq package-enable-at-startup nil) ; Disable package.el
 
@@ -84,6 +93,7 @@
 (setq line-number-mode nil) ; Display current line in modeline
 (setq column-number-mode nil) ; Display current column in modecolumn
 (setq initial-frame-alist '((fullscreen . maximized))) ; Start the initial frame maximized
+(setq default-frame-alist '((fullscreen . maximized)))  ; Same for new frames (C-x 5 2)
 (setq frame-resize-pixelwise t) ; frame sizes can increase/decrease by one pixel
 (setq window-divider-default-places 'right-only)
 (setq window-divider-default-bottom-width 1)
@@ -106,6 +116,8 @@
 (setq cursor-in-non-selected-windows 'hollow) ; Cursor when window is not selected
 
 ;; Display
+(setq auto-window-vscroll nil) ; Prevent micro-stutters from automatic vertical scrolling
+(setq inhibit-compacting-font-caches t) ; Don't compact font caches during GC
 (setq ctl-arrow nil) ; Display control characters as backslash and octal digits
 (setq cursor-type '(hbar . 4)) ; Cursor when window is selected
 (setq highlight-nonselected-windows t) ; Keep Highlightning region
@@ -114,6 +126,15 @@
 (setq truncate-lines nil) ; Don't truncate long lines (avoid horizontal scrolling)
 (setq truncate-partial-width-windows 40) ; Well still truncate if frame width is small
 (setq word-wrap t) ; Wrap long lines
+
+;; Disable bidirectional text scanning for users who don't work with
+;; right-to-left languages. Measurable gains in large files.
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;; Defer syntax highlighting until typing pauses to eliminate micro-stutters
+(setq redisplay-skip-fontification-on-input t)
 
 ;; https://github.com/kiwanami/emacs-epc/issues/35
 (setq byte-compile-warnings '(cl-functions))

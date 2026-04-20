@@ -30,7 +30,7 @@
 ;;;###autoload
 (defun abz--init-custom ()
   "Initialise custom configuration variables."
-  (defalias 'yes-or-no-p 'y-or-n-p) ; Just use 'y'/'n' even for yes-or-no-p
+  (setq use-short-answers t) ; Use y/n instead of yes/no
 
   ;; Uniquify buffer names
   (customize-set-variable 'uniquify-after-kill-buffer-p t)           ; Update buffer names when one is killed
@@ -44,21 +44,17 @@
   ;; Scrolling
   (customize-set-variable 'mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control . nil))))
   (customize-set-variable 'mouse-wheel-progressive-speed nil)
-  (customize-set-variable 'scroll-step 1)
   (customize-set-variable 'scroll-margin 2)
-  (customize-set-variable 'scroll-conservatively 4)
+  (customize-set-variable 'scroll-conservatively 101)
   (customize-set-variable 'scroll-preserve-screen-position t)
-
-  ;; History file
-  (customize-set-variable 'savehist-file
-                          (expand-file-name "history" abz-cache-dir)) ; Minibuffer history location
+  (when abz-fast-scroll
+    (customize-set-variable 'fast-but-imprecise-scrolling t))
 
   ;; Minibuffer
   (customize-set-variable 'enable-recursive-minibuffers t)   ; Allow minibuffer commands while in the minibuffer
   (customize-set-variable 'minibuffer-depth-indicate-mode t) ; Show recursion depth in the minibuffer
   (customize-set-variable 'history-length 100)               ; Maximum history
   (customize-set-variable 'history-delete-duplicates t)      ; Remove duplicates
-  (savehist-mode nil)                                        ; Enable minibuffer history
 
   ;; Buffers
   (customize-set-variable 'confirm-nonexistent-file-or-buffer
@@ -83,7 +79,40 @@
   (customize-set-variable 'vc-follow-symlinks t) ; Always follow symlinks to files under VC
 
   ;; Always select the help window
-  (customize-set-variable 'help-window-select t))
+  (customize-set-variable 'help-window-select t)
+
+  (when abz-switch-to-buffer-obey-display-actions
+    (customize-set-variable 'switch-to-buffer-obey-display-actions t))
+
+  (when abz-pixel-scroll
+    (pixel-scroll-precision-mode 1)))
+
+;; Minibuffer history persistence (built-in)
+;; no-littering: savehist-file (intentionally overridden to abz-cache-dir)
+(use-package savehist
+  :straight nil
+  :preface
+  ;; Strip text properties before saving to prevent savehist file bloat
+  ;; (adapted from Doom Emacs)
+  (defun abz--savehist-strip-kill-ring ()
+    "Remove text properties from `kill-ring' entries before saving.
+Prevents savehist file bloat when `kill-ring' is persisted."
+    (setq kill-ring
+          (mapcar #'substring-no-properties
+                  (cl-remove-if-not #'stringp kill-ring))))
+  :custom
+  (savehist-file (expand-file-name "history" abz-cache-dir) "Minibuffer history location")
+  :hook
+  (savehist-save . abz--savehist-strip-kill-ring)
+  (after-init . savehist-mode)
+  :config
+  ;; Persist kill ring and search rings across sessions
+  (dolist (var '(kill-ring search-ring regexp-search-ring))
+    (add-to-list 'savehist-additional-variables var)))
+
+;; Proportional window resizing
+(when abz-proportional-window-resize
+  (customize-set-variable 'window-combination-resize t))
 
 ;; Window nagivation (built-in)
 (use-package windmove
@@ -129,7 +158,9 @@
   (auto-save-timeout 101)    ; Idle time before auto-save
   (delete-auto-save-files t) ; Keep auto-save files
   :config
-  (abz--advice-inhibit-echo-area #'(save-buffer)))
+  (abz--advice-inhibit-echo-area #'(save-buffer))
+  :hook
+  (after-save . executable-make-buffer-file-executable-if-script-p))
 
 ;; List of recently visited files (built-in)
 (use-package recentf
@@ -165,9 +196,20 @@
 ;; Default keybindings: `C-c <left>` and `C-c <right>`
 (use-package winner
   :straight nil
+  :preface
+  ;; Adapted from Purcell's emacs.d
+  (defun abz-toggle-delete-other-windows ()
+    "Delete other windows in frame if any, or restore previous window config."
+    (interactive)
+    (if (and winner-mode
+             (equal (selected-window) (next-window)))
+        (winner-undo)
+      (delete-other-windows)))
   :init
   (defun abz--winner-mode ()
     (winner-mode 1))
+  :bind
+  ("C-x 1" . abz-toggle-delete-other-windows)
   :hook (after-init . abz--winner-mode))
 
 ;; Emacs server (emacsclient)

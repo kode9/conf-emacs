@@ -90,8 +90,6 @@
   lsp-stdio-connection
   :defines
   lsp-clients-clangd-library-directories
-  :init
-  (setq read-process-output-max (* 1024 1024))
   :preface
   ;; https://github.com/blahgeek/emacs-lsp-booster
   (when abz-lsp-use-lsp-booster

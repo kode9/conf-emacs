@@ -61,15 +61,25 @@
   (customize-set-variable 'c-basic-offset 2)                     ; Indentation offset
   (customize-set-variable 'standard-indent 2)
 
+  ;; Mark navigation
+  (customize-set-variable 'set-mark-command-repeat-pop t) ; After C-u C-SPC, repeat with just C-SPC
+
   (customize-set-variable 'warning-suppress-types '((undo discard-info)))) ; Be quiet
 
 ;; Remember last cursor position in all files
 (use-package saveplace
   :straight nil
+  :preface
+  ;; Recenter after restoring position (adapted from Doom Emacs)
+  (defun abz--save-place-recenter (&rest _)
+    "Recenter the view after `save-place' restores cursor position."
+    (when buffer-file-name (ignore-errors (recenter))))
   :init
   (customize-set-variable 'save-place-limit nil)
   (customize-set-variable 'save-place-save-skipped nil)
   (customize-set-variable 'save-place-version-control t)
+  :config
+  (advice-add 'save-place-find-file-hook :after #'abz--save-place-recenter)
   :hook (after-init . save-place-mode))
 
 (use-package abbrev
@@ -92,6 +102,18 @@
   (setq narrow-to-defun-include-comments t)
   :hook
   (after-init . fancy-narrow-mode)) ; Rebind classic narrow keys to fancy-narrow functions
+
+;; Regex builder (built-in)
+(use-package re-builder
+  :straight nil
+  :custom
+  (reb-re-syntax 'string "Use string syntax instead of double-escaped read syntax"))
+
+;; Find file at point (built-in)
+(use-package ffap
+  :straight nil
+  :custom
+  (ffap-machine-p-known 'reject "Prevent network lookups that cause multi-second hangs"))
 
 ;;;###autoload
 (defun align-comments (begin end)

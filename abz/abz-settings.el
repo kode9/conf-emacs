@@ -292,6 +292,52 @@ When set to a non-disabled value, also enables `lsp-enable-imenu'."
   :group 'abz
   :group 'convenience)
 
+(defcustom abz-proportional-window-resize t
+  "When non-nil, splitting a window resizes all windows proportionally.
+When nil, only the split window is halved."
+  :type 'boolean
+  :tag "Proportional window resize"
+  :group 'abz
+  :group 'convenience)
+
+;;; Display and scrolling
+
+(defcustom abz-fast-scroll t
+  "When non-nil, skip fontification when scrolling at high speed.
+Trades precision for responsiveness in large buffers."
+  :type 'boolean
+  :tag "Fast scrolling"
+  :group 'abz)
+
+(defcustom abz-pixel-scroll t
+  "When non-nil, enable pixel-precise smooth scrolling.
+Uses `pixel-scroll-precision-mode' for smoother scrolling on modern displays."
+  :type 'boolean
+  :tag "Pixel-precise scrolling"
+  :group 'abz)
+
+(defcustom abz-switch-to-buffer-obey-display-actions t
+  "When non-nil, `switch-to-buffer' respects `display-buffer-alist' rules.
+Makes window management more predictable with custom display rules."
+  :type 'boolean
+  :tag "Obey display actions on buffer switch"
+  :group 'abz
+  :group 'convenience)
+
+;;; Development
+
+(defcustom abz-next-error-highlight t
+  "Highlight error messages in the compilation buffer.
+When t, highlight the current error message.
+When `keep', highlight all visited error messages.
+When nil, no highlighting."
+  :type '(choice (const :tag "Highlight current error" t)
+                 (const :tag "Highlight all visited errors" keep)
+                 (const :tag "No highlighting" nil))
+  :tag "Highlight error messages"
+  :group 'abz
+  :group 'tools)
+
 (defun abz--consult-needed-p ()
   "Return non-nil if any defcustom selects a consult variant."
   (or (memq abz-search-backend '(consult-ripgrep consult-grep))
