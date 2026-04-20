@@ -215,8 +215,8 @@ All features can be configured via `kbd:[M-x] customize-group kbd:[RET] abz kbd:
 |abz-diagnostics-backend |Syntax checker engine |flycheck
 |abz-proportional-window-resize |Proportional window splitting |t
 |abz-fast-scroll |Skip fontification when scrolling fast |t
-|abz-pixel-scroll |Pixel-precise smooth scrolling |nil
-|abz-switch-to-buffer-obey-display-actions |Buffer switch respects display rules |nil
+|abz-pixel-scroll |Pixel-precise smooth scrolling |t
+|abz-switch-to-buffer-obey-display-actions |Buffer switch respects display rules |t
 |abz-next-error-highlight |Highlight current error in compilation |t
 |===
 

@@ -308,14 +308,14 @@ Trades precision for responsiveness in large buffers."
   :tag "Fast scrolling"
   :group 'abz)
 
-(defcustom abz-pixel-scroll nil
+(defcustom abz-pixel-scroll t
   "When non-nil, enable pixel-precise smooth scrolling.
 Uses `pixel-scroll-precision-mode' for smoother scrolling on modern displays."
   :type 'boolean
   :tag "Pixel-precise scrolling"
   :group 'abz)
 
-(defcustom abz-switch-to-buffer-obey-display-actions nil
+(defcustom abz-switch-to-buffer-obey-display-actions t
   "When non-nil, `switch-to-buffer' respects `display-buffer-alist' rules.
 Makes window management more predictable with custom display rules."
   :type 'boolean
