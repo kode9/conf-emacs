@@ -83,6 +83,8 @@ ALL-FRAMES specify which frames to consider as described in `get-buffer-window'.
   (compilation-skip-threshold 2 "Skip 'info' and 'warnings' when jumping between errors")
   (next-error-highlight 'fringe-arrow)
   (next-error-highlight-no-select t)
+  (next-error-message-highlight abz-next-error-highlight
+                                "Highlight current error message in compilation buffer")
   (compilation-auto-jump-to-first-error 'first-known)
   :hook
   (compilation-start . abz-select-process-window)

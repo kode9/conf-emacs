@@ -299,6 +299,39 @@ When nil, only the split window is halved."
   :group 'abz
   :group 'convenience)
 
+;;; Display and scrolling
+
+(defcustom abz-fast-scroll t
+  "When non-nil, skip fontification when scrolling at high speed.
+Trades precision for responsiveness in large buffers."
+  :type 'boolean
+  :tag "Fast scrolling"
+  :group 'abz)
+
+(defcustom abz-pixel-scroll nil
+  "When non-nil, enable pixel-precise smooth scrolling.
+Uses `pixel-scroll-precision-mode' for smoother scrolling on modern displays."
+  :type 'boolean
+  :tag "Pixel-precise scrolling"
+  :group 'abz)
+
+(defcustom abz-switch-to-buffer-obey-display-actions nil
+  "When non-nil, `switch-to-buffer' respects `display-buffer-alist' rules.
+Makes window management more predictable with custom display rules."
+  :type 'boolean
+  :tag "Obey display actions on buffer switch"
+  :group 'abz
+  :group 'convenience)
+
+;;; Development
+
+(defcustom abz-next-error-highlight t
+  "When non-nil, highlight the current error message in the compilation buffer."
+  :type 'boolean
+  :tag "Highlight current error message"
+  :group 'abz
+  :group 'tools)
+
 (defun abz--consult-needed-p ()
   "Return non-nil if any defcustom selects a consult variant."
   (or (memq abz-search-backend '(consult-ripgrep consult-grep))

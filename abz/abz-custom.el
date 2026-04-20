@@ -30,7 +30,7 @@
 ;;;###autoload
 (defun abz--init-custom ()
   "Initialise custom configuration variables."
-  (defalias 'yes-or-no-p 'y-or-n-p) ; Just use 'y'/'n' even for yes-or-no-p
+  (setq use-short-answers t) ; Use y/n instead of yes/no
 
   ;; Uniquify buffer names
   (customize-set-variable 'uniquify-after-kill-buffer-p t)           ; Update buffer names when one is killed
@@ -44,10 +44,11 @@
   ;; Scrolling
   (customize-set-variable 'mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control . nil))))
   (customize-set-variable 'mouse-wheel-progressive-speed nil)
-  (customize-set-variable 'scroll-step 1)
   (customize-set-variable 'scroll-margin 2)
-  (customize-set-variable 'scroll-conservatively 4)
+  (customize-set-variable 'scroll-conservatively 101)
   (customize-set-variable 'scroll-preserve-screen-position t)
+  (when abz-fast-scroll
+    (customize-set-variable 'fast-but-imprecise-scrolling t))
 
   ;; Minibuffer
   (customize-set-variable 'enable-recursive-minibuffers t)   ; Allow minibuffer commands while in the minibuffer
@@ -78,7 +79,13 @@
   (customize-set-variable 'vc-follow-symlinks t) ; Always follow symlinks to files under VC
 
   ;; Always select the help window
-  (customize-set-variable 'help-window-select t))
+  (customize-set-variable 'help-window-select t)
+
+  (when abz-switch-to-buffer-obey-display-actions
+    (customize-set-variable 'switch-to-buffer-obey-display-actions t))
+
+  (when abz-pixel-scroll
+    (pixel-scroll-precision-mode 1)))
 
 ;; Minibuffer history persistence (built-in)
 (use-package savehist

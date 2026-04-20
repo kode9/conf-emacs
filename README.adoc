@@ -214,6 +214,10 @@ All features can be configured via `kbd:[M-x] customize-group kbd:[RET] abz kbd:
 |abz-yank-handler |Kill ring browsing (M-y) |consult
 |abz-diagnostics-backend |Syntax checker engine |flycheck
 |abz-proportional-window-resize |Proportional window splitting |t
+|abz-fast-scroll |Skip fontification when scrolling fast |t
+|abz-pixel-scroll |Pixel-precise smooth scrolling |nil
+|abz-switch-to-buffer-obey-display-actions |Buffer switch respects display rules |nil
+|abz-next-error-highlight |Highlight current error in compilation |t
 |===
 
 === Window Management
@@ -323,6 +327,9 @@ For sustained work, run an Emacs daemon on the remote machine and display its GU
 * Evaluate `minibuffer-regexp-mode` (Emacs 30+ built-in: live feedback on regexp structure with color-coded groups and character classes)
 * Evaluate lazy isearch counting (built-in "match N of M" display, replacing packages like `anzu`)
 * Evaluate `repeat-mode` for streamlined repeated commands (e.g. mark popping, winner undo/redo)
+* Evaluate `jit-lock-defer-time` tuning (current value: 0, consider 0.25 for smoother interactive feel)
+* Evaluate `savehist-file-modes` for restricting history file permissions (`#o600`)
+* Evaluate `display-buffer-alist` for centralized window placement rules (help, diagnostics, async shell)
 
 == License
 
