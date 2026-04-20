@@ -27,13 +27,6 @@
 (require 'cl-lib)
 (require 'use-package)
 
-(defun abz--savehist-strip-kill-ring ()
-  "Remove text properties from `kill-ring' entries before saving.
-Prevents savehist file bloat when `kill-ring' is persisted."
-  (setq kill-ring
-        (mapcar #'substring-no-properties
-                (cl-remove-if-not #'stringp kill-ring))))
-
 ;;;###autoload
 (defun abz--init-custom ()
   "Initialise custom configuration variables."
@@ -56,24 +49,11 @@ Prevents savehist file bloat when `kill-ring' is persisted."
   (customize-set-variable 'scroll-conservatively 4)
   (customize-set-variable 'scroll-preserve-screen-position t)
 
-  ;; History file
-  (customize-set-variable 'savehist-file
-                          (expand-file-name "history" abz-cache-dir)) ; Minibuffer history location
-
-  ;; Persist kill ring and search rings across sessions
-  (add-to-list 'savehist-additional-variables 'kill-ring)
-  (add-to-list 'savehist-additional-variables 'search-ring)
-  (add-to-list 'savehist-additional-variables 'regexp-search-ring)
-  ;; Strip text properties before saving to prevent savehist file bloat
-  ;; (adapted from Doom Emacs)
-  (add-hook 'savehist-save-hook #'abz--savehist-strip-kill-ring)
-
   ;; Minibuffer
   (customize-set-variable 'enable-recursive-minibuffers t)   ; Allow minibuffer commands while in the minibuffer
   (customize-set-variable 'minibuffer-depth-indicate-mode t) ; Show recursion depth in the minibuffer
   (customize-set-variable 'history-length 100)               ; Maximum history
   (customize-set-variable 'history-delete-duplicates t)      ; Remove duplicates
-  (savehist-mode nil)                                        ; Enable minibuffer history
 
   ;; Buffers
   (customize-set-variable 'confirm-nonexistent-file-or-buffer
@@ -99,6 +79,28 @@ Prevents savehist file bloat when `kill-ring' is persisted."
 
   ;; Always select the help window
   (customize-set-variable 'help-window-select t))
+
+;; Minibuffer history persistence (built-in)
+(use-package savehist
+  :straight nil
+  :preface
+  ;; Strip text properties before saving to prevent savehist file bloat
+  ;; (adapted from Doom Emacs)
+  (defun abz--savehist-strip-kill-ring ()
+    "Remove text properties from `kill-ring' entries before saving.
+Prevents savehist file bloat when `kill-ring' is persisted."
+    (setq kill-ring
+          (mapcar #'substring-no-properties
+                  (cl-remove-if-not #'stringp kill-ring))))
+  :custom
+  (savehist-file (expand-file-name "history" abz-cache-dir) "Minibuffer history location")
+  :hook
+  (savehist-save . abz--savehist-strip-kill-ring)
+  (after-init . savehist-mode)
+  :config
+  ;; Persist kill ring and search rings across sessions
+  (dolist (var '(kill-ring search-ring regexp-search-ring))
+    (add-to-list 'savehist-additional-variables var)))
 
 ;; Proportional window resizing
 (when abz-proportional-window-resize
