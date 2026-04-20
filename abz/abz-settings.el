@@ -296,6 +296,7 @@ When set to a non-disabled value, also enables `lsp-enable-imenu'."
   "When non-nil, splitting a window resizes all windows proportionally.
 When nil, only the split window is halved."
   :type 'boolean
+  :tag "Proportional window resize"
   :group 'abz
   :group 'convenience)
 
@@ -326,9 +327,14 @@ Makes window management more predictable with custom display rules."
 ;;; Development
 
 (defcustom abz-next-error-highlight t
-  "When non-nil, highlight the current error message in the compilation buffer."
-  :type 'boolean
-  :tag "Highlight current error message"
+  "Highlight error messages in the compilation buffer.
+When t, highlight the current error message.
+When `keep', highlight all visited error messages.
+When nil, no highlighting."
+  :type '(choice (const :tag "Highlight current error" t)
+                 (const :tag "Highlight all visited errors" keep)
+                 (const :tag "No highlighting" nil))
+  :tag "Highlight error messages"
   :group 'abz
   :group 'tools)
 

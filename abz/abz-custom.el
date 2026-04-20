@@ -88,6 +88,7 @@
     (pixel-scroll-precision-mode 1)))
 
 ;; Minibuffer history persistence (built-in)
+;; no-littering: savehist-file (intentionally overridden to abz-cache-dir)
 (use-package savehist
   :straight nil
   :preface
